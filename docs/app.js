@@ -40,6 +40,12 @@ function uniqueModels(history) {
   return [...set].sort();
 }
 
+function isReferenceModel(m) {
+  const name = String(m?.model || "");
+  const slug = String(m?.model_slug || "");
+  return name.startsWith("reference:") || slug.startsWith("reference_");
+}
+
 function el(tag, attrs = {}, children = []) {
   const node = document.createElement(tag);
   for (const [k, v] of Object.entries(attrs)) {
@@ -324,7 +330,9 @@ function renderLeaderboardTable(models) {
 function renderModelCards(latest) {
   const host = document.getElementById("modelCards");
   host.innerHTML = "";
-  const models = [...(latest.models || [])].sort(byKey("strict_accuracy", "desc"));
+  const models = [...(latest.models || [])]
+    .filter((m) => !isReferenceModel(m))
+    .sort(byKey("strict_accuracy", "desc"));
 
   for (const m of models) {
     const grade = String(m.grade || "—");
@@ -619,7 +627,12 @@ async function main() {
   const models = [...(latest.models || [])].sort(byKey("strict_accuracy", "desc"));
   const barChart = document.getElementById("barChart");
   barChart.innerHTML = "";
-  barChart.appendChild(svgBarChart(models, "strict_accuracy"));
+  barChart.appendChild(
+    svgBarChart(
+      models.filter((m) => !isReferenceModel(m)),
+      "strict_accuracy",
+    ),
+  );
 
   renderModelCards(latest);
   wireTableSorting(latest);
