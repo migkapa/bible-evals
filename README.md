@@ -64,13 +64,13 @@ See `docs/DATA.md` for details and normalization rules.
 
 - `bible-eval run --config config.yaml` writes `runs/<timestamp>/<model_slug>/results.json` and `runs/<timestamp>/summary.json`.
 - `bible-eval score --gt "<text>" --pred "<text>"` prints metrics for one pair.
-- `bible-eval export-site` writes `site/data/history.json` for the landing page.
+- `bible-eval export-site` writes `docs/data/history.json` for the landing page.
 
 ## Results + Landing Page
 
 - Results history is saved to `results/history.json` after each run.
-- A static landing page lives in `site/` and reads `site/data/history.json`.
-- View locally: `cd site && python -m http.server 8000`
+- A static landing page lives in `docs/` and reads `docs/data/history.json`.
+- View locally: `cd docs && python -m http.server 8000`
 
 ## Development
 

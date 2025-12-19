@@ -240,8 +240,8 @@ def cmd_run(args: argparse.Namespace) -> int:
     append_run(history_path, run_summary)
     write_run_copy(Path("results") / "runs", run_id, run_summary)
 
-    # Keep static site data in sync (if you publish `site/`).
-    site_history_path = Path("site") / "data" / "history.json"
+    # Keep static site data in sync (if you publish `docs/`).
+    site_history_path = Path("docs") / "data" / "history.json"
     save_history(site_history_path, load_history(history_path))
 
     # Copy latest run details into the site for example rendering.
@@ -250,7 +250,7 @@ def cmd_run(args: argparse.Namespace) -> int:
         if not rel:
             continue
         src = Path("results") / rel
-        dst = Path("site") / "data" / rel
+        dst = Path("docs") / "data" / rel
         dst.parent.mkdir(parents=True, exist_ok=True)
         dst.write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
     return 0
@@ -334,7 +334,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     s_site = sub.add_parser("export-site", help="Export results history to a static site data folder.")
     s_site.add_argument("--history", default="results/history.json", help="Path to results history JSON.")
-    s_site.add_argument("--out", default="site", help="Site output directory (writes <out>/data/history.json).")
+    s_site.add_argument("--out", default="docs", help="Site output directory (writes <out>/data/history.json).")
     s_site.set_defaults(func=cmd_export_site)
 
     s_ex = sub.add_parser("examples", help="Print bad examples for a given run/model.")
