@@ -1,4 +1,4 @@
-# Example configuration for `bible-eval run`
+# Single-model config for gpt-oss runs.
 data:
   taxonomy_path: data/taxonomy.json
   versions:
@@ -7,41 +7,6 @@ data:
       name: "King James Version (1769)"
 
 models:
-  - name: "reference:verbatim"
-    connector: "reference"
-    options:
-      mode: "verbatim"
-  - name: "ollama:llama3.2"
-    connector: "ollama"
-    options:
-      base_url: "http://127.0.0.1:11434"
-      model: "llama3.2:latest"
-      temperature: 0.0
-      num_predict: 256
-  - name: "ollama:deepseek-r1:8b"
-    connector: "ollama"
-    options:
-      base_url: "http://127.0.0.1:11434"
-      model: "deepseek-r1:8b"
-      think: false
-      temperature: 0.0
-      num_predict: 1024
-      strip_thinking: true
-  - name: "ollama:gemma3:4b"
-    connector: "ollama"
-    options:
-      base_url: "http://127.0.0.1:11434"
-      model: "gemma3:4b"
-      temperature: 0.0
-      num_predict: 256
-  - name: "ollama:qwen3"
-    connector: "ollama"
-    options:
-      base_url: "http://127.0.0.1:11434"
-      model: "qwen3:latest"
-      think: false
-      temperature: 0.0
-      num_predict: 256
   - name: "ollama:gpt-oss"
     connector: "ollama"
     options:

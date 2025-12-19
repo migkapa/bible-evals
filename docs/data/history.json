@@ -1340,5 +1340,50 @@
         "details_rel": "details/20251214T043408Z/ollama_qwen3.json"
       }
     ]
+  },
+  {
+    "run_id": "20251219T040120Z",
+    "created_at": "2025-12-19T04:01:45.433944+00:00",
+    "version": "kjv",
+    "prompt_mode": "system2",
+    "sample": {
+      "count": 10,
+      "seed": 1,
+      "stratified": false
+    },
+    "models": [
+      {
+        "model": "ollama:gpt-oss",
+        "model_slug": "ollama_gpt_oss",
+        "version": "kjv",
+        "prompt_mode": "system2",
+        "n": 10,
+        "strict_accuracy": 0.8,
+        "avg_wer": 0.08409090909090909,
+        "avg_cer": 0.08282227307398932,
+        "avg_token_sort_ratio": 94.37361094864897,
+        "avg_chatter_ratio": -0.07495041952707857,
+        "avg_len_ratio": 0.9250495804729214,
+        "verbatim_count": 8,
+        "verbatim_with_extras_count": 0,
+        "inaccurate_count": 2,
+        "hallucination_count": 0,
+        "chattery_count": 0,
+        "truncated_count": 2,
+        "content_accuracy": 0.8,
+        "clean_output_rate": 1.0,
+        "strip_thinking_enabled": false,
+        "strip_thinking_changed_count": 0,
+        "raw_has_think_count": 0,
+        "grade": "B",
+        "headline": "Strong recall with minor drift.",
+        "notes": [
+          "Often truncates output."
+        ],
+        "results_path": "runs/20251219T040120Z/ollama_gpt_oss/results.json",
+        "details_path": "results/details/20251219T040120Z/ollama_gpt_oss.json",
+        "details_rel": "details/20251219T040120Z/ollama_gpt_oss.json"
+      }
+    ]
   }
 ]
