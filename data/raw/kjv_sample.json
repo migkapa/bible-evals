@@ -1,0 +1,13 @@
+[
+  {"book": "Genesis", "chapter": 1, "verse": 1, "text": "In the beginning God created the heaven and the earth."},
+  {"book": "Genesis", "chapter": 1, "verse": 2, "text": "And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters."},
+  {"book": "Genesis", "chapter": 1, "verse": 3, "text": "And God said, Let there be light: and there was light."},
+  {"book": "Genesis", "chapter": 1, "verse": 4, "text": "And God saw the light, that it was good: and God divided the light from the darkness."},
+  {"book": "Genesis", "chapter": 1, "verse": 5, "text": "And God called the light Day, and the darkness he called Night. And the evening and the morning were the first day."},
+  {"book": "Psalm", "chapter": 23, "verse": 1, "text": "The LORD is my shepherd; I shall not want."},
+  {"book": "John", "chapter": 3, "verse": 16, "text": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life."},
+  {"book": "John", "chapter": 11, "verse": 35, "text": "Jesus wept."},
+  {"book": "Romans", "chapter": 8, "verse": 1, "text": "There is therefore now no condemnation to them which are in Christ Jesus, who walk not after the flesh, but after the Spirit."},
+  {"book": "Revelation", "chapter": 22, "verse": 21, "text": "The grace of our Lord Jesus Christ be with you all. Amen."}
+]
+

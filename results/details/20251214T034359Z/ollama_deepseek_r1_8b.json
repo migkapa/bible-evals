@@ -1,0 +1,332 @@
+[
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Genesis",
+      "chapter": 1,
+      "verse": 3,
+      "id": 1001003,
+      "text": "And God said, Let there be light: and there was light.",
+      "ref": "Genesis 1:3"
+    },
+    "prediction": "<think>\nAlright, so I need to figure out how to retrieve and present the verse from Genesis 1:3 in the King James Version. First, I should recall what the verse actually says. From what I remember, Genesis 1:3 is about God creating light and dividing it into day and night.\n\nOkay, now the task is to output only the verse text without any extra stuff like book references or version labels. The user provided an example where they wanted \"Genesis 1:3\" in KJV, but the correct output was just the verse itself without any surrounding quotes or additional information.\n\nI should make sure not to include anything else besides the verse text. So, I need to check if there are any punctuation marks or specific wording that might be tricky. The KJV version of Genesis 1:3 is \"And God said, Let there be light, and there was light.\" That seems straightforward enough.\n\nI also need to ensure that I'm not adding any extra spaces or lines before or after the verse. It should just be the text as it is, without any commentary or preface. So, the output should be clean and direct.\n\nWait, am I supposed to capitalize anything? In the example given, \"Jesus wept.\" was in",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Genesis 1:3\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "scores": {
+      "wer": 18.181818181818183,
+      "cer": 20.444444444444443,
+      "chatter_ratio": 20.425925925925927,
+      "token_sort_ratio": 0.495458298926507,
+      "substitutions": 3,
+      "deletions": 0,
+      "insertions": 197,
+      "ref_words": 11,
+      "gt_norm": "And God said, Let there be light: and there was light.",
+      "pred_norm": "<think> Alright, so I need to figure out how to retrieve and present the verse from Genesis 1:3 in the King James Version. First, I should recall what the verse actually says. From what I remember, Genesis 1:3 is about God creating light and dividing it into day and night. Okay, now the task is to output only the verse text without any extra stuff like book references or version labels. The user provided an example where they wanted \"Genesis 1:3\" in KJV, but the correct output was just the verse itself without any surrounding quotes or additional information. I should make sure not to include anything else besides the verse text. So, I need to check if there are any punctuation marks or specific wording that might be tricky. The KJV version of Genesis 1:3 is \"And God said, Let there be light, and there was light.\" That seems straightforward enough. I also need to ensure that I'm not adding any extra spaces or lines before or after the verse. It should just be the text as it is, without any commentary or preface. So, the output should be clean and direct. Wait, am I supposed to capitalize anything? In the example given, \"Jesus wept.\" was in",
+      "label": "total_hallucination",
+      "contains_gt": false
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:deepseek-r1:8b",
+    "version": "kjv"
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Genesis",
+      "chapter": 1,
+      "verse": 2,
+      "id": 1001002,
+      "text": "And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters.",
+      "ref": "Genesis 1:2"
+    },
+    "prediction": "<think>\nAlright, so I need to figure out how to retrieve and present the verse from Genesis 1:2 in the King James Version. First, I should recall what the user is asking for. They want me to act as a database retrieval engine specifically for verses.\n\nThe task is straightforward: return only the verse text without any extra information like book references or version labels. The example given shows that the output should be clean and direct, just the text itself.\n\nI know that Genesis 1:2 in the KJV reads, \"And the earth was without form, and void; and darkness was upon the face of the deep.\" So I need to make sure I don't add anything before or after this text. No quotes, no references, nothing else.\n\nI should also pay attention to punctuation. The example provided uses a period at the end, so I'll follow that format. It's important to preserve the original wording accurately as per the KJV version.\n\nDouble-checking the verse number and book to ensure accuracy is crucial. Sometimes verses can be misremembered or transcribed incorrectly, but in this case, it's a well-known verse from Genesis.\n\nI should also consider if there are any variations in different versions of the Bible, but since the user",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Genesis 1:2\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "scores": {
+      "wer": 6.586206896551724,
+      "cer": 7.570422535211268,
+      "chatter_ratio": 7.52112676056338,
+      "token_sort_ratio": 1.9230769230769231,
+      "substitutions": 10,
+      "deletions": 0,
+      "insertions": 181,
+      "ref_words": 29,
+      "gt_norm": "And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters.",
+      "pred_norm": "<think> Alright, so I need to figure out how to retrieve and present the verse from Genesis 1:2 in the King James Version. First, I should recall what the user is asking for. They want me to act as a database retrieval engine specifically for verses. The task is straightforward: return only the verse text without any extra information like book references or version labels. The example given shows that the output should be clean and direct, just the text itself. I know that Genesis 1:2 in the KJV reads, \"And the earth was without form, and void; and darkness was upon the face of the deep.\" So I need to make sure I don't add anything before or after this text. No quotes, no references, nothing else. I should also pay attention to punctuation. The example provided uses a period at the end, so I'll follow that format. It's important to preserve the original wording accurately as per the KJV version. Double-checking the verse number and book to ensure accuracy is crucial. Sometimes verses can be misremembered or transcribed incorrectly, but in this case, it's a well-known verse from Genesis. I should also consider if there are any variations in different versions of the Bible, but since the user",
+      "label": "total_hallucination",
+      "contains_gt": false
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:deepseek-r1:8b",
+    "version": "kjv"
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Genesis",
+      "chapter": 1,
+      "verse": 5,
+      "id": 1001005,
+      "text": "And God called the light Day, and the darkness he called Night. And the evening and the morning were the first day.",
+      "ref": "Genesis 1:5"
+    },
+    "prediction": "<think>\nAlright, so I need to figure out how to retrieve and present the verse from Genesis 1:5 in the King James Version. First, I should recall what the KJV is—it's a specific translation of the Bible, often used for its archaic language and formal tone.\n\nNext, I need to locate Genesis chapter 1, verse 5. From memory, Genesis 1 talks about the creation of the world, so verse 5 is likely part of that narrative. I think it's something about light or the creation of the sun and moon.\n\nI should make sure not to include any book reference, version label, or extra text. The user specifically wants only the verse text without any surrounding quotes or additional information. So, no \"Genesis 1:5\" in parentheses or anything like that.\n\nAlso, I need to preserve punctuation as best as possible. In the KJV, verse 5 probably ends with a period, so I should include that correctly.\n\nI should double-check the exact wording of Genesis 1:5 in the KJV to ensure accuracy. It goes something like, \"And God made two great lights; the sun to rule by day, and the moon to rule by night.\"\n\nWait, no, actually, let me",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Genesis 1:5\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "scores": {
+      "wer": 8.727272727272727,
+      "cer": 8.704347826086957,
+      "chatter_ratio": 8.591304347826087,
+      "token_sort_ratio": 0.8210180623973727,
+      "substitutions": 15,
+      "deletions": 0,
+      "insertions": 177,
+      "ref_words": 22,
+      "gt_norm": "And God called the light Day, and the darkness he called Night. And the evening and the morning were the first day.",
+      "pred_norm": "<think> Alright, so I need to figure out how to retrieve and present the verse from Genesis 1:5 in the King James Version. First, I should recall what the KJV is—it's a specific translation of the Bible, often used for its archaic language and formal tone. Next, I need to locate Genesis chapter 1, verse 5. From memory, Genesis 1 talks about the creation of the world, so verse 5 is likely part of that narrative. I think it's something about light or the creation of the sun and moon. I should make sure not to include any book reference, version label, or extra text. The user specifically wants only the verse text without any surrounding quotes or additional information. So, no \"Genesis 1:5\" in parentheses or anything like that. Also, I need to preserve punctuation as best as possible. In the KJV, verse 5 probably ends with a period, so I should include that correctly. I should double-check the exact wording of Genesis 1:5 in the KJV to ensure accuracy. It goes something like, \"And God made two great lights; the sun to rule by day, and the moon to rule by night.\" Wait, no, actually, let me",
+      "label": "total_hallucination",
+      "contains_gt": false
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:deepseek-r1:8b",
+    "version": "kjv"
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Genesis",
+      "chapter": 1,
+      "verse": 1,
+      "id": 1001001,
+      "text": "In the beginning God created the heaven and the earth.",
+      "ref": "Genesis 1:1"
+    },
+    "prediction": "<think>\nAlright, so I need to figure out how to retrieve and present the verse text from Genesis 1:1 in the King James Version. First, I should recall what the user is asking for. They want me to act as a database retrieval engine specifically for verses.\n\nThe task is straightforward: return only the verse text without any extra information like book references or version labels. The example given shows that the output should be clean and direct, with no quotes or additional text.\n\nI know that Genesis 1:1 is \"In the beginning God created the heaven and the earth.\" in the KJV. I need to make sure there are no surrounding quotes or any other text added. Also, I must avoid including the version label after it since the user specified not to add that either.\n\nSo, my output should just be the verse itself: \"In the beginning God created the heaven and the earth.\" without any extra spaces or lines before or after. I need to double-check that there are no typos in the verse text to ensure accuracy.\n\nI also have to consider punctuation preservation. In this case, the sentence ends with a period, which is correct. No other punctuation issues seem present here.\n\nFinally, I should make sure that the response adheres strictly to",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Genesis 1:1\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "scores": {
+      "wer": 21.0,
+      "cer": 21.77777777777778,
+      "chatter_ratio": 21.77777777777778,
+      "token_sort_ratio": 0.6230529595015576,
+      "substitutions": 2,
+      "deletions": 0,
+      "insertions": 208,
+      "ref_words": 10,
+      "gt_norm": "In the beginning God created the heaven and the earth.",
+      "pred_norm": "<think> Alright, so I need to figure out how to retrieve and present the verse text from Genesis 1:1 in the King James Version. First, I should recall what the user is asking for. They want me to act as a database retrieval engine specifically for verses. The task is straightforward: return only the verse text without any extra information like book references or version labels. The example given shows that the output should be clean and direct, with no quotes or additional text. I know that Genesis 1:1 is \"In the beginning God created the heaven and the earth.\" in the KJV. I need to make sure there are no surrounding quotes or any other text added. Also, I must avoid including the version label after it since the user specified not to add that either. So, my output should just be the verse itself: \"In the beginning God created the heaven and the earth.\" without any extra spaces or lines before or after. I need to double-check that there are no typos in the verse text to ensure accuracy. I also have to consider punctuation preservation. In this case, the sentence ends with a period, which is correct. No other punctuation issues seem present here. Finally, I should make sure that the response adheres strictly to",
+      "label": "verbatim_with_extras",
+      "contains_gt": true
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:deepseek-r1:8b",
+    "version": "kjv"
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Genesis",
+      "chapter": 1,
+      "verse": 4,
+      "id": 1001004,
+      "text": "And God saw the light, that it was good: and God divided the light from the darkness.",
+      "ref": "Genesis 1:4"
+    },
+    "prediction": "<think>\nAlright, so I need to figure out how to retrieve and present the verse from Genesis 1:4 in the King James Version. First, I should recall what the user is asking for. They want me to act as a database retrieval engine specifically for verses.\n\nThe task is straightforward: return only the verse text without any extra information like book references or version labels. The example given shows that the output shouldn't have quotes or additional text, just the verse itself.\n\nI know that Genesis 1:4 is part of the first chapter of the Book of Genesis. From what I remember, this verse talks about God creating light and dividing the day from night on the first day of creation. The King James Version often uses archaic language, so I should make sure to use that correctly.\n\nI need to ensure that I don't include any book/chapter/verse references or version labels. Also, no prefaces or comments, just the verse text itself. So, I'll have to look up Genesis 1:4 in a KJV Bible and extract only that part.\n\nLet me think about possible variations or mistakes. Sometimes verses can be misremembered, so it's important to double-check the exact wording. For example, \"God made two great lights",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Genesis 1:4\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "scores": {
+      "wer": 11.823529411764707,
+      "cer": 13.117647058823529,
+      "chatter_ratio": 13.058823529411764,
+      "token_sort_ratio": 1.5625,
+      "substitutions": 11,
+      "deletions": 0,
+      "insertions": 190,
+      "ref_words": 17,
+      "gt_norm": "And God saw the light, that it was good: and God divided the light from the darkness.",
+      "pred_norm": "<think> Alright, so I need to figure out how to retrieve and present the verse from Genesis 1:4 in the King James Version. First, I should recall what the user is asking for. They want me to act as a database retrieval engine specifically for verses. The task is straightforward: return only the verse text without any extra information like book references or version labels. The example given shows that the output shouldn't have quotes or additional text, just the verse itself. I know that Genesis 1:4 is part of the first chapter of the Book of Genesis. From what I remember, this verse talks about God creating light and dividing the day from night on the first day of creation. The King James Version often uses archaic language, so I should make sure to use that correctly. I need to ensure that I don't include any book/chapter/verse references or version labels. Also, no prefaces or comments, just the verse text itself. So, I'll have to look up Genesis 1:4 in a KJV Bible and extract only that part. Let me think about possible variations or mistakes. Sometimes verses can be misremembered, so it's important to double-check the exact wording. For example, \"God made two great lights",
+      "label": "total_hallucination",
+      "contains_gt": false
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:deepseek-r1:8b",
+    "version": "kjv"
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Psalm",
+      "chapter": 23,
+      "verse": 1,
+      "id": 19023001,
+      "text": "The LORD is my shepherd; I shall not want.",
+      "ref": "Psalm 23:1"
+    },
+    "prediction": "<think>\nAlright, so I need to figure out how to retrieve the verse text for Psalm 23:1 from the King James Version of the Bible. First, I should understand what exactly is being asked here. The user wants me to return just the verse text without any additional information like book references or version labels.\n\nOkay, so the task is straightforward: output only the verse text verbatim. That means no quotes around it and nothing else attached. For example, if the verse was \"Jesus wept,\" I wouldn't include anything else before or after it.\n\nNow, considering the specific request for Psalm 23:1 in the King James Version (1769), I need to recall what that verse says. From memory, Psalm 23 is a well-known passage, often associated with comfort and guidance. The first verse typically starts with \"The Lord is my shepherd.\"\n\nI should make sure that I'm not adding any extra information or formatting. No book/chapter/verse references, no version labels, just the text itself. Also, punctuation needs to be preserved as accurately as possible.\n\nWait, let me double-check the exact wording of Psalm 23:1 in the KJV. Yes, it's \"The Lord is my shepherd; I shall not want.\"",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Psalm 23:1\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "scores": {
+      "wer": 21.22222222222222,
+      "cer": 26.857142857142858,
+      "chatter_ratio": 26.785714285714285,
+      "token_sort_ratio": 1.8196856906534327,
+      "substitutions": 2,
+      "deletions": 0,
+      "insertions": 189,
+      "ref_words": 9,
+      "gt_norm": "The LORD is my shepherd; I shall not want.",
+      "pred_norm": "<think> Alright, so I need to figure out how to retrieve the verse text for Psalm 23:1 from the King James Version of the Bible. First, I should understand what exactly is being asked here. The user wants me to return just the verse text without any additional information like book references or version labels. Okay, so the task is straightforward: output only the verse text verbatim. That means no quotes around it and nothing else attached. For example, if the verse was \"Jesus wept,\" I wouldn't include anything else before or after it. Now, considering the specific request for Psalm 23:1 in the King James Version (1769), I need to recall what that verse says. From memory, Psalm 23 is a well-known passage, often associated with comfort and guidance. The first verse typically starts with \"The Lord is my shepherd.\" I should make sure that I'm not adding any extra information or formatting. No book/chapter/verse references, no version labels, just the text itself. Also, punctuation needs to be preserved as accurately as possible. Wait, let me double-check the exact wording of Psalm 23:1 in the KJV. Yes, it's \"The Lord is my shepherd; I shall not want.\"",
+      "label": "total_hallucination",
+      "contains_gt": false
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:deepseek-r1:8b",
+    "version": "kjv"
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "John",
+      "chapter": 11,
+      "verse": 35,
+      "id": 43011035,
+      "text": "Jesus wept.",
+      "ref": "John 11:35"
+    },
+    "prediction": "<think>\nAlright, so I need to figure out how to retrieve a specific verse from the Bible. The user has given me a task where I have to return just the verse text without any extra stuff like book references or version labels.\n\nFirst, let's break down what they're asking for. They want me to act as a database retrieval engine. That means my job is to take the input, process it, and output only the verse text accurately.\n\nThe example provided shows that when the input is \"John 11:35\" with the King James Version (1769), the correct output is just \"Jesus wept.\" without any quotes or additional information. So, I need to make sure I follow this format strictly.\n\nI should start by understanding the structure of the verse reference. The user provided \"John 11:35,\" which refers to John chapter 11, verse 35. In the King James Version, that verse is indeed \"Jesus wept.\" So, my task is to extract just that part without any surrounding text or references.\n\nI also need to consider other possible inputs. For example, if someone asks for a different version or a different verse, I should still follow the same rule: output only the verse text verbatim. No extra quotes,",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: John 11:35\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "scores": {
+      "wer": 103.5,
+      "cer": 105.0909090909091,
+      "chatter_ratio": 105.0909090909091,
+      "token_sort_ratio": 1.0186757215619695,
+      "substitutions": 2,
+      "deletions": 0,
+      "insertions": 205,
+      "ref_words": 2,
+      "gt_norm": "Jesus wept.",
+      "pred_norm": "<think> Alright, so I need to figure out how to retrieve a specific verse from the Bible. The user has given me a task where I have to return just the verse text without any extra stuff like book references or version labels. First, let's break down what they're asking for. They want me to act as a database retrieval engine. That means my job is to take the input, process it, and output only the verse text accurately. The example provided shows that when the input is \"John 11:35\" with the King James Version (1769), the correct output is just \"Jesus wept.\" without any quotes or additional information. So, I need to make sure I follow this format strictly. I should start by understanding the structure of the verse reference. The user provided \"John 11:35,\" which refers to John chapter 11, verse 35. In the King James Version, that verse is indeed \"Jesus wept.\" So, my task is to extract just that part without any surrounding text or references. I also need to consider other possible inputs. For example, if someone asks for a different version or a different verse, I should still follow the same rule: output only the verse text verbatim. No extra quotes,",
+      "label": "verbatim_with_extras",
+      "contains_gt": true
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:deepseek-r1:8b",
+    "version": "kjv"
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Revelation",
+      "chapter": 22,
+      "verse": 21,
+      "id": 66022021,
+      "text": "The grace of our Lord Jesus Christ be with you all. Amen.",
+      "ref": "Revelation 22:21"
+    },
+    "prediction": "<think>\nAlright, so I need to figure out how to retrieve and present the verse from Revelation 22:21 in the King James Version. First, I should recall what that verse actually says. From what I remember, it's a significant passage because it's often referenced in discussions about the end times or the second coming of Christ.\n\nOkay, so the task is to output only the verse text without any book reference, version label, or extra stuff. The user provided an example where they wanted \"Revelation 22:21\" and the response was just the verse itself, \"For the Lord our God is a consuming fire.\" That makes sense because it's concise and follows the rules.\n\nI should make sure that I don't include any surrounding quotes or extra lines. Also, I need to preserve punctuation as best as possible. Since the user specified the King James Version, I have to ensure that the translation matches that version exactly.\n\nWait, let me double-check the verse in the KJV to avoid any mistakes. Revelation 22:21 reads: \"And the Lord God shall be their refuge, the same which is the Potter of the earth; and none shall fail.\" Hmm, no, that doesn't seem right. Maybe I misremembered it.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Revelation 22:21\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "scores": {
+      "wer": 16.583333333333332,
+      "cer": 19.54385964912281,
+      "chatter_ratio": 19.45614035087719,
+      "token_sort_ratio": 0.8176614881439084,
+      "substitutions": 8,
+      "deletions": 0,
+      "insertions": 191,
+      "ref_words": 12,
+      "gt_norm": "The grace of our Lord Jesus Christ be with you all. Amen.",
+      "pred_norm": "<think> Alright, so I need to figure out how to retrieve and present the verse from Revelation 22:21 in the King James Version. First, I should recall what that verse actually says. From what I remember, it's a significant passage because it's often referenced in discussions about the end times or the second coming of Christ. Okay, so the task is to output only the verse text without any book reference, version label, or extra stuff. The user provided an example where they wanted \"Revelation 22:21\" and the response was just the verse itself, \"For the Lord our God is a consuming fire.\" That makes sense because it's concise and follows the rules. I should make sure that I don't include any surrounding quotes or extra lines. Also, I need to preserve punctuation as best as possible. Since the user specified the King James Version, I have to ensure that the translation matches that version exactly. Wait, let me double-check the verse in the KJV to avoid any mistakes. Revelation 22:21 reads: \"And the Lord God shall be their refuge, the same which is the Potter of the earth; and none shall fail.\" Hmm, no, that doesn't seem right. Maybe I misremembered it.",
+      "label": "total_hallucination",
+      "contains_gt": false
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:deepseek-r1:8b",
+    "version": "kjv"
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Romans",
+      "chapter": 8,
+      "verse": 1,
+      "id": 45008001,
+      "text": "There is therefore now no condemnation to them which are in Christ Jesus, who walk not after the flesh, but after the Spirit.",
+      "ref": "Romans 8:1"
+    },
+    "prediction": "<think>\nAlright, so I need to figure out how to retrieve the verse text for Romans 8:1 from the King James Version. First, I should recall what the KJV is—it's a specific translation of the Bible, published in 1769. Now, the task is to get just the verse text without any extra stuff like book references or version labels.\n\nI remember that in the examples given, the output was straightforward, just the verse itself. So for Romans 8:1, I need to make sure I only include the text and nothing else. Let me think about how to structure this correctly.\n\nMaybe I should start by identifying what Romans 8:1 actually says. From what I remember, it's something like \"There is no condemnation for those who are in Christ Jesus.\" That seems right, but I want to double-check to make sure I'm not making a mistake here.\n\nI also need to ensure that the punctuation is preserved as best as possible. So if there's a period or a comma, I should include it accurately. No extra whitespace lines either—just the verse text on its own.\n\nWait, am I supposed to consider any specific formatting? The examples didn't have quotes or anything, so maybe just plain text is fine.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Romans 8:1\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "scores": {
+      "wer": 8.608695652173912,
+      "cer": 8.328,
+      "chatter_ratio": 8.24,
+      "token_sort_ratio": 0.78125,
+      "substitutions": 14,
+      "deletions": 0,
+      "insertions": 184,
+      "ref_words": 23,
+      "gt_norm": "There is therefore now no condemnation to them which are in Christ Jesus, who walk not after the flesh, but after the Spirit.",
+      "pred_norm": "<think> Alright, so I need to figure out how to retrieve the verse text for Romans 8:1 from the King James Version. First, I should recall what the KJV is—it's a specific translation of the Bible, published in 1769. Now, the task is to get just the verse text without any extra stuff like book references or version labels. I remember that in the examples given, the output was straightforward, just the verse itself. So for Romans 8:1, I need to make sure I only include the text and nothing else. Let me think about how to structure this correctly. Maybe I should start by identifying what Romans 8:1 actually says. From what I remember, it's something like \"There is no condemnation for those who are in Christ Jesus.\" That seems right, but I want to double-check to make sure I'm not making a mistake here. I also need to ensure that the punctuation is preserved as best as possible. So if there's a period or a comma, I should include it accurately. No extra whitespace lines either—just the verse text on its own. Wait, am I supposed to consider any specific formatting? The examples didn't have quotes or anything, so maybe just plain text is fine.",
+      "label": "total_hallucination",
+      "contains_gt": false
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:deepseek-r1:8b",
+    "version": "kjv"
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "John",
+      "chapter": 3,
+      "verse": 16,
+      "id": 43003016,
+      "text": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+      "ref": "John 3:16"
+    },
+    "prediction": "<think>\nAlright, so I need to figure out how to retrieve and present the verse text for John 3:16 from the King James Version. First, I should recall what the KJV is—it's a specific translation of the Bible, published in 1769. The task is to output only the verse text without any extra information like book references or version labels.\n\nI remember that John 3:16 is a well-known verse, often associated with themes of salvation and love. It goes something like \"For God so loved the world...\" I should make sure I get the wording right. Maybe I can look it up to confirm, but since I'm supposed to be a database retrieval engine, I'll assume I have access to the KJV text.\n\nI need to ensure that I don't include any surrounding quotes or references like \"John 3:16\" or \"(KJV)\". The output should just be the verse itself. Also, punctuation needs to be preserved accurately. So, if the original has a period at the end, it should stay there unless it's part of a larger sentence.\n\nWait, does the KJV version have any specific punctuation that I need to consider? For example, in some versions, commas might be used differently. But since I",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: John 3:16\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "scores": {
+      "wer": 7.88,
+      "cer": 7.212765957446808,
+      "chatter_ratio": 7.070921985815603,
+      "token_sort_ratio": 1.5637216575449568,
+      "substitutions": 18,
+      "deletions": 0,
+      "insertions": 179,
+      "ref_words": 25,
+      "gt_norm": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+      "pred_norm": "<think> Alright, so I need to figure out how to retrieve and present the verse text for John 3:16 from the King James Version. First, I should recall what the KJV is—it's a specific translation of the Bible, published in 1769. The task is to output only the verse text without any extra information like book references or version labels. I remember that John 3:16 is a well-known verse, often associated with themes of salvation and love. It goes something like \"For God so loved the world...\" I should make sure I get the wording right. Maybe I can look it up to confirm, but since I'm supposed to be a database retrieval engine, I'll assume I have access to the KJV text. I need to ensure that I don't include any surrounding quotes or references like \"John 3:16\" or \"(KJV)\". The output should just be the verse itself. Also, punctuation needs to be preserved accurately. So, if the original has a period at the end, it should stay there unless it's part of a larger sentence. Wait, does the KJV version have any specific punctuation that I need to consider? For example, in some versions, commas might be used differently. But since I",
+      "label": "total_hallucination",
+      "contains_gt": false
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:deepseek-r1:8b",
+    "version": "kjv"
+  }
+]

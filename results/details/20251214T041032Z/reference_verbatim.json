@@ -1,0 +1,352 @@
+[
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Genesis",
+      "chapter": 1,
+      "verse": 3,
+      "id": 1001003,
+      "text": "And God said, Let there be light: and there was light.",
+      "ref": "Genesis 1:3"
+    },
+    "prediction": "And God said, Let there be light: and there was light.",
+    "prediction_raw": "And God said, Let there be light: and there was light.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Genesis 1:3\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 0.0,
+      "cer": 0.0,
+      "chatter_ratio": 0.0,
+      "token_sort_ratio": 100.0,
+      "substitutions": 0,
+      "deletions": 0,
+      "insertions": 0,
+      "ref_words": 11,
+      "gt_norm": "And God said, Let there be light: and there was light.",
+      "pred_norm": "And God said, Let there be light: and there was light.",
+      "label": "verbatim",
+      "contains_gt": false
+    },
+    "prompt_mode": "system2",
+    "model": "reference:verbatim",
+    "version": "kjv"
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Genesis",
+      "chapter": 1,
+      "verse": 2,
+      "id": 1001002,
+      "text": "And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters.",
+      "ref": "Genesis 1:2"
+    },
+    "prediction": "And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters.",
+    "prediction_raw": "And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Genesis 1:2\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 0.0,
+      "cer": 0.0,
+      "chatter_ratio": 0.0,
+      "token_sort_ratio": 100.0,
+      "substitutions": 0,
+      "deletions": 0,
+      "insertions": 0,
+      "ref_words": 29,
+      "gt_norm": "And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters.",
+      "pred_norm": "And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters.",
+      "label": "verbatim",
+      "contains_gt": false
+    },
+    "prompt_mode": "system2",
+    "model": "reference:verbatim",
+    "version": "kjv"
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Genesis",
+      "chapter": 1,
+      "verse": 5,
+      "id": 1001005,
+      "text": "And God called the light Day, and the darkness he called Night. And the evening and the morning were the first day.",
+      "ref": "Genesis 1:5"
+    },
+    "prediction": "And God called the light Day, and the darkness he called Night. And the evening and the morning were the first day.",
+    "prediction_raw": "And God called the light Day, and the darkness he called Night. And the evening and the morning were the first day.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Genesis 1:5\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 0.0,
+      "cer": 0.0,
+      "chatter_ratio": 0.0,
+      "token_sort_ratio": 100.0,
+      "substitutions": 0,
+      "deletions": 0,
+      "insertions": 0,
+      "ref_words": 22,
+      "gt_norm": "And God called the light Day, and the darkness he called Night. And the evening and the morning were the first day.",
+      "pred_norm": "And God called the light Day, and the darkness he called Night. And the evening and the morning were the first day.",
+      "label": "verbatim",
+      "contains_gt": false
+    },
+    "prompt_mode": "system2",
+    "model": "reference:verbatim",
+    "version": "kjv"
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Genesis",
+      "chapter": 1,
+      "verse": 1,
+      "id": 1001001,
+      "text": "In the beginning God created the heaven and the earth.",
+      "ref": "Genesis 1:1"
+    },
+    "prediction": "In the beginning God created the heaven and the earth.",
+    "prediction_raw": "In the beginning God created the heaven and the earth.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Genesis 1:1\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 0.0,
+      "cer": 0.0,
+      "chatter_ratio": 0.0,
+      "token_sort_ratio": 100.0,
+      "substitutions": 0,
+      "deletions": 0,
+      "insertions": 0,
+      "ref_words": 10,
+      "gt_norm": "In the beginning God created the heaven and the earth.",
+      "pred_norm": "In the beginning God created the heaven and the earth.",
+      "label": "verbatim",
+      "contains_gt": false
+    },
+    "prompt_mode": "system2",
+    "model": "reference:verbatim",
+    "version": "kjv"
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Genesis",
+      "chapter": 1,
+      "verse": 4,
+      "id": 1001004,
+      "text": "And God saw the light, that it was good: and God divided the light from the darkness.",
+      "ref": "Genesis 1:4"
+    },
+    "prediction": "And God saw the light, that it was good: and God divided the light from the darkness.",
+    "prediction_raw": "And God saw the light, that it was good: and God divided the light from the darkness.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Genesis 1:4\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 0.0,
+      "cer": 0.0,
+      "chatter_ratio": 0.0,
+      "token_sort_ratio": 100.0,
+      "substitutions": 0,
+      "deletions": 0,
+      "insertions": 0,
+      "ref_words": 17,
+      "gt_norm": "And God saw the light, that it was good: and God divided the light from the darkness.",
+      "pred_norm": "And God saw the light, that it was good: and God divided the light from the darkness.",
+      "label": "verbatim",
+      "contains_gt": false
+    },
+    "prompt_mode": "system2",
+    "model": "reference:verbatim",
+    "version": "kjv"
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Psalm",
+      "chapter": 23,
+      "verse": 1,
+      "id": 19023001,
+      "text": "The LORD is my shepherd; I shall not want.",
+      "ref": "Psalm 23:1"
+    },
+    "prediction": "The LORD is my shepherd; I shall not want.",
+    "prediction_raw": "The LORD is my shepherd; I shall not want.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Psalm 23:1\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 0.0,
+      "cer": 0.0,
+      "chatter_ratio": 0.0,
+      "token_sort_ratio": 100.0,
+      "substitutions": 0,
+      "deletions": 0,
+      "insertions": 0,
+      "ref_words": 9,
+      "gt_norm": "The LORD is my shepherd; I shall not want.",
+      "pred_norm": "The LORD is my shepherd; I shall not want.",
+      "label": "verbatim",
+      "contains_gt": false
+    },
+    "prompt_mode": "system2",
+    "model": "reference:verbatim",
+    "version": "kjv"
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "John",
+      "chapter": 11,
+      "verse": 35,
+      "id": 43011035,
+      "text": "Jesus wept.",
+      "ref": "John 11:35"
+    },
+    "prediction": "Jesus wept.",
+    "prediction_raw": "Jesus wept.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: John 11:35\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 0.0,
+      "cer": 0.0,
+      "chatter_ratio": 0.0,
+      "token_sort_ratio": 100.0,
+      "substitutions": 0,
+      "deletions": 0,
+      "insertions": 0,
+      "ref_words": 2,
+      "gt_norm": "Jesus wept.",
+      "pred_norm": "Jesus wept.",
+      "label": "verbatim",
+      "contains_gt": false
+    },
+    "prompt_mode": "system2",
+    "model": "reference:verbatim",
+    "version": "kjv"
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Revelation",
+      "chapter": 22,
+      "verse": 21,
+      "id": 66022021,
+      "text": "The grace of our Lord Jesus Christ be with you all. Amen.",
+      "ref": "Revelation 22:21"
+    },
+    "prediction": "The grace of our Lord Jesus Christ be with you all. Amen.",
+    "prediction_raw": "The grace of our Lord Jesus Christ be with you all. Amen.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Revelation 22:21\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 0.0,
+      "cer": 0.0,
+      "chatter_ratio": 0.0,
+      "token_sort_ratio": 100.0,
+      "substitutions": 0,
+      "deletions": 0,
+      "insertions": 0,
+      "ref_words": 12,
+      "gt_norm": "The grace of our Lord Jesus Christ be with you all. Amen.",
+      "pred_norm": "The grace of our Lord Jesus Christ be with you all. Amen.",
+      "label": "verbatim",
+      "contains_gt": false
+    },
+    "prompt_mode": "system2",
+    "model": "reference:verbatim",
+    "version": "kjv"
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Romans",
+      "chapter": 8,
+      "verse": 1,
+      "id": 45008001,
+      "text": "There is therefore now no condemnation to them which are in Christ Jesus, who walk not after the flesh, but after the Spirit.",
+      "ref": "Romans 8:1"
+    },
+    "prediction": "There is therefore now no condemnation to them which are in Christ Jesus, who walk not after the flesh, but after the Spirit.",
+    "prediction_raw": "There is therefore now no condemnation to them which are in Christ Jesus, who walk not after the flesh, but after the Spirit.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Romans 8:1\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 0.0,
+      "cer": 0.0,
+      "chatter_ratio": 0.0,
+      "token_sort_ratio": 100.0,
+      "substitutions": 0,
+      "deletions": 0,
+      "insertions": 0,
+      "ref_words": 23,
+      "gt_norm": "There is therefore now no condemnation to them which are in Christ Jesus, who walk not after the flesh, but after the Spirit.",
+      "pred_norm": "There is therefore now no condemnation to them which are in Christ Jesus, who walk not after the flesh, but after the Spirit.",
+      "label": "verbatim",
+      "contains_gt": false
+    },
+    "prompt_mode": "system2",
+    "model": "reference:verbatim",
+    "version": "kjv"
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "John",
+      "chapter": 3,
+      "verse": 16,
+      "id": 43003016,
+      "text": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+      "ref": "John 3:16"
+    },
+    "prediction": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+    "prediction_raw": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: John 3:16\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 0.0,
+      "cer": 0.0,
+      "chatter_ratio": 0.0,
+      "token_sort_ratio": 100.0,
+      "substitutions": 0,
+      "deletions": 0,
+      "insertions": 0,
+      "ref_words": 25,
+      "gt_norm": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+      "pred_norm": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+      "label": "verbatim",
+      "contains_gt": false
+    },
+    "prompt_mode": "system2",
+    "model": "reference:verbatim",
+    "version": "kjv"
+  }
+]

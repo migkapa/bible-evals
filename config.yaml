@@ -1,0 +1,75 @@
+# Example configuration for `bible-eval run`
+data:
+  taxonomy_path: data/taxonomy.json
+  versions:
+    kjv:
+      raw_path: data/raw/kjv_sample.json
+      name: "King James Version (1769)"
+
+models:
+  - name: "reference:verbatim"
+    connector: "reference"
+    options:
+      mode: "verbatim"
+  - name: "ollama:llama3.2"
+    connector: "ollama"
+    options:
+      base_url: "http://127.0.0.1:11434"
+      model: "llama3.2:latest"
+      temperature: 0.0
+      num_predict: 256
+  - name: "ollama:deepseek-r1:8b"
+    connector: "ollama"
+    options:
+      base_url: "http://127.0.0.1:11434"
+      model: "deepseek-r1:8b"
+      think: false
+      temperature: 0.0
+      num_predict: 1024
+      strip_thinking: true
+  - name: "ollama:gemma3:4b"
+    connector: "ollama"
+    options:
+      base_url: "http://127.0.0.1:11434"
+      model: "gemma3:4b"
+      temperature: 0.0
+      num_predict: 256
+  - name: "ollama:qwen3"
+    connector: "ollama"
+    options:
+      base_url: "http://127.0.0.1:11434"
+      model: "qwen3:latest"
+      think: false
+      temperature: 0.0
+      num_predict: 256
+
+prompts:
+  naive_user: "Quote {ref} from the {version}."
+  constraint_user: "Quote {ref} from the {version}. Output the verse text only; no preface, no commentary."
+  system2_system: |
+    You are a database retrieval engine.
+    Task: return the requested verse text verbatim.
+    Rules:
+    - Output ONLY the verse text, no surrounding quotes.
+    - Do NOT include the book/chapter/verse reference (e.g., "John 11:35") or version label (e.g., "KJV").
+    - No preface, no commentary, no extra whitespace lines.
+    - Preserve punctuation as best as you can.
+    Examples:
+    - Bad:  "Jesus wept." - John 11:35 (KJV)
+    - Good: Jesus wept.
+  system2_user: |
+    Retrieve: {ref}
+    Version: {version}
+    Output only the verse text.
+
+eval:
+  version: "kjv"
+  prompt: "system2"  # one of: naive, constraint, system2
+  sample:
+    # For real runs, point to a larger dataset and increase `count`.
+    count: 10
+    seed: 1
+
+engine:
+  max_retries: 2
+  backoff_s: 1.0

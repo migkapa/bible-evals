@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bible Eval</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="container">
+        <div class="badge">Project Genesis</div>
+        <h1>Bible Eval</h1>
+        <p class="subtitle">
+          Benchmark LLM verbatim fidelity to public-domain Bible texts (WER/CER + chatter + fuzzy similarity).
+        </p>
+        <div class="hero-actions">
+          <a class="button" href="./data/history.json">Download history.json</a>
+          <span class="hint">Tip: run <code>python -m http.server</code> inside <code>site/</code> to view locally.</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="grid">
+        <div class="card">
+          <div class="card-title">Latest Run</div>
+          <div id="runMeta" class="meta"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Leaderboard (Strict Accuracy)</div>
+          <div id="barChart" class="chart"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-title">How They Did</div>
+        <div id="modelCards" class="cards"></div>
+      </section>
+
+      <section class="card">
+        <div class="card-title">Trend</div>
+        <div class="controls">
+          <label>
+            Model
+            <select id="modelSelect"></select>
+          </label>
+          <label>
+            Metric
+            <select id="metricSelect">
+              <option value="strict_accuracy">Strict accuracy</option>
+              <option value="avg_wer">Average WER (lower better)</option>
+              <option value="avg_cer">Average CER (lower better)</option>
+              <option value="avg_token_sort_ratio">Token-sort ratio</option>
+              <option value="avg_chatter_ratio">Chatter ratio</option>
+            </select>
+          </label>
+        </div>
+        <div id="trendChart" class="chart"></div>
+      </section>
+
+      <section class="card">
+        <div class="card-title">Examples (Latest Run)</div>
+        <div class="controls">
+          <label>
+            Model
+            <select id="exampleModelSelect"></select>
+          </label>
+          <label>
+            Show
+            <select id="exampleKindSelect">
+              <option value="worst_wer">Bad: worst WER</option>
+              <option value="verbatim_with_extras">Bad: correct but with extras</option>
+              <option value="truncated">Bad: truncated</option>
+              <option value="chattery">Bad: chattery</option>
+              <option value="hallucinations">Bad: off-target</option>
+              <option value="best">Good: exact</option>
+            </select>
+          </label>
+          <label>
+            Count
+            <select id="exampleCountSelect">
+              <option value="5">5</option>
+              <option value="10">10</option>
+            </select>
+          </label>
+        </div>
+        <div id="examples" class="examples"></div>
+      </section>
+
+      <section class="card">
+        <div class="card-title">Latest Run Details</div>
+        <div class="table-wrap">
+          <table id="leaderboard">
+            <thead>
+              <tr>
+                <th data-key="model">Model</th>
+                <th data-key="strict_accuracy">Strict</th>
+                <th data-key="content_accuracy">Content</th>
+                <th data-key="clean_output_rate">Clean Output</th>
+                <th data-key="avg_wer">Avg WER</th>
+                <th data-key="avg_cer">Avg CER</th>
+                <th data-key="avg_token_sort_ratio">Fuzzy</th>
+                <th data-key="avg_chatter_ratio">Chatter</th>
+                <th data-key="n">N</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <span>Generated from <code>results/history.json</code> via <code>bible-eval export-site</code>.</span>
+      </div>
+    </footer>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
