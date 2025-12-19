@@ -35,7 +35,10 @@ function latestRun(history) {
 function uniqueModels(history) {
   const set = new Set();
   for (const run of history) {
-    for (const m of run.models || []) set.add(m.model);
+    for (const m of run.models || []) {
+      if (isReferenceModel(m)) continue;
+      set.add(m.model);
+    }
   }
   return [...set].sort();
 }
@@ -527,7 +530,9 @@ function wireTableSorting(latest) {
   let sortDir = "desc";
 
   function apply() {
-    const models = [...(latest.models || [])].sort(byKey(sortKey, sortDir));
+    const models = [...(latest.models || [])]
+      .filter((m) => !isReferenceModel(m))
+      .sort(byKey(sortKey, sortDir));
     renderLeaderboardTable(models);
   }
 
@@ -577,8 +582,12 @@ function wireTrend(history) {
 
   modelSelect.addEventListener("change", render);
   metricSelect.addEventListener("change", render);
-  if (models.length) modelSelect.value = models[0];
-  render();
+  if (models.length) {
+    modelSelect.value = models[0];
+    render();
+  } else {
+    trendChart.textContent = "No non-reference models available.";
+  }
 }
 
 function wireExamples(latest) {
@@ -586,7 +595,9 @@ function wireExamples(latest) {
   const kindSelect = document.getElementById("exampleKindSelect");
   const countSelect = document.getElementById("exampleCountSelect");
   const host = document.getElementById("examples");
-  const models = [...(latest.models || [])].sort(byKey("strict_accuracy", "desc"));
+  const models = [...(latest.models || [])]
+    .filter((m) => !isReferenceModel(m))
+    .sort(byKey("strict_accuracy", "desc"));
   select.innerHTML = "";
   for (const m of models) {
     select.appendChild(el("option", { value: m.model_slug || m.model, text: m.model }));
@@ -607,9 +618,13 @@ function wireExamples(latest) {
   select.addEventListener("change", render);
   kindSelect.addEventListener("change", render);
   countSelect.addEventListener("change", render);
-  if (models.length) select.value = models[0].model_slug || models[0].model;
-  if (countSelect) countSelect.value = "5";
-  render();
+  if (models.length) {
+    select.value = models[0].model_slug || models[0].model;
+    if (countSelect) countSelect.value = "5";
+    render();
+  } else {
+    host.textContent = "No non-reference models available.";
+  }
 }
 
 async function main() {
