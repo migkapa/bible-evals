@@ -72,6 +72,14 @@ See `docs/DATA.md` for details and normalization rules.
 - A static landing page lives in `docs/` and reads `docs/data/history.json`.
 - View locally: `cd docs && python -m http.server 8000`
 
+## Results snapshot
+
+![Best strict accuracy by model](docs/results.svg)
+
+Full results: https://migkapa.github.io/bible-evals/
+
+To refresh the chart after new runs: `python scripts/render_readme_chart.py`.
+
 ## Development
 
 - Tests: `pytest`

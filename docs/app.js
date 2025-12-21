@@ -49,6 +49,27 @@ function isReferenceModel(m) {
   return name.startsWith("reference:") || slug.startsWith("reference_");
 }
 
+function bestModels(history, key) {
+  const best = new Map();
+  for (const run of history) {
+    for (const m of run.models || []) {
+      if (isReferenceModel(m)) continue;
+      const val = Number(m?.[key]);
+      if (!Number.isFinite(val)) continue;
+      const prev = best.get(m.model);
+      if (!prev) {
+        best.set(m.model, { ...m, _run_id: run.run_id, _created_at: run.created_at });
+        continue;
+      }
+      const prevVal = Number(prev?.[key]);
+      if (val > prevVal || (val === prevVal && String(run.run_id) > String(prev._run_id))) {
+        best.set(m.model, { ...m, _run_id: run.run_id, _created_at: run.created_at });
+      }
+    }
+  }
+  return [...best.values()];
+}
+
 function el(tag, attrs = {}, children = []) {
   const node = document.createElement(tag);
   for (const [k, v] of Object.entries(attrs)) {
@@ -330,14 +351,12 @@ function renderLeaderboardTable(models) {
   }
 }
 
-function renderModelCards(latest) {
+function renderModelCards(models) {
   const host = document.getElementById("modelCards");
   host.innerHTML = "";
-  const models = [...(latest.models || [])]
-    .filter((m) => !isReferenceModel(m))
-    .sort(byKey("strict_accuracy", "desc"));
+  const ordered = [...models].sort(byKey("strict_accuracy", "desc"));
 
-  for (const m of models) {
+  for (const m of ordered) {
     const grade = String(m.grade || "—");
     const headline = String(m.headline || "");
     const notes = Array.isArray(m.notes) ? m.notes : [];
@@ -523,17 +542,15 @@ function renderExamples(latest, entries, model, kind, count) {
   }
 }
 
-function wireTableSorting(latest) {
+function wireTableSorting(models) {
   const table = document.getElementById("leaderboard");
   const headers = [...table.querySelectorAll("thead th[data-key]")];
   let sortKey = "strict_accuracy";
   let sortDir = "desc";
 
   function apply() {
-    const models = [...(latest.models || [])]
-      .filter((m) => !isReferenceModel(m))
-      .sort(byKey(sortKey, sortDir));
-    renderLeaderboardTable(models);
+    const ordered = [...models].sort(byKey(sortKey, sortDir));
+    renderLeaderboardTable(ordered);
   }
 
   headers.forEach((th) => {
@@ -639,7 +656,7 @@ async function main() {
   const latest = latestRun(history);
   renderMeta(latest);
 
-  const models = [...(latest.models || [])].sort(byKey("strict_accuracy", "desc"));
+  const models = bestModels(history, "strict_accuracy").sort(byKey("strict_accuracy", "desc"));
   const barChart = document.getElementById("barChart");
   barChart.innerHTML = "";
   barChart.appendChild(
@@ -649,8 +666,8 @@ async function main() {
     ),
   );
 
-  renderModelCards(latest);
-  wireTableSorting(latest);
+  renderModelCards(models);
+  wireTableSorting(models);
   wireTrend(history);
   wireExamples(latest);
 }
