@@ -1,10 +1,44 @@
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+import math
+from dataclasses import asdict, dataclass, field
 from difflib import SequenceMatcher
-from typing import Optional
+from typing import List, Optional
 
 from bible_eval.core.normalizer import NormalizationConfig, Normalizer
+
+
+# ---------------------------------------------------------------------------
+# Error Category Definitions
+# ---------------------------------------------------------------------------
+# More granular error classification for better analysis
+
+class ErrorCategory:
+    """Detailed error categorization for non-verbatim responses."""
+
+    VERBATIM = "verbatim"  # Perfect match
+    VERBATIM_WITH_EXTRAS = "verbatim_with_extras"  # Correct text + quotes/citations
+
+    # Subcategories of inaccurate recall (from least to most severe)
+    MINOR_DEVIATION = "minor_deviation"  # Small typos/punctuation (CER < 5%, WER < 10%)
+    OMISSION = "omission"  # Significant deletions (deletions > 20% of words)
+    PARAPHRASE = "paraphrase"  # Meaning preserved but words changed (TSR >= 70%)
+    PARTIAL_RECALL = "partial_recall"  # Some correct content mixed with errors
+
+    # Severe errors
+    TOTAL_HALLUCINATION = "total_hallucination"  # Completely wrong (TSR < 30%)
+
+    @classmethod
+    def all_categories(cls) -> List[str]:
+        return [
+            cls.VERBATIM,
+            cls.VERBATIM_WITH_EXTRAS,
+            cls.MINOR_DEVIATION,
+            cls.OMISSION,
+            cls.PARAPHRASE,
+            cls.PARTIAL_RECALL,
+            cls.TOTAL_HALLUCINATION,
+        ]
 
 
 def _levenshtein(a: list[str], b: list[str]) -> int:
@@ -124,6 +158,127 @@ class ScoreResult:
     pred_norm: str
     label: str
     contains_gt: bool
+    # New: detailed error category and semantic similarity
+    error_category: str = ""
+    semantic_similarity: float = 0.0
+    deletion_ratio: float = 0.0  # deletions / ref_words
+    substitution_ratio: float = 0.0  # substitutions / ref_words
+    insertion_ratio: float = 0.0  # insertions / ref_words
+
+
+def _compute_semantic_similarity(gt_words: List[str], pred_words: List[str]) -> float:
+    """
+    Compute semantic similarity using word overlap with IDF-like weighting.
+
+    This is a lightweight alternative to embedding-based similarity that:
+    - Gives higher weight to rare/distinctive words
+    - Penalizes missing key content words
+    - Works without external dependencies
+
+    Returns a score between 0.0 and 1.0.
+    """
+    if not gt_words or not pred_words:
+        return 0.0 if gt_words or pred_words else 1.0
+
+    # Common stop words to downweight
+    stop_words = {
+        "the", "a", "an", "and", "or", "but", "in", "on", "at", "to", "for",
+        "of", "with", "by", "from", "is", "are", "was", "were", "be", "been",
+        "being", "have", "has", "had", "do", "does", "did", "will", "would",
+        "could", "should", "may", "might", "must", "shall", "can", "need",
+        "it", "its", "this", "that", "these", "those", "i", "you", "he", "she",
+        "we", "they", "me", "him", "her", "us", "them", "my", "your", "his",
+        "our", "their", "what", "which", "who", "whom", "whose", "where", "when",
+        "why", "how", "all", "each", "every", "both", "few", "more", "most",
+        "other", "some", "such", "no", "not", "only", "same", "so", "than",
+        "too", "very", "just", "also", "now", "here", "there", "then", "once",
+    }
+
+    def word_weight(word: str) -> float:
+        """Assign weight to word - content words get higher weight."""
+        w = word.lower()
+        if w in stop_words:
+            return 0.3
+        if len(w) <= 2:
+            return 0.5
+        return 1.0
+
+    gt_set = set(w.lower() for w in gt_words)
+    pred_set = set(w.lower() for w in pred_words)
+
+    # Weighted intersection
+    intersection = gt_set & pred_set
+    weighted_overlap = sum(word_weight(w) for w in intersection)
+
+    # Weighted ground truth (what we expect)
+    weighted_gt = sum(word_weight(w) for w in gt_set)
+
+    if weighted_gt == 0:
+        return 1.0 if not pred_set else 0.0
+
+    # Recall-oriented: how much of the expected content was found
+    recall = weighted_overlap / weighted_gt
+
+    # Penalize excessive additions (precision component)
+    weighted_pred = sum(word_weight(w) for w in pred_set)
+    precision = weighted_overlap / weighted_pred if weighted_pred > 0 else 0.0
+
+    # F1-like combination favoring recall (content preservation is more important)
+    if recall + precision == 0:
+        return 0.0
+    f_beta = (1.25 * precision * recall) / (0.25 * precision + recall)  # beta=0.5
+
+    return min(1.0, max(0.0, f_beta))
+
+
+def _classify_error(
+    wer: float,
+    cer: float,
+    tsr: float,
+    deletion_ratio: float,
+    substitution_ratio: float,
+    insertion_ratio: float,
+    contains_gt: bool,
+    semantic_sim: float,
+) -> str:
+    """
+    Classify the error into a detailed category.
+
+    Categories (from best to worst):
+    - verbatim: Perfect match
+    - verbatim_with_extras: Correct text with added quotes/citations
+    - minor_deviation: Small typos/punctuation differences
+    - omission: Significant content deleted
+    - paraphrase: Meaning preserved but wording changed
+    - partial_recall: Mixed correct and incorrect content
+    - total_hallucination: Completely wrong content
+    """
+    # Perfect match
+    if wer == 0.0 and cer == 0.0:
+        return ErrorCategory.VERBATIM
+
+    # Contains full ground truth with extras
+    if contains_gt:
+        return ErrorCategory.VERBATIM_WITH_EXTRAS
+
+    # Total hallucination - very low token overlap
+    if tsr < 30.0:
+        return ErrorCategory.TOTAL_HALLUCINATION
+
+    # Minor deviation - small character-level errors, high TSR
+    if cer < 0.05 and wer <= 0.15 and tsr >= 90.0:
+        return ErrorCategory.MINOR_DEVIATION
+
+    # Omission - primarily deletions (truncated output)
+    if deletion_ratio > 0.25 and substitution_ratio <= 0.15:
+        return ErrorCategory.OMISSION
+
+    # Paraphrase - high semantic similarity but different words
+    if tsr >= 70.0 and semantic_sim >= 0.7:
+        return ErrorCategory.PARAPHRASE
+
+    # Partial recall - everything else
+    return ErrorCategory.PARTIAL_RECALL
 
 
 class Scorer:
@@ -142,7 +297,8 @@ class Scorer:
         pred_words = pred_norm.split(" ") if pred_norm else []
 
         distance, substitutions, deletions, insertions = _word_edit_counts(gt_words, pred_words)
-        wer = (distance / len(gt_words)) if gt_words else (0.0 if not pred_words else 1.0)
+        ref_word_count = len(gt_words)
+        wer = (distance / ref_word_count) if ref_word_count else (0.0 if not pred_words else 1.0)
 
         gt_chars = list(gt_norm)
         pred_chars = list(pred_norm)
@@ -161,6 +317,27 @@ class Scorer:
 
         contains_gt = bool(gt_norm) and (gt_norm in pred_norm) and (gt_norm != pred_norm)
 
+        # Compute ratios for detailed categorization
+        deletion_ratio = deletions / ref_word_count if ref_word_count else 0.0
+        substitution_ratio = substitutions / ref_word_count if ref_word_count else 0.0
+        insertion_ratio = insertions / ref_word_count if ref_word_count else 0.0
+
+        # Compute semantic similarity
+        semantic_sim = _compute_semantic_similarity(gt_words, pred_words)
+
+        # Detailed error categorization
+        error_category = _classify_error(
+            wer=wer,
+            cer=cer,
+            tsr=tsr,
+            deletion_ratio=deletion_ratio,
+            substitution_ratio=substitution_ratio,
+            insertion_ratio=insertion_ratio,
+            contains_gt=contains_gt,
+            semantic_sim=semantic_sim,
+        )
+
+        # Legacy label for backwards compatibility
         if wer == 0.0 and cer == 0.0:
             label = "verbatim"
         elif contains_gt:
@@ -178,9 +355,14 @@ class Scorer:
             substitutions=int(substitutions),
             deletions=int(deletions),
             insertions=int(insertions),
-            ref_words=int(len(gt_words)),
+            ref_words=int(ref_word_count),
             gt_norm=gt_norm,
             pred_norm=pred_norm,
             label=label,
             contains_gt=bool(contains_gt),
+            error_category=error_category,
+            semantic_similarity=float(semantic_sim),
+            deletion_ratio=float(deletion_ratio),
+            substitution_ratio=float(substitution_ratio),
+            insertion_ratio=float(insertion_ratio),
         )

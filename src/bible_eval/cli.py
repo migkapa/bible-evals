@@ -11,7 +11,13 @@ from typing import List, Optional
 
 import yaml
 
-from bible_eval.core.scorer import ScoreConfig, Scorer
+from bible_eval.core.scorer import ErrorCategory, ScoreConfig, Scorer
+from bible_eval.core.statistics import (
+    compute_confidence_interval,
+    compute_metrics_summary,
+    compute_proportion_ci,
+    format_ci,
+)
 from bible_eval.data.loader import Taxonomy, VerseDatabase
 from bible_eval.engine.interrogator import Interrogator
 from bible_eval.engine.sampler import Sampler, SampleConfig
@@ -92,7 +98,7 @@ def cmd_run(args: argparse.Namespace) -> int:
 
         results = []
         for verse in verses:
-            req, pred = interrogator.query_with_request(
+            req, pred, latency = interrogator.query_with_latency(
                 verse=verse, version_name=version_cfg.get("name", version_key)
             )
             pred_raw = pred
@@ -109,6 +115,7 @@ def cmd_run(args: argparse.Namespace) -> int:
                     "prompt_mode": prompt_mode,
                     "model": interrogator.model_name,
                     "version": version_key,
+                    "latency_seconds": latency,
                 }
             )
 
@@ -118,6 +125,7 @@ def cmd_run(args: argparse.Namespace) -> int:
         out_path = model_dir / "results.json"
         out_path.write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
 
+        # Legacy labels for backwards compatibility
         labels = [r["scores"].get("label", "unknown") for r in results]
         verbatim = sum(1 for x in labels if x == "verbatim")
         verbatim_with_extras = sum(1 for x in labels if x == "verbatim_with_extras")
@@ -126,6 +134,23 @@ def cmd_run(args: argparse.Namespace) -> int:
         chattery = sum(1 for r in results if float(r["scores"].get("chatter_ratio", 0.0)) > 0.15)
         truncated = sum(1 for r in results if float(r["scores"].get("chatter_ratio", 0.0)) < -0.15)
 
+        # New detailed error categories
+        error_cats = [r["scores"].get("error_category", "") for r in results]
+        n_minor_deviation = sum(1 for c in error_cats if c == ErrorCategory.MINOR_DEVIATION)
+        n_omission = sum(1 for c in error_cats if c == ErrorCategory.OMISSION)
+        n_paraphrase = sum(1 for c in error_cats if c == ErrorCategory.PARAPHRASE)
+        n_partial_recall = sum(1 for c in error_cats if c == ErrorCategory.PARTIAL_RECALL)
+
+        # Latency statistics
+        latencies = [r.get("latency_seconds", 0.0) for r in results]
+        avg_latency = sum(latencies) / len(latencies) if latencies else 0.0
+        latency_ci = compute_confidence_interval(latencies)
+
+        # Semantic similarity statistics
+        semantic_sims = [r["scores"].get("semantic_similarity", 0.0) for r in results]
+        avg_semantic_sim = sum(semantic_sims) / len(semantic_sims) if semantic_sims else 0.0
+        semantic_sim_ci = compute_confidence_interval(semantic_sims)
+
         strip_thinking_enabled = bool((model_cfg.get("options") or {}).get("strip_thinking", False))
         strip_thinking_changed = sum(
             1 for r in results if bool((r.get("postprocess") or {}).get("strip_thinking_changed", False))
@@ -133,11 +158,22 @@ def cmd_run(args: argparse.Namespace) -> int:
         raw_has_think = sum(1 for r in results if "<think>" in str(r.get("prediction_raw", "")).lower())
 
         strict_hits = sum(1 for r in results if r["scores"]["wer"] == 0.0 and r["scores"]["cer"] == 0.0)
-        avg_wer = sum(r["scores"]["wer"] for r in results) / len(results) if results else 0.0
-        avg_cer = sum(r["scores"]["cer"] for r in results) / len(results) if results else 0.0
-        avg_tsr = sum(r["scores"]["token_sort_ratio"] for r in results) / len(results) if results else 0.0
-        avg_chatter = sum(r["scores"]["chatter_ratio"] for r in results) / len(results) if results else 0.0
+        wer_values = [r["scores"]["wer"] for r in results]
+        cer_values = [r["scores"]["cer"] for r in results]
+        tsr_values = [r["scores"]["token_sort_ratio"] for r in results]
+        chatter_values = [r["scores"]["chatter_ratio"] for r in results]
+
+        avg_wer = sum(wer_values) / len(wer_values) if wer_values else 0.0
+        avg_cer = sum(cer_values) / len(cer_values) if cer_values else 0.0
+        avg_tsr = sum(tsr_values) / len(tsr_values) if tsr_values else 0.0
+        avg_chatter = sum(chatter_values) / len(chatter_values) if chatter_values else 0.0
         avg_len_ratio = (1.0 + avg_chatter) if results else 0.0
+
+        # Compute confidence intervals for key metrics
+        wer_ci = compute_confidence_interval(wer_values)
+        cer_ci = compute_confidence_interval(cer_values)
+        strict_acc_ci = compute_proportion_ci(strict_hits, len(results))
+        halluc_ci = compute_proportion_ci(hallucinations, len(results))
 
         strict_acc = (strict_hits / len(results)) if results else 0.0
         halluc_rate = (hallucinations / len(results)) if results else 0.0
@@ -213,13 +249,35 @@ def cmd_run(args: argparse.Namespace) -> int:
                 "results_path": str(out_path),
                 "details_path": str(details_path),
                 "details_rel": details_rel,
+                # New: detailed error categories
+                "error_categories": {
+                    "minor_deviation": n_minor_deviation,
+                    "omission": n_omission,
+                    "paraphrase": n_paraphrase,
+                    "partial_recall": n_partial_recall,
+                },
+                # New: confidence intervals
+                "confidence_intervals": {
+                    "strict_accuracy": strict_acc_ci.to_dict() if strict_acc_ci else None,
+                    "hallucination_rate": halluc_ci.to_dict() if halluc_ci else None,
+                    "avg_wer": wer_ci.to_dict() if wer_ci else None,
+                    "avg_cer": cer_ci.to_dict() if cer_ci else None,
+                    "avg_latency": latency_ci.to_dict() if latency_ci else None,
+                    "avg_semantic_similarity": semantic_sim_ci.to_dict() if semantic_sim_ci else None,
+                },
+                # New: latency and semantic similarity
+                "avg_latency_seconds": avg_latency,
+                "avg_semantic_similarity": avg_semantic_sim,
             }
         )
 
         print(f"Wrote {out_path}")
+        # Enhanced output with confidence intervals
+        acc_ci_str = format_ci(strict_acc_ci, as_percent=True) if strict_acc_ci else f"{strict_acc*100:.1f}%"
         print(
-            f"{interrogator.model_name}: exact={strict_hits}/{len(results)} "
-            f"halluc={hallucinations}/{len(results)} avg_wer={avg_wer:.3f}"
+            f"{interrogator.model_name}: exact={strict_hits}/{len(results)} ({acc_ci_str}) "
+            f"halluc={hallucinations}/{len(results)} avg_wer={avg_wer:.3f} "
+            f"latency={avg_latency:.2f}s"
         )
 
     run_summary = {

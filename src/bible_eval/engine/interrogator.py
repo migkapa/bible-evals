@@ -111,3 +111,16 @@ class Interrogator:
     def query_with_request(self, verse: VerseRecord, version_name: str) -> tuple[GenerateRequest, str]:
         req = self.build_request(verse=verse, version_name=version_name)
         return req, self._generate(verse, req)
+
+    def query_with_latency(self, verse: VerseRecord, version_name: str) -> tuple[GenerateRequest, str, float]:
+        """
+        Query the model and return the request, response, and latency in seconds.
+
+        Returns:
+            Tuple of (request, response, latency_seconds)
+        """
+        req = self.build_request(verse=verse, version_name=version_name)
+        start_time = time.perf_counter()
+        response = self._generate(verse, req)
+        latency = time.perf_counter() - start_time
+        return req, response, latency
