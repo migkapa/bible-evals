@@ -73,9 +73,15 @@ eval:
   version: "kjv"
   prompt: "system2"  # one of: naive, constraint, system2
   sample:
-    # For real runs, point to a larger dataset and increase `count`.
-    count: 10
+    # Sample size recommendation:
+    # - 10: Quick smoke test (wide confidence intervals, ~±30%)
+    # - 30: Minimum for statistical validity (±15-20% CI)
+    # - 50: Recommended for reliable comparisons (±10-15% CI)
+    # - 100+: Publication quality (±5-10% CI)
+    # Larger samples reduce margin of error but increase evaluation time.
+    count: 50
     seed: 1
+    stratified: true  # Balance OT/NT for representative coverage
 
 engine:
   max_retries: 2
