@@ -76,6 +76,12 @@ eval:
     # For real runs, point to a larger dataset and increase `count`.
     count: 10
     seed: 1
+  # Abstention probes: ask for verses that do not exist (e.g. "John 999:1") and
+  # reward refusal over fabrication. Skipped for the offline reference connector.
+  abstention:
+    enabled: true
+    count: 5
+    seed: 1
 
 engine:
   max_retries: 2
