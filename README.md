@@ -15,6 +15,13 @@ but can be extended to hosted APIs.
 - **CER** (character error rate): fine-grained spelling drift.
 - **Chatter ratio**: how much extra text the model adds (prefaces, commentary, etc.).
 - **Fuzzy similarity**: token-sort similarity to flag paraphrase vs total miss.
+- **Abstention**: asks for verses that don't exist (e.g. `John 999:1`) and rewards
+  refusal over fabrication. Configure under `eval.abstention` in `config.yaml`.
+
+Every metric is reported with a **95% confidence interval** (Wilson for rates,
+bootstrap for continuous metrics), and each run carries a reproduce stamp
+(git commit, seed, prompt hash). The landing page adds a **Knowledge-vs-Compliance
+quadrant** and a **verse × model heatmap**.
 
 ## Quickstart
 
