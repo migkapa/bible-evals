@@ -20,8 +20,17 @@ setup(
     python_requires=">=3.9",
     install_requires=[
         "PyYAML>=6.0.1",
-        "tqdm>=4.66.0",
     ],
+    extras_require={
+        # Consistent, fast fuzzy similarity. Without it the scorer falls back to
+        # difflib, so install this extra for reproducible token-sort ratios.
+        "fuzzy": ["rapidfuzz>=3.0.0"],
+        "dev": [
+            "pytest>=8.0.0",
+            "ruff>=0.6.0",
+            "rapidfuzz>=3.0.0",
+        ],
+    },
     entry_points={"console_scripts": ["bible-eval=bible_eval.cli:main"]},
     classifiers=[
         "License :: OSI Approved :: MIT License",
