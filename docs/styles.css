@@ -427,6 +427,21 @@ tbody tr:hover td {
   font-size: 12px;
 }
 
+.ci {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 11px;
+  margin-top: 2px;
+  white-space: nowrap;
+}
+
+.copy-btn {
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  padding: 8px 12px;
+}
+
 .footer {
   padding: 16px 0 28px;
   color: var(--muted);

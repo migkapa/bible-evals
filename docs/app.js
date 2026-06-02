@@ -10,6 +10,17 @@ function fmtNum(x) {
   return x.toFixed(3);
 }
 
+// A table cell showing a point estimate with its 95% CI underneath (if present).
+function ciCell(m, key, fmt) {
+  const td = document.createElement("td");
+  td.appendChild(el("div", { text: fmt(Number(m[key])) }));
+  const c = ciFor(m, key);
+  if (c) {
+    td.appendChild(el("div", { class: "ci", text: `${fmt(c.lo)}–${fmt(c.hi)}` }));
+  }
+  return td;
+}
+
 function byKey(key, dir = "desc") {
   const sign = dir === "asc" ? 1 : -1;
   return (a, b) => {
@@ -162,6 +173,14 @@ function renderMeta(run) {
     ["models", String((run.models || []).length)],
     ["sample", JSON.stringify(run.sample || {})],
   ];
+  const repro = run.repro || {};
+  if (repro.git_commit) {
+    rows.push(["commit", repro.git_dirty ? `${repro.git_commit} (dirty)` : repro.git_commit]);
+  }
+  if (repro.tool_version) rows.push(["tool", `v${repro.tool_version}`]);
+  if (repro.python) rows.push(["python", repro.python]);
+  if (repro.prompt_hash) rows.push(["prompt_hash", repro.prompt_hash]);
+
   for (const [k, v] of rows) {
     meta.appendChild(
       el("div", { class: "row" }, [
@@ -170,6 +189,32 @@ function renderMeta(run) {
       ]),
     );
   }
+
+  if (repro.command) {
+    const btn = el("button", { class: "button copy-btn", text: "Copy reproduce command" });
+    btn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(repro.command);
+        const prev = btn.textContent;
+        btn.textContent = "Copied ✓";
+        setTimeout(() => {
+          btn.textContent = prev;
+        }, 1500);
+      } catch (_) {
+        btn.textContent = repro.command;
+      }
+    });
+    meta.appendChild(el("div", { class: "row" }, [btn]));
+  }
+}
+
+function ciFor(m, key) {
+  const c = m && m.ci && m.ci[key];
+  if (!c) return null;
+  const lo = Number(c.lo);
+  const hi = Number(c.hi);
+  if (!Number.isFinite(lo) || !Number.isFinite(hi)) return null;
+  return { lo, hi };
 }
 
 function svgBarChart(models, key, { maxBars = 12 } = {}) {
@@ -181,7 +226,9 @@ function svgBarChart(models, key, { maxBars = 12 } = {}) {
   const innerH = height - pad.t - pad.b;
 
   const vals = sorted.map((m) => Number(m[key]));
-  const max = Math.max(1e-9, ...vals);
+  // Extend the scale to the top of any CI whisker so bands aren't clipped.
+  const ciHis = sorted.map((m) => (ciFor(m, key) || {}).hi).filter(Number.isFinite);
+  const max = Math.max(1e-9, ...vals, ...ciHis);
 
   const barW = innerW / Math.max(1, sorted.length);
   const ns = "http://www.w3.org/2000/svg";
@@ -226,6 +273,34 @@ function svgBarChart(models, key, { maxBars = 12 } = {}) {
     rect.setAttribute("stroke-width", "1");
     g.appendChild(rect);
 
+    // Confidence-interval whisker (vertical line + caps) on top of the bar.
+    const ci = ciFor(m, key);
+    if (ci) {
+      const cx = x + Math.max(1, barW - 12) / 2;
+      const yHi = pad.t + innerH - (ci.hi / max) * innerH;
+      const yLo = pad.t + innerH - (ci.lo / max) * innerH;
+      const capW = Math.min(10, Math.max(4, (barW - 12) / 3));
+      const whisk = document.createElementNS(ns, "g");
+      whisk.setAttribute("stroke", "rgba(255,255,255,0.85)");
+      whisk.setAttribute("stroke-width", "1.5");
+      const seg = (x1, y1, x2, y2) => {
+        const ln = document.createElementNS(ns, "line");
+        ln.setAttribute("x1", String(x1));
+        ln.setAttribute("y1", String(y1));
+        ln.setAttribute("x2", String(x2));
+        ln.setAttribute("y2", String(y2));
+        whisk.appendChild(ln);
+      };
+      seg(cx, yHi, cx, yLo);
+      seg(cx - capW / 2, yHi, cx + capW / 2, yHi);
+      seg(cx - capW / 2, yLo, cx + capW / 2, yLo);
+      const title = document.createElementNS(ns, "title");
+      const fmt = key === "avg_wer" || key === "avg_cer" || key === "avg_chatter_ratio" || key === "avg_token_sort_ratio" ? fmtNum : fmtPct;
+      title.textContent = `95% CI: ${fmt(ci.lo)} – ${fmt(ci.hi)}`;
+      whisk.appendChild(title);
+      g.appendChild(whisk);
+    }
+
     const label = document.createElementNS(ns, "text");
     label.setAttribute("x", String(x + Math.max(1, barW - 12) / 2));
     label.setAttribute("y", String(height - 18));
@@ -257,9 +332,14 @@ function svgLineChart(points, key) {
 
   const xs = points.map((p) => p.t.getTime());
   const ys = points.map((p) => Number(p[key]));
+  const cis = points.map((p) => ciFor(p, key));
   const minX = Math.min(...xs);
   const maxX = Math.max(...xs);
-  const finiteYs = ys.filter((y) => Number.isFinite(y));
+  const domainYs = ys.filter((y) => Number.isFinite(y));
+  for (const c of cis) {
+    if (c) domainYs.push(c.lo, c.hi);
+  }
+  const finiteYs = domainYs;
   const minY = finiteYs.length ? Math.min(...finiteYs) : 0;
   const maxY = finiteYs.length ? Math.max(...finiteYs) : 1;
   const yPad = (maxY - minY) * 0.08 || 0.1;
@@ -298,6 +378,27 @@ function svgLineChart(points, key) {
   }
   svg.appendChild(grid);
 
+  // Confidence band: filled area between per-point lo/hi, drawn behind the line.
+  if (cis.some(Boolean)) {
+    const upper = points.map((p, i) => {
+      const c = cis[i];
+      const y = c ? c.hi : Number(p[key]);
+      return `${sx(p.t.getTime()).toFixed(2)} ${sy(y).toFixed(2)}`;
+    });
+    const lower = points
+      .map((p, i) => {
+        const c = cis[i];
+        const y = c ? c.lo : Number(p[key]);
+        return `${sx(p.t.getTime()).toFixed(2)} ${sy(y).toFixed(2)}`;
+      })
+      .reverse();
+    const band = document.createElementNS(ns, "path");
+    band.setAttribute("d", `M ${upper.join(" L ")} L ${lower.join(" L ")} Z`);
+    band.setAttribute("fill", "rgba(34,197,94,0.16)");
+    band.setAttribute("stroke", "none");
+    svg.appendChild(band);
+  }
+
   const path = document.createElementNS(ns, "path");
   const d = points
     .map((p, i) => {
@@ -332,6 +433,200 @@ function svgLineChart(points, key) {
   return svg;
 }
 
+function svgQuadrantChart(models) {
+  const ns = "http://www.w3.org/2000/svg";
+  const width = 980;
+  const height = 460;
+  const pad = { l: 56, r: 124, t: 20, b: 52 };
+  const innerW = width - pad.l - pad.r;
+  const innerH = height - pad.t - pad.b;
+
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+  svg.setAttribute("width", "100%");
+  svg.setAttribute("height", "100%");
+
+  const sx = (v) => pad.l + Math.max(0, Math.min(1, v)) * innerW;
+  const sy = (v) => pad.t + (1 - Math.max(0, Math.min(1, v))) * innerH;
+
+  const mk = (tag, attrs) => {
+    const n = document.createElementNS(ns, tag);
+    for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, String(v));
+    return n;
+  };
+
+  const xm = sx(0.5);
+  const ym = sy(0.5);
+
+  // Quadrant background tints (only the "good" corner is emphasized).
+  const quads = [
+    { x: xm, y: pad.t, w: pad.l + innerW - xm, h: ym - pad.t, fill: "rgba(34,197,94,0.10)" },
+    { x: pad.l, y: pad.t, w: xm - pad.l, h: ym - pad.t, fill: "rgba(96,165,250,0.06)" },
+    { x: xm, y: ym, w: pad.l + innerW - xm, h: pad.t + innerH - ym, fill: "rgba(245,158,11,0.07)" },
+    { x: pad.l, y: ym, w: xm - pad.l, h: pad.t + innerH - ym, fill: "rgba(239,68,68,0.07)" },
+  ];
+  for (const q of quads) {
+    svg.appendChild(mk("rect", { x: q.x, y: q.y, width: q.w, height: q.h, fill: q.fill }));
+  }
+
+  // Plot border + midlines.
+  svg.appendChild(
+    mk("rect", {
+      x: pad.l,
+      y: pad.t,
+      width: innerW,
+      height: innerH,
+      fill: "none",
+      stroke: "rgba(255,255,255,0.14)",
+    }),
+  );
+  for (const [x1, y1, x2, y2] of [
+    [xm, pad.t, xm, pad.t + innerH],
+    [pad.l, ym, pad.l + innerW, ym],
+  ]) {
+    const ln = mk("line", { x1, y1, x2, y2, stroke: "rgba(255,255,255,0.18)" });
+    ln.setAttribute("stroke-dasharray", "4 5");
+    svg.appendChild(ln);
+  }
+
+  // Corner labels.
+  const corners = [
+    { x: pad.l + innerW - 8, y: pad.t + 16, anchor: "end", text: "Verbatim machine" },
+    { x: pad.l + 8, y: pad.t + 16, anchor: "start", text: "Refuses / concise miss" },
+    { x: pad.l + innerW - 8, y: pad.t + innerH - 8, anchor: "end", text: "Knows but chatty" },
+    { x: pad.l + 8, y: pad.t + innerH - 8, anchor: "start", text: "Confident but wrong" },
+  ];
+  for (const c of corners) {
+    const t = mk("text", {
+      x: c.x,
+      y: c.y,
+      fill: "rgba(255,255,255,0.40)",
+      "font-size": "12",
+      "text-anchor": c.anchor,
+    });
+    t.textContent = c.text;
+    svg.appendChild(t);
+  }
+
+  // Axis ticks (0 / 50 / 100%).
+  for (const v of [0, 0.5, 1]) {
+    const xt = mk("text", {
+      x: sx(v),
+      y: pad.t + innerH + 18,
+      fill: "rgba(255,255,255,0.6)",
+      "font-size": "11",
+      "text-anchor": "middle",
+    });
+    xt.textContent = fmtPct(v);
+    svg.appendChild(xt);
+    const yt = mk("text", {
+      x: pad.l - 8,
+      y: sy(v) + 4,
+      fill: "rgba(255,255,255,0.6)",
+      "font-size": "11",
+      "text-anchor": "end",
+    });
+    yt.textContent = fmtPct(v);
+    svg.appendChild(yt);
+  }
+
+  // Axis titles.
+  const xTitle = mk("text", {
+    x: pad.l + innerW / 2,
+    y: height - 8,
+    fill: "rgba(255,255,255,0.75)",
+    "font-size": "12",
+    "text-anchor": "middle",
+  });
+  xTitle.textContent = "Knows the verse  (content accuracy) →";
+  svg.appendChild(xTitle);
+  const yTitle = mk("text", {
+    x: 16,
+    y: pad.t + innerH / 2,
+    fill: "rgba(255,255,255,0.75)",
+    "font-size": "12",
+    "text-anchor": "middle",
+    transform: `rotate(-90 16 ${pad.t + innerH / 2})`,
+  });
+  yTitle.textContent = "Says only the verse  (clean output) →";
+  svg.appendChild(yTitle);
+
+  const pts = models
+    .filter((m) => !isReferenceModel(m))
+    .map((m) => ({ m, x: Number(m.content_accuracy), y: Number(m.clean_output_rate) }))
+    .filter((p) => Number.isFinite(p.x) && Number.isFinite(p.y));
+
+  if (!pts.length) {
+    const t = mk("text", {
+      x: pad.l + innerW / 2,
+      y: pad.t + innerH / 2,
+      fill: "rgba(255,255,255,0.6)",
+      "font-size": "13",
+      "text-anchor": "middle",
+    });
+    t.textContent = "No model data available.";
+    svg.appendChild(t);
+    return svg;
+  }
+
+  const dotColor = (x, y) => {
+    if (x >= 0.5 && y >= 0.5) return "rgba(34,197,94,0.95)";
+    if (x >= 0.5 && y < 0.5) return "rgba(245,158,11,0.95)";
+    if (x < 0.5 && y >= 0.5) return "rgba(96,165,250,0.95)";
+    return "rgba(239,68,68,0.95)";
+  };
+
+  // Draw dots first.
+  for (const p of pts) {
+    const dot = mk("circle", {
+      cx: sx(p.x),
+      cy: sy(p.y),
+      r: 7,
+      fill: dotColor(p.x, p.y),
+      stroke: "rgba(0,0,0,0.45)",
+      "stroke-width": "1.5",
+    });
+    const title = document.createElementNS(ns, "title");
+    title.textContent = `${p.m.model}\ncontent accuracy: ${fmtPct(p.x)}\nclean output: ${fmtPct(p.y)}`;
+    dot.appendChild(title);
+    svg.appendChild(dot);
+  }
+
+  // Place labels with greedy vertical de-collision so dots sharing a score
+  // (common at 100% clean output) don't print on top of each other.
+  const placed = [];
+  const top = pad.t + 6;
+  const bottom = pad.t + innerH - 4;
+  for (const p of [...pts].sort((a, b) => sy(a.y) - sy(b.y) || sx(a.x) - sx(b.x))) {
+    const cx = sx(p.x);
+    const nearRight = cx > pad.l + innerW - 90;
+    const anchor = nearRight ? "end" : "start";
+    const lx = nearRight ? cx - 11 : cx + 11;
+    let ly = sy(p.y) + 4;
+    while (
+      placed.some((q) => q.anchor === anchor && Math.abs(q.lx - lx) < 96 && Math.abs(q.ly - ly) < 14)
+    ) {
+      ly += 14;
+      if (ly > bottom) {
+        ly = top;
+        break;
+      }
+    }
+    placed.push({ lx, ly, anchor });
+    const label = mk("text", {
+      x: lx,
+      y: ly,
+      fill: "rgba(255,255,255,0.9)",
+      "font-size": "12",
+      "text-anchor": anchor,
+    });
+    label.textContent = String(p.m.model).replace(/^ollama:/, "");
+    svg.appendChild(label);
+  }
+
+  return svg;
+}
+
 function renderLeaderboardTable(models) {
   const table = document.getElementById("leaderboard");
   const tbody = table.querySelector("tbody");
@@ -339,13 +634,13 @@ function renderLeaderboardTable(models) {
   for (const m of models) {
     const tr = document.createElement("tr");
     tr.appendChild(el("td", {}, [el("span", { class: "pill", text: m.model })]));
-    tr.appendChild(el("td", { text: fmtPct(Number(m.strict_accuracy)) }));
-    tr.appendChild(el("td", { text: fmtPct(Number(m.content_accuracy)) }));
-    tr.appendChild(el("td", { text: fmtPct(Number(m.clean_output_rate)) }));
-    tr.appendChild(el("td", { text: fmtNum(Number(m.avg_wer)) }));
-    tr.appendChild(el("td", { text: fmtNum(Number(m.avg_cer)) }));
-    tr.appendChild(el("td", { text: fmtNum(Number(m.avg_token_sort_ratio)) }));
-    tr.appendChild(el("td", { text: fmtNum(Number(m.avg_chatter_ratio)) }));
+    tr.appendChild(ciCell(m, "strict_accuracy", fmtPct));
+    tr.appendChild(ciCell(m, "content_accuracy", fmtPct));
+    tr.appendChild(ciCell(m, "clean_output_rate", fmtPct));
+    tr.appendChild(ciCell(m, "avg_wer", fmtNum));
+    tr.appendChild(ciCell(m, "avg_cer", fmtNum));
+    tr.appendChild(ciCell(m, "avg_token_sort_ratio", fmtNum));
+    tr.appendChild(ciCell(m, "avg_chatter_ratio", fmtNum));
     tr.appendChild(el("td", { text: String(m.n ?? "—") }));
     tbody.appendChild(tr);
   }
@@ -408,6 +703,21 @@ function renderModelCards(models) {
         ]),
       ]),
     ]);
+
+    const ab = m.abstention;
+    if (ab && Number.isFinite(Number(ab.n)) && Number(ab.n) > 0) {
+      const refused = Number(ab.refused);
+      const rate = Number(ab.abstention_rate);
+      card.querySelector(".kpis").appendChild(
+        el("div", { class: "kpi" }, [
+          el("div", { class: "k", text: "Refused fake refs" }),
+          el("div", {
+            class: "v",
+            text: `${refused}/${ab.n} (${fmtPct(rate)})`,
+          }),
+        ]),
+      );
+    }
 
     if (notes.length) {
       const ul = document.createElement("ul");
@@ -644,6 +954,164 @@ function wireExamples(latest) {
   }
 }
 
+const LABEL_COLORS = {
+  verbatim: "rgba(34,197,94,0.92)",
+  verbatim_with_extras: "rgba(96,165,250,0.92)",
+  inaccurate_recall: "rgba(245,158,11,0.92)",
+  total_hallucination: "rgba(239,68,68,0.92)",
+};
+const LABEL_TEXT = {
+  verbatim: "verbatim",
+  verbatim_with_extras: "verbatim + extras",
+  inaccurate_recall: "inaccurate recall",
+  total_hallucination: "off-target",
+};
+
+async function renderHeatmap(latest) {
+  const host = document.getElementById("heatmap");
+  if (!host) return;
+  host.textContent = "Loading heatmap…";
+
+  const models = [...(latest.models || [])]
+    .filter((m) => !isReferenceModel(m))
+    .sort(byKey("strict_accuracy", "desc"));
+  if (!models.length) {
+    host.textContent = "No non-reference models in the latest run.";
+    return;
+  }
+
+  const perModel = await Promise.all(
+    models.map(async (m) => {
+      try {
+        return await loadDetailsForModel(latest, m.model_slug || m.model);
+      } catch (_) {
+        return null;
+      }
+    }),
+  );
+
+  // Verse rows: preserve sample order from the first model that loaded.
+  const order = [];
+  const seen = new Set();
+  const byRefByModel = models.map(() => new Map());
+  perModel.forEach((entries, ci) => {
+    if (!Array.isArray(entries)) return;
+    for (const e of entries) {
+      const v = e.verse || {};
+      const ref = v.ref || `${v.book ?? "?"} ${v.chapter ?? "?"}:${v.verse ?? "?"}`;
+      if (!seen.has(ref)) {
+        seen.add(ref);
+        order.push(ref);
+      }
+      byRefByModel[ci].set(ref, e.scores || {});
+    }
+  });
+
+  if (!order.length) {
+    host.textContent = "No detailed results available for the latest run.";
+    return;
+  }
+
+  const ns = "http://www.w3.org/2000/svg";
+  const leftPad = 150;
+  const topPad = 96;
+  const rowH = 22;
+  const width = 980;
+  const colW = Math.max(34, (width - leftPad - 12) / models.length);
+  const gridW = colW * models.length;
+  const height = topPad + order.length * rowH + 40;
+
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+  svg.setAttribute("width", "100%");
+  svg.setAttribute("height", "100%");
+
+  const mk = (tag, attrs, text) => {
+    const n = document.createElementNS(ns, tag);
+    for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, String(v));
+    if (text != null) n.textContent = text;
+    return n;
+  };
+
+  // Column headers (model names), rotated to avoid overlap.
+  models.forEach((m, ci) => {
+    const x = leftPad + ci * colW + colW / 2;
+    const t = mk(
+      "text",
+      {
+        x,
+        y: topPad - 10,
+        fill: "rgba(255,255,255,0.85)",
+        "font-size": "12",
+        "text-anchor": "start",
+        transform: `rotate(-40 ${x} ${topPad - 10})`,
+      },
+      String(m.model).replace(/^ollama:/, ""),
+    );
+    svg.appendChild(t);
+  });
+
+  // Cells.
+  order.forEach((ref, ri) => {
+    const y = topPad + ri * rowH;
+    const rowLabel = mk(
+      "text",
+      {
+        x: leftPad - 8,
+        y: y + rowH / 2 + 4,
+        fill: "rgba(255,255,255,0.82)",
+        "font-size": "12",
+        "text-anchor": "end",
+      },
+      ref,
+    );
+    svg.appendChild(rowLabel);
+
+    models.forEach((m, ci) => {
+      const x = leftPad + ci * colW;
+      const sc = byRefByModel[ci].get(ref);
+      const label = sc ? sc.label : null;
+      const fill = (label && LABEL_COLORS[label]) || "rgba(255,255,255,0.06)";
+      const cell = mk("rect", {
+        x: x + 2,
+        y: y + 2,
+        width: colW - 4,
+        height: rowH - 4,
+        rx: 4,
+        fill,
+        stroke: "rgba(0,0,0,0.35)",
+        "stroke-width": "1",
+      });
+      const wer = sc ? Number(sc.wer) : NaN;
+      const title = document.createElementNS(ns, "title");
+      title.textContent = `${m.model}\n${ref}\n${
+        label ? LABEL_TEXT[label] || label : "no data"
+      }${Number.isFinite(wer) ? `\nWER ${wer.toFixed(3)}` : ""}`;
+      cell.appendChild(title);
+      svg.appendChild(cell);
+    });
+  });
+
+  // Legend.
+  let lx = leftPad;
+  const ly = topPad + order.length * rowH + 22;
+  for (const key of Object.keys(LABEL_COLORS)) {
+    svg.appendChild(
+      mk("rect", { x: lx, y: ly - 11, width: 14, height: 14, rx: 3, fill: LABEL_COLORS[key] }),
+    );
+    const t = mk(
+      "text",
+      { x: lx + 20, y: ly, fill: "rgba(255,255,255,0.78)", "font-size": "12" },
+      LABEL_TEXT[key],
+    );
+    svg.appendChild(t);
+    lx += 24 + LABEL_TEXT[key].length * 7.5 + 18;
+  }
+
+  host.innerHTML = "";
+  host.appendChild(svg);
+}
+
 async function main() {
   const res = await fetch("./data/history.json", { cache: "no-store" });
   const history = await res.json();
@@ -667,8 +1135,16 @@ async function main() {
   );
 
   renderModelCards(models);
+
+  const quadrant = document.getElementById("quadrantChart");
+  if (quadrant) {
+    quadrant.innerHTML = "";
+    quadrant.appendChild(svgQuadrantChart(models));
+  }
+
   wireTableSorting(models);
   wireTrend(history);
+  renderHeatmap(latest);
   wireExamples(latest);
 }
 
