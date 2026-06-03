@@ -23,6 +23,10 @@ bootstrap for continuous metrics), and each run carries a reproduce stamp
 (git commit, seed, prompt hash). The landing page adds a **Knowledge-vs-Compliance
 quadrant** and a **verse × model heatmap**.
 
+The methodology behind these choices — and the plan to grow this into a rigorous,
+publishable open-weight memorization study — is documented in
+[`docs/STUDY_DESIGN.md`](docs/STUDY_DESIGN.md) (literature-reviewed and cited).
+
 ## Quickstart
 
 1) Create a venv and install:
