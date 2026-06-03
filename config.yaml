@@ -82,6 +82,12 @@ eval:
     count: 50
     seed: 1
     stratified: true  # Balance OT/NT for representative coverage
+  # Abstention probes: ask for verses that do not exist (e.g. "John 999:1") and
+  # reward refusal over fabrication. Skipped for the offline reference connector.
+  abstention:
+    enabled: true
+    count: 5
+    seed: 1
 
 engine:
   max_retries: 2

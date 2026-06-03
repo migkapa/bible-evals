@@ -40,6 +40,15 @@
       </section>
 
       <section class="card">
+        <div class="card-title">Knowledge vs Compliance</div>
+        <div class="hint">
+          Does the model <em>know</em> the verse (x = content accuracy) and can it output <em>only</em>
+          the verse (y = clean output)? One dot per model, best run each.
+        </div>
+        <div id="quadrantChart" class="chart"></div>
+      </section>
+
+      <section class="card">
         <div class="card-title">Trend</div>
         <div class="controls">
           <label>
@@ -58,6 +67,15 @@
           </label>
         </div>
         <div id="trendChart" class="chart"></div>
+      </section>
+
+      <section class="card">
+        <div class="card-title">Verse × Model Heatmap (Latest Run)</div>
+        <div class="hint">
+          One row per verse, one column per model. Green = verbatim, blue = verbatim with extras,
+          amber = inaccurate recall, red = off-target. Reveals which verses are universally hard.
+        </div>
+        <div id="heatmap" class="chart"></div>
       </section>
 
       <section class="card">

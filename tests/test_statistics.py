@@ -1,5 +1,4 @@
 """Tests for the statistics module."""
-import math
 
 from bible_eval.core.statistics import (
     ConfidenceInterval,

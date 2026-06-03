@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import platform
 import re
+import subprocess
 import sys
 from dataclasses import asdict
 from datetime import datetime, timezone
@@ -11,22 +14,52 @@ from typing import List, Optional
 
 import yaml
 
+from bible_eval import __version__
+from bible_eval.core.abstention import classify_void_response
 from bible_eval.core.scorer import ErrorCategory, ScoreConfig, Scorer
+from bible_eval.core.stats import bootstrap_ci, wilson_interval
 from bible_eval.core.statistics import (
     compute_confidence_interval,
-    compute_metrics_summary,
     compute_proportion_ci,
     format_ci,
 )
 from bible_eval.data.loader import Taxonomy, VerseDatabase
 from bible_eval.engine.interrogator import Interrogator
-from bible_eval.engine.sampler import Sampler, SampleConfig
+from bible_eval.engine.sampler import Sampler, SampleConfig, void_probes
 from bible_eval.results.store import append_run, load_history, save_history, write_run_copy
+
+_REFERENCE_CONNECTORS = {"reference", "baseline"}
 
 
 def _load_config(path: str) -> dict:
     with open(path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
+
+
+def _git_state() -> dict:
+    """Best-effort git commit + dirty flag for reproducibility. Never raises."""
+    def _run(*args: str) -> Optional[str]:
+        try:
+            out = subprocess.run(
+                ["git", *args], capture_output=True, text=True, timeout=5, check=False
+            )
+            return out.stdout.strip() if out.returncode == 0 else None
+        except Exception:
+            return None
+
+    commit = _run("rev-parse", "--short", "HEAD")
+    status = _run("status", "--porcelain")
+    return {"git_commit": commit, "git_dirty": bool(status) if status is not None else None}
+
+
+def _wilson_ci(k: int, n: int) -> dict:
+    lo, hi = wilson_interval(int(k), int(n))
+    return {"lo": lo, "hi": hi, "method": "wilson"}
+
+
+def _bootstrap_ci(values: list, *, scale: float = 1.0) -> dict:
+    lo, hi = bootstrap_ci([float(v) for v in values])
+    return {"lo": lo * scale, "hi": hi * scale, "method": "bootstrap"}
 
 
 def cmd_score(args: argparse.Namespace) -> int:
@@ -83,10 +116,21 @@ def cmd_run(args: argparse.Namespace) -> int:
         seed=int(cfg["eval"]["sample"].get("seed", 1)),
         stratified=bool(cfg["eval"]["sample"].get("stratified", False)),
     )
-    verses = Sampler(sample_cfg).sample(db)
+    sampler = Sampler(sample_cfg)
+    verses = sampler.sample(db)
 
     prompt_mode = cfg["eval"].get("prompt", "system2")
     scorer = Scorer(ScoreConfig())
+
+    abstention_cfg = cfg["eval"].get("abstention") or {}
+    abstention_enabled = bool(abstention_cfg.get("enabled", False))
+    abstention_count = int(abstention_cfg.get("count", 0))
+    abstention_seed = int(abstention_cfg.get("seed", sample_cfg.seed))
+    void_set = (
+        void_probes(db, count=abstention_count, seed=abstention_seed)
+        if abstention_enabled and abstention_count > 0
+        else []
+    )
 
     run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     out_dir = Path("runs") / run_id
@@ -219,6 +263,70 @@ def cmd_run(args: argparse.Namespace) -> int:
         details_path.parent.mkdir(parents=True, exist_ok=True)
         details_path.write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
 
+        # Abstention probes: ask for verses that do not exist and reward refusal
+        # over fabrication. Skipped for the offline reference connector (it has
+        # no opinion about void references).
+        abstention = None
+        if void_set and model_cfg.get("connector") not in _REFERENCE_CONNECTORS:
+            probe_results = []
+            for probe in void_set:
+                req, p_raw = interrogator.query_with_request(
+                    verse=probe, version_name=version_cfg.get("name", version_key)
+                )
+                p_clean, p_applied = _postprocess_prediction(p_raw, model_cfg=model_cfg)
+                verdict = classify_void_response(p_clean)
+                probe_results.append(
+                    {
+                        "ref": probe.ref,
+                        "prediction": p_clean,
+                        "prediction_raw": p_raw,
+                        "prompt": {"system": req.system, "user": req.user},
+                        "postprocess": p_applied,
+                        "verdict": verdict,
+                        "model": interrogator.model_name,
+                    }
+                )
+            n_probes = len(probe_results)
+            refused = sum(1 for r in probe_results if r["verdict"] == "refused")
+            fabricated = sum(1 for r in probe_results if r["verdict"] == "fabricated")
+            empties = sum(1 for r in probe_results if r["verdict"] == "empty")
+            abstention_rel = f"details/{run_id}/{slug}.abstention.json"
+            (Path("results") / abstention_rel).write_text(
+                json.dumps(probe_results, ensure_ascii=False, indent=2), encoding="utf-8"
+            )
+            abstention = {
+                "n": n_probes,
+                "refused": refused,
+                "fabricated": fabricated,
+                "empty": empties,
+                "abstention_rate": (refused / n_probes) if n_probes else 0.0,
+                "fabrication_rate": (fabricated / n_probes) if n_probes else 0.0,
+                "ci": _wilson_ci(refused, n_probes) if n_probes else None,
+                "details_rel": abstention_rel,
+            }
+            print(
+                f"{interrogator.model_name}: abstention refused={refused}/{n_probes} "
+                f"fabricated={fabricated}/{n_probes}"
+            )
+
+        # Confidence intervals: Wilson for rates, percentile-bootstrap for
+        # continuous metrics. Stored under `ci[<metric>] = {lo, hi, method}`
+        # so the site can render every point estimate with its uncertainty.
+        n_res = len(results)
+        clean_hits = n_res - strip_thinking_changed
+        ci = {}
+        if n_res:
+            ci["strict_accuracy"] = _wilson_ci(strict_hits, n_res)
+            ci["content_accuracy"] = _wilson_ci(verbatim + verbatim_with_extras, n_res)
+            ci["hallucination_rate"] = _wilson_ci(hallucinations, n_res)
+            ci["clean_output_rate"] = _wilson_ci(clean_hits, n_res)
+            ci["avg_wer"] = _bootstrap_ci([r["scores"]["wer"] for r in results])
+            ci["avg_cer"] = _bootstrap_ci([r["scores"]["cer"] for r in results])
+            ci["avg_token_sort_ratio"] = _bootstrap_ci(
+                [r["scores"]["token_sort_ratio"] for r in results]
+            )
+            ci["avg_chatter_ratio"] = _bootstrap_ci([r["scores"]["chatter_ratio"] for r in results])
+
         summaries.append(
             {
                 "model": interrogator.model_name,
@@ -240,6 +348,11 @@ def cmd_run(args: argparse.Namespace) -> int:
                 "truncated_count": truncated,
                 "content_accuracy": content_acc,
                 "clean_output_rate": clean_output_rate,
+                "hallucination_rate": halluc_rate,
+                "abstention": abstention,
+                "ci": ci,
+                "decode_options": dict((model_cfg.get("options") or {})),
+                "connector": model_cfg.get("connector"),
                 "strip_thinking_enabled": strip_thinking_enabled,
                 "strip_thinking_changed_count": strip_thinking_changed,
                 "raw_has_think_count": raw_has_think,
@@ -280,12 +393,28 @@ def cmd_run(args: argparse.Namespace) -> int:
             f"latency={avg_latency:.2f}s"
         )
 
+    prompts_blob = json.dumps(cfg.get("prompts", {}), sort_keys=True, ensure_ascii=False)
+    prompt_hash = hashlib.sha256(prompts_blob.encode("utf-8")).hexdigest()[:12]
+    repro = {
+        "tool_version": __version__,
+        "scorer_config": asdict(ScoreConfig()),
+        "python": platform.python_version(),
+        "seed": sample_cfg.seed,
+        "prompt_mode": prompt_mode,
+        "prompt_hash": prompt_hash,
+        "config_path": args.config,
+        "command": f"bible-eval run --config {args.config}",
+        **_git_state(),
+    }
+
     run_summary = {
         "run_id": run_id,
         "created_at": datetime.now(timezone.utc).isoformat(),
         "version": version_key,
         "prompt_mode": prompt_mode,
         "sample": asdict(sample_cfg),
+        "schema_version": 2,
+        "repro": repro,
         "models": summaries,
     }
 
@@ -304,13 +433,16 @@ def cmd_run(args: argparse.Namespace) -> int:
 
     # Copy latest run details into the site for example rendering.
     for m in summaries:
-        rel = m.get("details_rel")
-        if not rel:
-            continue
-        src = Path("results") / rel
-        dst = Path("docs") / "data" / rel
-        dst.parent.mkdir(parents=True, exist_ok=True)
-        dst.write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
+        rels = [m.get("details_rel"), (m.get("abstention") or {}).get("details_rel")]
+        for rel in rels:
+            if not rel:
+                continue
+            src = Path("results") / rel
+            if not src.exists():
+                continue
+            dst = Path("docs") / "data" / rel
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            dst.write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
     return 0
 
 
@@ -326,15 +458,16 @@ def cmd_export_site(args: argparse.Namespace) -> int:
 
     for run in runs:
         for m in run.get("models", []) or []:
-            rel = m.get("details_rel")
-            if not rel:
-                continue
-            src = Path("results") / rel
-            if not src.exists():
-                continue
-            dst = out_dir / "data" / rel
-            dst.parent.mkdir(parents=True, exist_ok=True)
-            dst.write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
+            rels = [m.get("details_rel"), (m.get("abstention") or {}).get("details_rel")]
+            for rel in rels:
+                if not rel:
+                    continue
+                src = Path("results") / rel
+                if not src.exists():
+                    continue
+                dst = out_dir / "data" / rel
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                dst.write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
     return 0
 
 
