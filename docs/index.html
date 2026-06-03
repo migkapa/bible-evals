@@ -3,77 +3,121 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Bible Eval</title>
+    <title>BibleEval — do models know scripture, or memorize it?</title>
+    <meta
+      name="description"
+      content="A verbatim-fidelity benchmark for open-weight LLMs on public-domain scripture. Separates knowledge from compliance and probes memorization."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <header class="hero">
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="masthead">
       <div class="container">
-        <div class="badge">Project Genesis</div>
-        <h1>Bible Eval</h1>
-        <p class="subtitle">
-          Benchmark LLM verbatim fidelity to public-domain Bible texts (WER/CER + chatter + fuzzy similarity).
+        <div class="eyebrow">
+          <span class="mark">✠</span> Project Genesis · open-weight memorization study
+        </div>
+        <h1 class="title">Bible<span class="title-eval">Eval</span></h1>
+        <p class="lede">
+          Do language models <em>know</em> scripture — or merely <em>memorize</em> the famous
+          verses? A verbatim-fidelity benchmark for open-weight models, separating
+          <span class="ul-know">knowledge</span> from <span class="ul-comply">compliance</span>.
         </p>
+        <div class="stat-band" id="statBand"></div>
         <div class="hero-actions">
-          <a class="button" href="./data/history.json">Download history.json</a>
-          <span class="hint">Tip: run <code>python -m http.server</code> inside <code>docs/</code> to view locally.</span>
+          <a class="button" href="https://github.com/migkapa/bible-evals">View on GitHub</a>
+          <a class="button button-ghost" href="./data/history.json">Download data</a>
+          <span class="hint mono">verbatim fidelity · WER/CER · abstention · confidence intervals</span>
         </div>
       </div>
     </header>
 
     <main class="container">
-      <section class="grid">
-        <div class="card">
-          <div class="card-title">Latest Run</div>
-          <div id="runMeta" class="meta"></div>
-        </div>
-        <div class="card">
-          <div class="card-title">Leaderboard (Best Strict Accuracy)</div>
-          <div class="hint">Best run per model across all runs.</div>
-          <div id="barChart" class="chart"></div>
+      <section class="finding" id="findingCard" hidden>
+        <div class="finding-rule"></div>
+        <div class="finding-body">
+          <div class="finding-kicker">The finding</div>
+          <p class="finding-text" id="findingText"></p>
         </div>
       </section>
 
+      <div class="section-head">
+        <span class="section-num">01</span>
+        <h2>Leaderboard</h2>
+        <p class="section-sub">Best strict (verbatim) accuracy per model, across all runs.</p>
+      </div>
       <section class="card">
-        <div class="card-title">How They Did (Best Run)</div>
-        <div id="modelCards" class="cards"></div>
+        <div id="barChart" class="chart"></div>
       </section>
 
+      <div class="section-head">
+        <span class="section-num">02</span>
+        <h2>Knowledge vs Compliance</h2>
+        <p class="section-sub">
+          Does the model <em>know</em> the verse (x) and output <em>only</em> the verse (y)?
+          One dot per model, best run each.
+        </p>
+      </div>
       <section class="card">
-        <div class="card-title">Knowledge vs Compliance</div>
-        <div class="hint">
-          Does the model <em>know</em> the verse (x = content accuracy) and can it output <em>only</em>
-          the verse (y = clean output)? One dot per model, best run each.
-        </div>
         <div id="quadrantChart" class="chart"></div>
       </section>
 
-      <section class="card" id="quantSection" hidden>
-        <div class="card-title">Quantization Fidelity</div>
-        <div class="hint">
-          Strict accuracy vs quantization tier for a single base model — "which quant can
-          still quote scripture verbatim?" Higher precision on the left. Whiskers are 95% CIs.
-        </div>
-        <div id="quantChart" class="chart"></div>
-      </section>
+      <div class="section-head" id="gradientSection" hidden>
+        <span class="section-num">03</span>
+        <h2>Memorization Gradient</h2>
+        <p class="section-sub">
+          Strict accuracy on <em>famous</em> vs <em>obscure</em> verses. A large gap means recall
+          tracks popularity (memorization), not uniform knowledge. Whiskers are 95% CIs.
+        </p>
+        <div class="card section-head-card"><div id="gradientChart" class="chart"></div></div>
+      </div>
 
-      <section class="card" id="gradientSection" hidden>
-        <div class="card-title">Memorization Gradient</div>
-        <div class="hint">
-          Strict accuracy on <em>famous</em> vs <em>obscure</em> verses, per model. A large
-          gap means recall tracks popularity (memorization) rather than uniform knowledge.
-          Whiskers are 95% CIs.
-        </div>
-        <div id="gradientChart" class="chart"></div>
-      </section>
+      <div class="section-head" id="quantSection" hidden>
+        <span class="section-num">04</span>
+        <h2>Quantization Fidelity</h2>
+        <p class="section-sub">
+          “Which quant can still quote scripture verbatim?” Strict accuracy vs quant tier,
+          higher precision on the left. Whiskers are 95% CIs.
+        </p>
+        <div class="card section-head-card"><div id="quantChart" class="chart"></div></div>
+      </div>
 
+      <div class="section-head">
+        <span class="section-num">05</span>
+        <h2>Verse × Model</h2>
+        <p class="section-sub">
+          Per-verse label grid for the latest run — green verbatim, blue verbatim+extras,
+          amber inaccurate, red off-target. Reveals universally hard verses.
+        </p>
+      </div>
       <section class="card">
-        <div class="card-title">Trend</div>
+        <div id="heatmap" class="chart"></div>
+      </section>
+
+      <div class="section-head">
+        <span class="section-num">06</span>
+        <h2>How They Did</h2>
+        <p class="section-sub">Per-model report cards from each model's best run.</p>
+      </div>
+      <section class="card card-flush">
+        <div id="modelCards" class="cards"></div>
+      </section>
+
+      <div class="section-head">
+        <span class="section-num">07</span>
+        <h2>Trend</h2>
+        <p class="section-sub">A metric over time, per model. Shaded band is the 95% CI.</p>
+      </div>
+      <section class="card">
         <div class="controls">
-          <label>
-            Model
-            <select id="modelSelect"></select>
-          </label>
+          <label>Model<select id="modelSelect"></select></label>
           <label>
             Metric
             <select id="metricSelect">
@@ -88,22 +132,14 @@
         <div id="trendChart" class="chart"></div>
       </section>
 
+      <div class="section-head">
+        <span class="section-num">08</span>
+        <h2>Examples</h2>
+        <p class="section-sub">Word-level diffs from the latest run — see exactly what each model got wrong.</p>
+      </div>
       <section class="card">
-        <div class="card-title">Verse × Model Heatmap (Latest Run)</div>
-        <div class="hint">
-          One row per verse, one column per model. Green = verbatim, blue = verbatim with extras,
-          amber = inaccurate recall, red = off-target. Reveals which verses are universally hard.
-        </div>
-        <div id="heatmap" class="chart"></div>
-      </section>
-
-      <section class="card">
-        <div class="card-title">Examples (Latest Run)</div>
         <div class="controls">
-          <label>
-            Model
-            <select id="exampleModelSelect"></select>
-          </label>
+          <label>Model<select id="exampleModelSelect"></select></label>
           <label>
             Show
             <select id="exampleKindSelect">
@@ -126,8 +162,12 @@
         <div id="examples" class="examples"></div>
       </section>
 
-      <section class="card">
-        <div class="card-title">Best Per Model (All Runs)</div>
+      <div class="section-head">
+        <span class="section-num">09</span>
+        <h2>Full Table</h2>
+        <p class="section-sub">Best run per model. Click a header to sort; small figures are 95% CIs.</p>
+      </div>
+      <section class="card card-flush">
         <div class="table-wrap">
           <table id="leaderboard">
             <thead>
@@ -147,11 +187,20 @@
           </table>
         </div>
       </section>
+
+      <section class="card run-card">
+        <div class="card-title">Latest Run</div>
+        <div id="runMeta" class="meta"></div>
+      </section>
     </main>
 
     <footer class="footer">
       <div class="container">
-        <span>Generated from <code>results/history.json</code> via <code>bible-eval export-site</code>.</span>
+        <span class="mono"
+          >Generated from <code>results/history.json</code> ·
+          <a href="https://github.com/migkapa/bible-evals/blob/main/docs/STUDY_DESIGN.md">study design</a>
+          · sample Bible text is public domain (KJV).</span
+        >
       </div>
     </footer>
 

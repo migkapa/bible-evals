@@ -1325,6 +1325,57 @@ async function renderHeatmap(latest) {
   host.appendChild(svg);
 }
 
+function statEl(num, unit, label) {
+  const numNode = el("div", { class: "stat-num" }, [document.createTextNode(String(num))]);
+  if (unit) numNode.appendChild(el("small", { text: unit }));
+  return el("div", { class: "stat" }, [numNode, el("div", { class: "stat-label", text: label })]);
+}
+
+function topGradient(history) {
+  return gradientModels(history)
+    .filter((m) => m.gradient && m.gradient.gap != null)
+    .sort((a, b) => b.gradient.gap - a.gradient.gap)[0];
+}
+
+function renderHeadline(history) {
+  const band = document.getElementById("statBand");
+  if (!band) return;
+  band.innerHTML = "";
+  const models = uniqueModels(history);
+  const best = bestModels(history, "strict_accuracy").sort(byKey("strict_accuracy", "desc"))[0];
+  const grad = topGradient(history);
+
+  band.appendChild(statEl(models.length, "", "Models tested"));
+  band.appendChild(statEl(history.length, "", "Eval runs"));
+  if (best && Number.isFinite(Number(best.strict_accuracy))) {
+    band.appendChild(statEl(Math.round(Number(best.strict_accuracy) * 100), "%", "Best verbatim"));
+  }
+  if (grad) {
+    band.appendChild(statEl(`+${Math.round(grad.gradient.gap * 100)}`, "", "Memorization gap"));
+  }
+}
+
+function renderFinding(history) {
+  const card = document.getElementById("findingCard");
+  const textEl = document.getElementById("findingText");
+  if (!card || !textEl) return;
+  const grad = topGradient(history);
+  if (!grad || !grad.gradient.famous || !grad.gradient.obscure) {
+    card.hidden = true;
+    return;
+  }
+  const g = grad.gradient;
+  const name = String(grad.model).replace(/^ollama:/, "");
+  const fam = Math.round(Number(g.famous.strict_accuracy) * 100);
+  const obs = Math.round(Number(g.obscure.strict_accuracy) * 100);
+  const gap = Math.round(Number(g.gap) * 100);
+  textEl.innerHTML =
+    `<strong>${name}</strong> recalls <strong>${fam}%</strong> of famous verses verbatim, ` +
+    `but only <strong>${obs}%</strong> of obscure ones — a <strong>+${gap}-point</strong> gap. ` +
+    `Recall tracks popularity, not knowledge: the memorization signature.`;
+  card.hidden = false;
+}
+
 async function main() {
   const res = await fetch("./data/history.json", { cache: "no-store" });
   const history = await res.json();
@@ -1335,6 +1386,8 @@ async function main() {
   }
 
   const latest = latestRun(history);
+  renderHeadline(history);
+  renderFinding(history);
   renderMeta(latest);
 
   const models = bestModels(history, "strict_accuracy").sort(byKey("strict_accuracy", "desc"));
