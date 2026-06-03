@@ -1,0 +1,412 @@
+[
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Genesis",
+      "chapter": 1,
+      "verse": 3,
+      "id": 1001003,
+      "text": "And God said, Let there be light: and there was light.",
+      "ref": "Genesis 1:3"
+    },
+    "prediction": "God saw the light be in the darkness, and the day and the night were made; and it was शुभ.",
+    "prediction_raw": "God saw the light be in the darkness, and the day and the night were made; and it was शुभ.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference or version label.\n- No preface, no commentary, no extra whitespace lines.\n",
+      "user": "Retrieve: Genesis 1:3\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 1.5454545454545454,
+      "cer": 1.1296296296296295,
+      "chatter_ratio": 0.6666666666666666,
+      "token_sort_ratio": 61.111111111111114,
+      "substitutions": 6,
+      "deletions": 1,
+      "insertions": 10,
+      "ref_words": 11,
+      "gt_norm": "And God said, Let there be light: and there was light.",
+      "pred_norm": "God saw the light be in the darkness, and the day and the night were made; and it was शुभ.",
+      "label": "inaccurate_recall",
+      "contains_gt": false,
+      "error_category": "partial_recall",
+      "semantic_similarity": 0.20386266094420602,
+      "deletion_ratio": 0.09090909090909091,
+      "substitution_ratio": 0.5454545454545454,
+      "insertion_ratio": 0.9090909090909091
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:gemma3:1b@fp16",
+    "version": "kjv",
+    "latency_seconds": 0.443194209
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Genesis",
+      "chapter": 1,
+      "verse": 2,
+      "id": 1001002,
+      "text": "And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters.",
+      "ref": "Genesis 1:2"
+    },
+    "prediction": "And God said, “Let there be light: and it was so.”",
+    "prediction_raw": "And God said, “Let there be light: and it was so.”",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference or version label.\n- No preface, no commentary, no extra whitespace lines.\n",
+      "user": "Retrieve: Genesis 1:2\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 0.896551724137931,
+      "cer": 0.795774647887324,
+      "chatter_ratio": -0.647887323943662,
+      "token_sort_ratio": 32.291666666666664,
+      "substitutions": 8,
+      "deletions": 18,
+      "insertions": 0,
+      "ref_words": 29,
+      "gt_norm": "And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters.",
+      "pred_norm": "And God said, \"Let there be light: and it was so.\"",
+      "label": "inaccurate_recall",
+      "contains_gt": false,
+      "error_category": "partial_recall",
+      "semantic_similarity": 0.20408163265306126,
+      "deletion_ratio": 0.6206896551724138,
+      "substitution_ratio": 0.27586206896551724,
+      "insertion_ratio": 0.0
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:gemma3:1b@fp16",
+    "version": "kjv",
+    "latency_seconds": 0.36882833299999995
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Genesis",
+      "chapter": 1,
+      "verse": 5,
+      "id": 1001005,
+      "text": "And God called the light Day, and the darkness he called Night. And the evening and the morning were the first day.",
+      "ref": "Genesis 1:5"
+    },
+    "prediction": "“Be like God.”",
+    "prediction_raw": "“Be like God.”",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference or version label.\n- No preface, no commentary, no extra whitespace lines.\n",
+      "user": "Retrieve: Genesis 1:5\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 1.0,
+      "cer": 0.9217391304347826,
+      "chatter_ratio": -0.8782608695652174,
+      "token_sort_ratio": 13.953488372093027,
+      "substitutions": 3,
+      "deletions": 19,
+      "insertions": 0,
+      "ref_words": 22,
+      "gt_norm": "And God called the light Day, and the darkness he called Night. And the evening and the morning were the first day.",
+      "pred_norm": "\"Be like God.\"",
+      "label": "total_hallucination",
+      "contains_gt": false,
+      "error_category": "total_hallucination",
+      "semantic_similarity": 0.0,
+      "deletion_ratio": 0.8636363636363636,
+      "substitution_ratio": 0.13636363636363635,
+      "insertion_ratio": 0.0
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:gemma3:1b@fp16",
+    "version": "kjv",
+    "latency_seconds": 0.2713458340000001
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Genesis",
+      "chapter": 1,
+      "verse": 1,
+      "id": 1001001,
+      "text": "In the beginning God created the heaven and the earth.",
+      "ref": "Genesis 1:1"
+    },
+    "prediction": "“In the beginning God created the heavens and the earth.”",
+    "prediction_raw": "“In the beginning God created the heavens and the earth.”",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference or version label.\n- No preface, no commentary, no extra whitespace lines.\n",
+      "user": "Retrieve: Genesis 1:1\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 0.3,
+      "cer": 0.05555555555555555,
+      "chatter_ratio": 0.05555555555555555,
+      "token_sort_ratio": 91.89189189189189,
+      "substitutions": 3,
+      "deletions": 0,
+      "insertions": 0,
+      "ref_words": 10,
+      "gt_norm": "In the beginning God created the heaven and the earth.",
+      "pred_norm": "\"In the beginning God created the heavens and the earth.\"",
+      "label": "inaccurate_recall",
+      "contains_gt": false,
+      "error_category": "partial_recall",
+      "semantic_similarity": 0.5572755417956656,
+      "deletion_ratio": 0.0,
+      "substitution_ratio": 0.3,
+      "insertion_ratio": 0.0
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:gemma3:1b@fp16",
+    "version": "kjv",
+    "latency_seconds": 0.302209709
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Genesis",
+      "chapter": 1,
+      "verse": 4,
+      "id": 1001004,
+      "text": "And God saw the light, that it was good: and God divided the light from the darkness.",
+      "ref": "Genesis 1:4"
+    },
+    "prediction": "And God said, “Let there be light: and it was so.”",
+    "prediction_raw": "And God said, “Let there be light: and it was so.”",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference or version label.\n- No preface, no commentary, no extra whitespace lines.\n",
+      "user": "Retrieve: Genesis 1:4\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 0.8235294117647058,
+      "cer": 0.6588235294117647,
+      "chatter_ratio": -0.4117647058823529,
+      "token_sort_ratio": 53.333333333333336,
+      "substitutions": 8,
+      "deletions": 6,
+      "insertions": 0,
+      "ref_words": 17,
+      "gt_norm": "And God saw the light, that it was good: and God divided the light from the darkness.",
+      "pred_norm": "And God said, \"Let there be light: and it was so.\"",
+      "label": "inaccurate_recall",
+      "contains_gt": false,
+      "error_category": "partial_recall",
+      "semantic_similarity": 0.27298850574712646,
+      "deletion_ratio": 0.35294117647058826,
+      "substitution_ratio": 0.47058823529411764,
+      "insertion_ratio": 0.0
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:gemma3:1b@fp16",
+    "version": "kjv",
+    "latency_seconds": 0.31280225000000006
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Psalm",
+      "chapter": 23,
+      "verse": 1,
+      "id": 19023001,
+      "text": "The LORD is my shepherd; I shall not want.",
+      "ref": "Psalm 23:1"
+    },
+    "prediction": "The Lord is my shepherd; I shall not want.",
+    "prediction_raw": "The Lord is my shepherd; I shall not want.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference or version label.\n- No preface, no commentary, no extra whitespace lines.\n",
+      "user": "Retrieve: Psalm 23:1\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 0.1111111111111111,
+      "cer": 0.07142857142857142,
+      "chatter_ratio": 0.0,
+      "token_sort_ratio": 100.0,
+      "substitutions": 1,
+      "deletions": 0,
+      "insertions": 0,
+      "ref_words": 9,
+      "gt_norm": "The LORD is my shepherd; I shall not want.",
+      "pred_norm": "The Lord is my shepherd; I shall not want.",
+      "label": "inaccurate_recall",
+      "contains_gt": false,
+      "error_category": "paraphrase",
+      "semantic_similarity": 1.0,
+      "deletion_ratio": 0.0,
+      "substitution_ratio": 0.1111111111111111,
+      "insertion_ratio": 0.0
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:gemma3:1b@fp16",
+    "version": "kjv",
+    "latency_seconds": 0.3062359579999998
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "John",
+      "chapter": 11,
+      "verse": 35,
+      "id": 43011035,
+      "text": "Jesus wept.",
+      "ref": "John 11:35"
+    },
+    "prediction": "“And the world was made, and it was made good.  And the world was without God, and it was dark.  But in those days, the God saw that the world was wet, and the world was dry, and the world was made perfect.”",
+    "prediction_raw": "“And the world was made, and it was made good.  And the world was without God, and it was dark.  But in those days, the God saw that the world was wet, and the world was dry, and the world was made perfect.”",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference or version label.\n- No preface, no commentary, no extra whitespace lines.\n",
+      "user": "Retrieve: John 11:35\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 21.5,
+      "cer": 17.727272727272727,
+      "chatter_ratio": 17.636363636363637,
+      "token_sort_ratio": 6.481481481481477,
+      "substitutions": 2,
+      "deletions": 0,
+      "insertions": 41,
+      "ref_words": 2,
+      "gt_norm": "Jesus wept.",
+      "pred_norm": "\"And the world was made, and it was made good. And the world was without God, and it was dark. But in those days, the God saw that the world was wet, and the world was dry, and the world was made perfect.\"",
+      "label": "total_hallucination",
+      "contains_gt": false,
+      "error_category": "total_hallucination",
+      "semantic_similarity": 0.0,
+      "deletion_ratio": 0.0,
+      "substitution_ratio": 1.0,
+      "insertion_ratio": 20.5
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:gemma3:1b@fp16",
+    "version": "kjv",
+    "latency_seconds": 0.6920292909999999
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Revelation",
+      "chapter": 22,
+      "verse": 21,
+      "id": 66022021,
+      "text": "The grace of our Lord Jesus Christ be with you all. Amen.",
+      "ref": "Revelation 22:21"
+    },
+    "prediction": "And he gave to them all the truth, and delivered them unto the bondsinners, and the rebellious, and the heathens.",
+    "prediction_raw": "And he gave to them all the truth, and delivered them unto the bondsinners, and the rebellious, and the heathens.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference or version label.\n- No preface, no commentary, no extra whitespace lines.\n",
+      "user": "Retrieve: Revelation 22:21\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 1.6666666666666667,
+      "cer": 1.4385964912280702,
+      "chatter_ratio": 0.9824561403508771,
+      "token_sort_ratio": 38.8235294117647,
+      "substitutions": 12,
+      "deletions": 0,
+      "insertions": 8,
+      "ref_words": 12,
+      "gt_norm": "The grace of our Lord Jesus Christ be with you all. Amen.",
+      "pred_norm": "And he gave to them all the truth, and delivered them unto the bondsinners, and the rebellious, and the heathens.",
+      "label": "inaccurate_recall",
+      "contains_gt": false,
+      "error_category": "partial_recall",
+      "semantic_similarity": 0.03488372093023256,
+      "deletion_ratio": 0.0,
+      "substitution_ratio": 1.0,
+      "insertion_ratio": 0.6666666666666666
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:gemma3:1b@fp16",
+    "version": "kjv",
+    "latency_seconds": 0.482961875
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Romans",
+      "chapter": 8,
+      "verse": 1,
+      "id": 45008001,
+      "text": "There is therefore now no condemnation to them which are in Christ Jesus, who walk not after the flesh, but after the Spirit.",
+      "ref": "Romans 8:1"
+    },
+    "prediction": "God is light, and good, and very good.",
+    "prediction_raw": "God is light, and good, and very good.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference or version label.\n- No preface, no commentary, no extra whitespace lines.\n",
+      "user": "Retrieve: Romans 8:1\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 0.9565217391304348,
+      "cer": 0.84,
+      "chatter_ratio": -0.696,
+      "token_sort_ratio": 23.31288343558282,
+      "substitutions": 7,
+      "deletions": 15,
+      "insertions": 0,
+      "ref_words": 23,
+      "gt_norm": "There is therefore now no condemnation to them which are in Christ Jesus, who walk not after the flesh, but after the Spirit.",
+      "pred_norm": "God is light, and good, and very good.",
+      "label": "total_hallucination",
+      "contains_gt": false,
+      "error_category": "total_hallucination",
+      "semantic_similarity": 0.047619047619047616,
+      "deletion_ratio": 0.6521739130434783,
+      "substitution_ratio": 0.30434782608695654,
+      "insertion_ratio": 0.0
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:gemma3:1b@fp16",
+    "version": "kjv",
+    "latency_seconds": 0.33407970900000006
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "John",
+      "chapter": 3,
+      "verse": 16,
+      "id": 43003016,
+      "text": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+      "ref": "John 3:16"
+    },
+    "prediction": "“For I have come to speak of love, not of statutes, or of righteousness to strangers, or of corrupt officials.  It is not by letter with his commandment that love was professed, but by his own example. Forயো, I have come to speak of love, not of statutes, or of righteousness to strangers, or of corrupt officials. It is not by letter with his commandment that love was professed, but by his own example. Forயো, I have come to speak of love, not of statutes, or of righteousness to strangers, or of corrupt officials. It is not by letter with his commandment that love was professed, but by his own example. Forயো, I have come to speak of love, not of statutes, or of righteousness to strangers, or of corrupt officials. It is not by letter with his commandment that love was professed, but by his own example. Forயো, I have come to speak of love, not of statutes, or of righteousness to strangers, or of corrupt officials. It is not by letter with his commandment that love was professed, but by his own example. Forயো, I have come to speak of love, not of statutes, or of righteousness to strangers, or of corrupt officials.",
+    "prediction_raw": "“For I have come to speak of love, not of statutes, or of righteousness to strangers, or of corrupt officials.  It is not by letter with his commandment that love was professed, but by his own example. Forயো, I have come to speak of love, not of statutes, or of righteousness to strangers, or of corrupt officials. It is not by letter with his commandment that love was professed, but by his own example. Forயো, I have come to speak of love, not of statutes, or of righteousness to strangers, or of corrupt officials. It is not by letter with his commandment that love was professed, but by his own example. Forயো, I have come to speak of love, not of statutes, or of righteousness to strangers, or of corrupt officials. It is not by letter with his commandment that love was professed, but by his own example. Forயো, I have come to speak of love, not of statutes, or of righteousness to strangers, or of corrupt officials. It is not by letter with his commandment that love was professed, but by his own example. Forயো, I have come to speak of love, not of statutes, or of righteousness to strangers, or of corrupt officials.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference or version label.\n- No preface, no commentary, no extra whitespace lines.\n",
+      "user": "Retrieve: John 3:16\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 7.96,
+      "cer": 7.113475177304965,
+      "chatter_ratio": 6.9787234042553195,
+      "token_sort_ratio": 15.63981042654028,
+      "substitutions": 19,
+      "deletions": 0,
+      "insertions": 180,
+      "ref_words": 25,
+      "gt_norm": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+      "pred_norm": "\"For I have come to speak of love, not of statutes, or of righteousness to strangers, or of corrupt officials. It is not by letter with his commandment that love was professed, but by his own example. Forயো, I have come to speak of love, not of statutes, or of righteousness to strangers, or of corrupt officials. It is not by letter with his commandment that love was professed, but by his own example. Forயো, I have come to speak of love, not of statutes, or of righteousness to strangers, or of corrupt officials. It is not by letter with his commandment that love was professed, but by his own example. Forயো, I have come to speak of love, not of statutes, or of righteousness to strangers, or of corrupt officials. It is not by letter with his commandment that love was professed, but by his own example. Forயো, I have come to speak of love, not of statutes, or of righteousness to strangers, or of corrupt officials. It is not by letter with his commandment that love was professed, but by his own example. Forயো, I have come to speak of love, not of statutes, or of righteousness to strangers, or of corrupt officials.",
+      "label": "total_hallucination",
+      "contains_gt": false,
+      "error_category": "total_hallucination",
+      "semantic_similarity": 0.07836990595611283,
+      "deletion_ratio": 0.0,
+      "substitution_ratio": 0.76,
+      "insertion_ratio": 7.2
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:gemma3:1b@fp16",
+    "version": "kjv",
+    "latency_seconds": 3.3104414159999997
+  }
+]

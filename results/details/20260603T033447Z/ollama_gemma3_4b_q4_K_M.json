@@ -1,0 +1,412 @@
+[
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Genesis",
+      "chapter": 1,
+      "verse": 3,
+      "id": 1001003,
+      "text": "And God said, Let there be light: and there was light.",
+      "ref": "Genesis 1:3"
+    },
+    "prediction": "And the earth was without form, and void; and darkness was upon the face of the deep. And the spirit of God moved upon the face of the waters.",
+    "prediction_raw": "And the earth was without form, and void; and darkness was upon the face of the deep. And the spirit of God moved upon the face of the waters.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference or version label.\n- No preface, no commentary, no extra whitespace lines.\n",
+      "user": "Retrieve: Genesis 1:3\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 2.3636363636363638,
+      "cer": 2.0185185185185186,
+      "chatter_ratio": 1.6296296296296295,
+      "token_sort_ratio": 35.71428571428571,
+      "substitutions": 8,
+      "deletions": 0,
+      "insertions": 18,
+      "ref_words": 11,
+      "gt_norm": "And God said, Let there be light: and there was light.",
+      "pred_norm": "And the earth was without form, and void; and darkness was upon the face of the deep. And the spirit of God moved upon the face of the waters.",
+      "label": "inaccurate_recall",
+      "contains_gt": false,
+      "error_category": "partial_recall",
+      "semantic_similarity": 0.13559322033898305,
+      "deletion_ratio": 0.0,
+      "substitution_ratio": 0.7272727272727273,
+      "insertion_ratio": 1.6363636363636365
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:gemma3:4b@q4_K_M",
+    "version": "kjv",
+    "latency_seconds": 0.736766792000001
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Genesis",
+      "chapter": 1,
+      "verse": 2,
+      "id": 1001002,
+      "text": "And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters.",
+      "ref": "Genesis 1:2"
+    },
+    "prediction": "And the earth was without form, and void; and darkness was upon the face of the deep. And the spirit of God moved upon the face of the waters.",
+    "prediction_raw": "And the earth was without form, and void; and darkness was upon the face of the deep. And the spirit of God moved upon the face of the waters.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference or version label.\n- No preface, no commentary, no extra whitespace lines.\n",
+      "user": "Retrieve: Genesis 1:2\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 0.034482758620689655,
+      "cer": 0.007042253521126761,
+      "chatter_ratio": 0.0,
+      "token_sort_ratio": 100.0,
+      "substitutions": 1,
+      "deletions": 0,
+      "insertions": 0,
+      "ref_words": 29,
+      "gt_norm": "And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters.",
+      "pred_norm": "And the earth was without form, and void; and darkness was upon the face of the deep. And the spirit of God moved upon the face of the waters.",
+      "label": "inaccurate_recall",
+      "contains_gt": false,
+      "error_category": "minor_deviation",
+      "semantic_similarity": 1.0,
+      "deletion_ratio": 0.0,
+      "substitution_ratio": 0.034482758620689655,
+      "insertion_ratio": 0.0
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:gemma3:4b@q4_K_M",
+    "version": "kjv",
+    "latency_seconds": 0.8147493749999981
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Genesis",
+      "chapter": 1,
+      "verse": 5,
+      "id": 1001005,
+      "text": "And God called the light Day, and the darkness he called Night. And the evening and the morning were the first day.",
+      "ref": "Genesis 1:5"
+    },
+    "prediction": "And God blessed them: And God said, Be fruitful and multiply, and fill the waters of the earth, and every creature that moveth upon the earth.",
+    "prediction_raw": "And God blessed them: And God said, Be fruitful and multiply, and fill the waters of the earth, and every creature that moveth upon the earth.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference or version label.\n- No preface, no commentary, no extra whitespace lines.\n",
+      "user": "Retrieve: Genesis 1:5\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 0.9545454545454546,
+      "cer": 0.8173913043478261,
+      "chatter_ratio": 0.23478260869565218,
+      "token_sort_ratio": 59.92217898832685,
+      "substitutions": 17,
+      "deletions": 0,
+      "insertions": 4,
+      "ref_words": 22,
+      "gt_norm": "And God called the light Day, and the darkness he called Night. And the evening and the morning were the first day.",
+      "pred_norm": "And God blessed them: And God said, Be fruitful and multiply, and fill the waters of the earth, and every creature that moveth upon the earth.",
+      "label": "inaccurate_recall",
+      "contains_gt": false,
+      "error_category": "partial_recall",
+      "semantic_similarity": 0.11363636363636365,
+      "deletion_ratio": 0.0,
+      "substitution_ratio": 0.7727272727272727,
+      "insertion_ratio": 0.18181818181818182
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:gemma3:4b@q4_K_M",
+    "version": "kjv",
+    "latency_seconds": 0.7655242499999986
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Genesis",
+      "chapter": 1,
+      "verse": 1,
+      "id": 1001001,
+      "text": "In the beginning God created the heaven and the earth.",
+      "ref": "Genesis 1:1"
+    },
+    "prediction": "In the beginning God created the heaven; and the earth.",
+    "prediction_raw": "In the beginning God created the heaven; and the earth.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference or version label.\n- No preface, no commentary, no extra whitespace lines.\n",
+      "user": "Retrieve: Genesis 1:1\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 0.1,
+      "cer": 0.018518518518518517,
+      "chatter_ratio": 0.018518518518518517,
+      "token_sort_ratio": 99.08256880733946,
+      "substitutions": 1,
+      "deletions": 0,
+      "insertions": 0,
+      "ref_words": 10,
+      "gt_norm": "In the beginning God created the heaven and the earth.",
+      "pred_norm": "In the beginning God created the heaven; and the earth.",
+      "label": "inaccurate_recall",
+      "contains_gt": false,
+      "error_category": "minor_deviation",
+      "semantic_similarity": 0.8305084745762712,
+      "deletion_ratio": 0.0,
+      "substitution_ratio": 0.1,
+      "insertion_ratio": 0.0
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:gemma3:4b@q4_K_M",
+    "version": "kjv",
+    "latency_seconds": 0.43718433300000115
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Genesis",
+      "chapter": 1,
+      "verse": 4,
+      "id": 1001004,
+      "text": "And God saw the light, that it was good: and God divided the light from the darkness.",
+      "ref": "Genesis 1:4"
+    },
+    "prediction": "And darkness was over the face of the deep, and light did dwell in the depths.",
+    "prediction_raw": "And darkness was over the face of the deep, and light did dwell in the depths.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference or version label.\n- No preface, no commentary, no extra whitespace lines.\n",
+      "user": "Retrieve: Genesis 1:4\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 0.8235294117647058,
+      "cer": 0.6823529411764706,
+      "chatter_ratio": -0.08235294117647059,
+      "token_sort_ratio": 63.80368098159509,
+      "substitutions": 13,
+      "deletions": 1,
+      "insertions": 0,
+      "ref_words": 17,
+      "gt_norm": "And God saw the light, that it was good: and God divided the light from the darkness.",
+      "pred_norm": "And darkness was over the face of the deep, and light did dwell in the depths.",
+      "label": "inaccurate_recall",
+      "contains_gt": false,
+      "error_category": "partial_recall",
+      "semantic_similarity": 0.21590909090909088,
+      "deletion_ratio": 0.058823529411764705,
+      "substitution_ratio": 0.7647058823529411,
+      "insertion_ratio": 0.0
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:gemma3:4b@q4_K_M",
+    "version": "kjv",
+    "latency_seconds": 0.47724812499999913
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Psalm",
+      "chapter": 23,
+      "verse": 1,
+      "id": 19023001,
+      "text": "The LORD is my shepherd; I shall not want.",
+      "ref": "Psalm 23:1"
+    },
+    "prediction": "The Lord is my shepherd:",
+    "prediction_raw": "The Lord is my shepherd:",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference or version label.\n- No preface, no commentary, no extra whitespace lines.\n",
+      "user": "Retrieve: Psalm 23:1\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 0.6666666666666666,
+      "cer": 0.5238095238095238,
+      "chatter_ratio": -0.42857142857142855,
+      "token_sort_ratio": 69.6969696969697,
+      "substitutions": 2,
+      "deletions": 4,
+      "insertions": 0,
+      "ref_words": 9,
+      "gt_norm": "The LORD is my shepherd; I shall not want.",
+      "pred_norm": "The Lord is my shepherd:",
+      "label": "inaccurate_recall",
+      "contains_gt": false,
+      "error_category": "partial_recall",
+      "semantic_similarity": 0.5792682926829268,
+      "deletion_ratio": 0.4444444444444444,
+      "substitution_ratio": 0.2222222222222222,
+      "insertion_ratio": 0.0
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:gemma3:4b@q4_K_M",
+    "version": "kjv",
+    "latency_seconds": 0.3239495000000012
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "John",
+      "chapter": 11,
+      "verse": 35,
+      "id": 43011035,
+      "text": "Jesus wept.",
+      "ref": "John 11:35"
+    },
+    "prediction": "“Lord, do not let thy loving kindness be taken away from me.”",
+    "prediction_raw": "“Lord, do not let thy loving kindness be taken away from me.”",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference or version label.\n- No preface, no commentary, no extra whitespace lines.\n",
+      "user": "Retrieve: John 11:35\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 6.0,
+      "cer": 5.0,
+      "chatter_ratio": 4.545454545454546,
+      "token_sort_ratio": 19.444444444444443,
+      "substitutions": 2,
+      "deletions": 0,
+      "insertions": 10,
+      "ref_words": 2,
+      "gt_norm": "Jesus wept.",
+      "pred_norm": "\"Lord, do not let thy loving kindness be taken away from me.\"",
+      "label": "total_hallucination",
+      "contains_gt": false,
+      "error_category": "total_hallucination",
+      "semantic_similarity": 0.0,
+      "deletion_ratio": 0.0,
+      "substitution_ratio": 1.0,
+      "insertion_ratio": 5.0
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:gemma3:4b@q4_K_M",
+    "version": "kjv",
+    "latency_seconds": 0.40849291700000023
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Revelation",
+      "chapter": 22,
+      "verse": 21,
+      "id": 66022021,
+      "text": "The grace of our Lord Jesus Christ be with you all. Amen.",
+      "ref": "Revelation 22:21"
+    },
+    "prediction": "And the leaves of the tree were full of poisonous names, and righteous persons did eat them.",
+    "prediction_raw": "And the leaves of the tree were full of poisonous names, and righteous persons did eat them.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference or version label.\n- No preface, no commentary, no extra whitespace lines.\n",
+      "user": "Retrieve: Revelation 22:21\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 1.3333333333333333,
+      "cer": 1.1228070175438596,
+      "chatter_ratio": 0.6140350877192983,
+      "token_sort_ratio": 40.26845637583892,
+      "substitutions": 11,
+      "deletions": 0,
+      "insertions": 5,
+      "ref_words": 12,
+      "gt_norm": "The grace of our Lord Jesus Christ be with you all. Amen.",
+      "pred_norm": "And the leaves of the tree were full of poisonous names, and righteous persons did eat them.",
+      "label": "inaccurate_recall",
+      "contains_gt": false,
+      "error_category": "partial_recall",
+      "semantic_similarity": 0.060240963855421686,
+      "deletion_ratio": 0.0,
+      "substitution_ratio": 0.9166666666666666,
+      "insertion_ratio": 0.4166666666666667
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:gemma3:4b@q4_K_M",
+    "version": "kjv",
+    "latency_seconds": 0.5530503750000015
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "Romans",
+      "chapter": 8,
+      "verse": 1,
+      "id": 45008001,
+      "text": "There is therefore now no condemnation to them which are in Christ Jesus, who walk not after the flesh, but after the Spirit.",
+      "ref": "Romans 8:1"
+    },
+    "prediction": "Therefore, being the children of God, we ought not to be conformed to the forms of this world.",
+    "prediction_raw": "Therefore, being the children of God, we ought not to be conformed to the forms of this world.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference or version label.\n- No preface, no commentary, no extra whitespace lines.\n",
+      "user": "Retrieve: Romans 8:1\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 0.9565217391304348,
+      "cer": 0.688,
+      "chatter_ratio": -0.248,
+      "token_sort_ratio": 50.228310502283115,
+      "substitutions": 17,
+      "deletions": 5,
+      "insertions": 0,
+      "ref_words": 23,
+      "gt_norm": "There is therefore now no condemnation to them which are in Christ Jesus, who walk not after the flesh, but after the Spirit.",
+      "pred_norm": "Therefore, being the children of God, we ought not to be conformed to the forms of this world.",
+      "label": "inaccurate_recall",
+      "contains_gt": false,
+      "error_category": "partial_recall",
+      "semantic_similarity": 0.0909090909090909,
+      "deletion_ratio": 0.21739130434782608,
+      "substitution_ratio": 0.7391304347826086,
+      "insertion_ratio": 0.0
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:gemma3:4b@q4_K_M",
+    "version": "kjv",
+    "latency_seconds": 0.6040731660000027
+  },
+  {
+    "verse": {
+      "version": "kjv",
+      "book": "John",
+      "chapter": 3,
+      "verse": 16,
+      "id": 43003016,
+      "text": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+      "ref": "John 3:16"
+    },
+    "prediction": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+    "prediction_raw": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference or version label.\n- No preface, no commentary, no extra whitespace lines.\n",
+      "user": "Retrieve: John 3:16\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "scores": {
+      "wer": 0.0,
+      "cer": 0.0,
+      "chatter_ratio": 0.0,
+      "token_sort_ratio": 100.0,
+      "substitutions": 0,
+      "deletions": 0,
+      "insertions": 0,
+      "ref_words": 25,
+      "gt_norm": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+      "pred_norm": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+      "label": "verbatim",
+      "contains_gt": false,
+      "error_category": "verbatim",
+      "semantic_similarity": 1.0,
+      "deletion_ratio": 0.0,
+      "substitution_ratio": 0.0,
+      "insertion_ratio": 0.0
+    },
+    "prompt_mode": "system2",
+    "model": "ollama:gemma3:4b@q4_K_M",
+    "version": "kjv",
+    "latency_seconds": 0.8606408750000014
+  }
+]

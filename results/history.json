@@ -1724,5 +1724,946 @@
         "avg_semantic_similarity": 0.7717188566030756
       }
     ]
+  },
+  {
+    "run_id": "20260603T033447Z",
+    "created_at": "2026-06-03T03:35:17.356994+00:00",
+    "version": "kjv",
+    "prompt_mode": "system2",
+    "sample": {
+      "count": 50,
+      "seed": 1,
+      "stratified": true
+    },
+    "schema_version": 2,
+    "repro": {
+      "tool_version": "0.1.0",
+      "scorer_config": {
+        "normalization": {
+          "strip_brackets": true,
+          "strip_pilcrow": true,
+          "standardize_quotes": true,
+          "collapse_whitespace": true,
+          "casefold": false
+        },
+        "fuzzy_casefold": true
+      },
+      "python": "3.9.18",
+      "seed": 1,
+      "prompt_mode": "system2",
+      "prompt_hash": "341cb50bae9f",
+      "config_path": "config_quant_sweep.yaml",
+      "command": "bible-eval run --config config_quant_sweep.yaml",
+      "git_commit": "9306fb8",
+      "git_dirty": true
+    },
+    "models": [
+      {
+        "model": "reference:verbatim",
+        "model_slug": "reference_verbatim",
+        "version": "kjv",
+        "prompt_mode": "system2",
+        "n": 10,
+        "strict_accuracy": 1.0,
+        "avg_wer": 0.0,
+        "avg_cer": 0.0,
+        "avg_token_sort_ratio": 100.0,
+        "avg_chatter_ratio": 0.0,
+        "avg_len_ratio": 1.0,
+        "verbatim_count": 10,
+        "verbatim_with_extras_count": 0,
+        "inaccurate_count": 0,
+        "hallucination_count": 0,
+        "chattery_count": 0,
+        "truncated_count": 0,
+        "content_accuracy": 1.0,
+        "clean_output_rate": 1.0,
+        "hallucination_rate": 0.0,
+        "abstention": null,
+        "robustness": null,
+        "base_model": null,
+        "quant": null,
+        "ci": {
+          "strict_accuracy": {
+            "lo": 0.7224672001371107,
+            "hi": 0.9999999999999999,
+            "method": "wilson"
+          },
+          "content_accuracy": {
+            "lo": 0.7224672001371107,
+            "hi": 0.9999999999999999,
+            "method": "wilson"
+          },
+          "hallucination_rate": {
+            "lo": 0.0,
+            "hi": 0.2775327998628892,
+            "method": "wilson"
+          },
+          "clean_output_rate": {
+            "lo": 0.7224672001371107,
+            "hi": 0.9999999999999999,
+            "method": "wilson"
+          },
+          "avg_wer": {
+            "lo": 0.0,
+            "hi": 0.0,
+            "method": "bootstrap"
+          },
+          "avg_cer": {
+            "lo": 0.0,
+            "hi": 0.0,
+            "method": "bootstrap"
+          },
+          "avg_token_sort_ratio": {
+            "lo": 100.0,
+            "hi": 100.0,
+            "method": "bootstrap"
+          },
+          "avg_chatter_ratio": {
+            "lo": 0.0,
+            "hi": 0.0,
+            "method": "bootstrap"
+          }
+        },
+        "decode_options": {
+          "mode": "verbatim"
+        },
+        "connector": "reference",
+        "strip_thinking_enabled": false,
+        "strip_thinking_changed_count": 0,
+        "raw_has_think_count": 0,
+        "grade": "A",
+        "headline": "Excellent verbatim recall.",
+        "notes": [
+          "Behaves consistently on this sample."
+        ],
+        "results_path": "runs/20260603T033447Z/reference_verbatim/results.json",
+        "details_path": "results/details/20260603T033447Z/reference_verbatim.json",
+        "details_rel": "details/20260603T033447Z/reference_verbatim.json",
+        "error_categories": {
+          "minor_deviation": 0,
+          "omission": 0,
+          "paraphrase": 0,
+          "partial_recall": 0
+        },
+        "confidence_intervals": {
+          "strict_accuracy": {
+            "mean": 1.0,
+            "lower": 0.7224598312333834,
+            "upper": 1.0,
+            "std_dev": 0.0,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.1387700843833083
+          },
+          "hallucination_rate": {
+            "mean": 0.0,
+            "lower": 0.0,
+            "upper": 0.2775401687666165,
+            "std_dev": 0.0,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.13877008438330826
+          },
+          "avg_wer": {
+            "mean": 0.0,
+            "lower": 0.0,
+            "upper": 0.0,
+            "std_dev": 0.0,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.0
+          },
+          "avg_cer": {
+            "mean": 0.0,
+            "lower": 0.0,
+            "upper": 0.0,
+            "std_dev": 0.0,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.0
+          },
+          "avg_latency": {
+            "mean": 1.4832000000006285e-06,
+            "lower": 5.034952964787242e-07,
+            "upper": 2.462904703522533e-06,
+            "std_dev": 1.3717829274365813e-06,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 9.797047035219044e-07
+          },
+          "avg_semantic_similarity": {
+            "mean": 1.0,
+            "lower": 1.0,
+            "upper": 1.0,
+            "std_dev": 7.401486830834377e-17,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.0
+          }
+        },
+        "avg_latency_seconds": 1.4832000000006285e-06,
+        "avg_semantic_similarity": 1.0
+      },
+      {
+        "model": "ollama:gemma3:1b@fp16",
+        "model_slug": "ollama_gemma3_1b_fp16",
+        "version": "kjv",
+        "prompt_mode": "system2",
+        "n": 10,
+        "strict_accuracy": 0.0,
+        "avg_wer": 3.675983519826539,
+        "avg_cer": 3.075229546015339,
+        "avg_token_sort_ratio": 43.68391961304653,
+        "avg_chatter_ratio": 2.368585250380082,
+        "avg_len_ratio": 3.368585250380082,
+        "verbatim_count": 0,
+        "verbatim_with_extras_count": 0,
+        "inaccurate_count": 6,
+        "hallucination_count": 4,
+        "chattery_count": 4,
+        "truncated_count": 4,
+        "content_accuracy": 0.0,
+        "clean_output_rate": 1.0,
+        "hallucination_rate": 0.4,
+        "abstention": null,
+        "robustness": null,
+        "base_model": "gemma3:1b",
+        "quant": "fp16",
+        "ci": {
+          "strict_accuracy": {
+            "lo": 0.0,
+            "hi": 0.2775327998628892,
+            "method": "wilson"
+          },
+          "content_accuracy": {
+            "lo": 0.0,
+            "hi": 0.2775327998628892,
+            "method": "wilson"
+          },
+          "hallucination_rate": {
+            "lo": 0.16818032970623614,
+            "hi": 0.6873262302663417,
+            "method": "wilson"
+          },
+          "clean_output_rate": {
+            "lo": 0.7224672001371107,
+            "hi": 0.9999999999999999,
+            "method": "wilson"
+          },
+          "avg_wer": {
+            "lo": 0.7889961073384875,
+            "hi": 7.863249129445973,
+            "method": "bootstrap"
+          },
+          "avg_cer": {
+            "lo": 0.6468979496232266,
+            "hi": 6.529624695175476,
+            "method": "bootstrap"
+          },
+          "avg_token_sort_ratio": {
+            "lo": 26.52125055653171,
+            "hi": 64.60005169530524,
+            "method": "bootstrap"
+          },
+          "avg_chatter_ratio": {
+            "lo": -0.2832744882667025,
+            "hi": 5.929977518053104,
+            "method": "bootstrap"
+          }
+        },
+        "decode_options": {
+          "base_url": "http://127.0.0.1:11434",
+          "model": "gemma3:1b-it-fp16",
+          "temperature": 0.0,
+          "num_predict": 256
+        },
+        "connector": "ollama",
+        "strip_thinking_enabled": false,
+        "strip_thinking_changed_count": 0,
+        "raw_has_think_count": 0,
+        "grade": "F",
+        "headline": "Low verbatim fidelity.",
+        "notes": [
+          "Frequently off-target (hallucinations).",
+          "Often truncates output.",
+          "Often adds extra chatter."
+        ],
+        "results_path": "runs/20260603T033447Z/ollama_gemma3_1b_fp16/results.json",
+        "details_path": "results/details/20260603T033447Z/ollama_gemma3_1b_fp16.json",
+        "details_rel": "details/20260603T033447Z/ollama_gemma3_1b_fp16.json",
+        "error_categories": {
+          "minor_deviation": 0,
+          "omission": 0,
+          "paraphrase": 1,
+          "partial_recall": 5
+        },
+        "confidence_intervals": {
+          "strict_accuracy": {
+            "mean": 0.0,
+            "lower": 0.0,
+            "upper": 0.2775401687666165,
+            "std_dev": 0.0,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.13877008438330826
+          },
+          "hallucination_rate": {
+            "mean": 0.4,
+            "lower": 0.16817758120350967,
+            "upper": 0.6873304525498135,
+            "std_dev": 0.15491933384829668,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.2595764356731519
+          },
+          "avg_wer": {
+            "mean": 3.675983519826539,
+            "lower": -1.0801695108249745,
+            "upper": 8.432136550478052,
+            "std_dev": 6.659567422988928,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 4.756153030651514
+          },
+          "avg_cer": {
+            "mean": 3.075229546015339,
+            "lower": -0.8816282366496142,
+            "upper": 7.0320873286802925,
+            "std_dev": 5.540393889139873,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 3.9568577826649536
+          },
+          "avg_latency": {
+            "mean": 0.6824128584,
+            "lower": 0.01690712069218614,
+            "upper": 1.3479185961078137,
+            "std_dev": 0.9318414067185858,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.6655057377078137
+          },
+          "avg_semantic_similarity": {
+            "mean": 0.23990810156454523,
+            "lower": 0.01376812221179266,
+            "upper": 0.46604808091729777,
+            "std_dev": 0.31664129178086686,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.22613997935275254
+          }
+        },
+        "avg_latency_seconds": 0.6824128584,
+        "avg_semantic_similarity": 0.23990810156454523
+      },
+      {
+        "model": "ollama:gemma3:1b@q8_0",
+        "model_slug": "ollama_gemma3_1b_q8_0",
+        "version": "kjv",
+        "prompt_mode": "system2",
+        "n": 10,
+        "strict_accuracy": 0.0,
+        "avg_wer": 2.331104731947751,
+        "avg_cer": 1.8801102259011704,
+        "avg_token_sort_ratio": 46.40165002090459,
+        "avg_chatter_ratio": 1.163399793723181,
+        "avg_len_ratio": 2.163399793723181,
+        "verbatim_count": 0,
+        "verbatim_with_extras_count": 0,
+        "inaccurate_count": 8,
+        "hallucination_count": 2,
+        "chattery_count": 4,
+        "truncated_count": 4,
+        "content_accuracy": 0.0,
+        "clean_output_rate": 1.0,
+        "hallucination_rate": 0.2,
+        "abstention": null,
+        "robustness": null,
+        "base_model": "gemma3:1b",
+        "quant": "q8_0",
+        "ci": {
+          "strict_accuracy": {
+            "lo": 0.0,
+            "hi": 0.2775327998628892,
+            "method": "wilson"
+          },
+          "content_accuracy": {
+            "lo": 0.0,
+            "hi": 0.2775327998628892,
+            "method": "wilson"
+          },
+          "hallucination_rate": {
+            "lo": 0.05668215145437519,
+            "hi": 0.5098375284633583,
+            "method": "wilson"
+          },
+          "clean_output_rate": {
+            "lo": 0.7224672001371107,
+            "hi": 0.9999999999999999,
+            "method": "wilson"
+          },
+          "avg_wer": {
+            "lo": 0.8238351138156413,
+            "hi": 4.6754187447942686,
+            "method": "bootstrap"
+          },
+          "avg_cer": {
+            "lo": 0.644724594081573,
+            "hi": 3.852000916072422,
+            "method": "bootstrap"
+          },
+          "avg_token_sort_ratio": {
+            "lo": 30.285052190989585,
+            "hi": 65.30382158101756,
+            "method": "bootstrap"
+          },
+          "avg_chatter_ratio": {
+            "lo": -0.20244911740024304,
+            "hi": 3.260226346434958,
+            "method": "bootstrap"
+          }
+        },
+        "decode_options": {
+          "base_url": "http://127.0.0.1:11434",
+          "model": "gemma3:1b-it-q8_0",
+          "temperature": 0.0,
+          "num_predict": 256
+        },
+        "connector": "ollama",
+        "strip_thinking_enabled": false,
+        "strip_thinking_changed_count": 0,
+        "raw_has_think_count": 0,
+        "grade": "F",
+        "headline": "Low verbatim fidelity.",
+        "notes": [
+          "Some off-target responses.",
+          "Often truncates output.",
+          "Often adds extra chatter."
+        ],
+        "results_path": "runs/20260603T033447Z/ollama_gemma3_1b_q8_0/results.json",
+        "details_path": "results/details/20260603T033447Z/ollama_gemma3_1b_q8_0.json",
+        "details_rel": "details/20260603T033447Z/ollama_gemma3_1b_q8_0.json",
+        "error_categories": {
+          "minor_deviation": 0,
+          "omission": 0,
+          "paraphrase": 1,
+          "partial_recall": 7
+        },
+        "confidence_intervals": {
+          "strict_accuracy": {
+            "mean": 0.0,
+            "lower": 0.0,
+            "upper": 0.2775401687666165,
+            "std_dev": 0.0,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.13877008438330826
+          },
+          "hallucination_rate": {
+            "mean": 0.2,
+            "lower": 0.05668094798069326,
+            "upper": 0.5098431532792767,
+            "std_dev": 0.1264911064067352,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.2265811026492917
+          },
+          "avg_wer": {
+            "mean": 2.331104731947751,
+            "lower": -0.294110180110283,
+            "upper": 4.956319644005785,
+            "std_dev": 3.6758269958970557,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 2.625214912058034
+          },
+          "avg_cer": {
+            "mean": 1.8801102259011704,
+            "lower": -0.3235361483938455,
+            "upper": 4.083756600196186,
+            "std_dev": 3.08554655652711,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 2.203646374295016
+          },
+          "avg_latency": {
+            "mean": 0.4694987290999997,
+            "lower": 0.17471995148689062,
+            "upper": 0.7642775067131087,
+            "std_dev": 0.41274936523895817,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.294778777613109
+          },
+          "avg_semantic_similarity": {
+            "mean": 0.2345348358151461,
+            "lower": 0.006788010668776351,
+            "upper": 0.4622816609615158,
+            "std_dev": 0.3188911979197099,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.22774682514636974
+          }
+        },
+        "avg_latency_seconds": 0.4694987290999997,
+        "avg_semantic_similarity": 0.2345348358151461
+      },
+      {
+        "model": "ollama:gemma3:1b@q4_K_M",
+        "model_slug": "ollama_gemma3_1b_q4_K_M",
+        "version": "kjv",
+        "prompt_mode": "system2",
+        "n": 10,
+        "strict_accuracy": 0.0,
+        "avg_wer": 3.512045737380864,
+        "avg_cer": 3.4584568753096634,
+        "avg_token_sort_ratio": 57.33970361586957,
+        "avg_chatter_ratio": 2.9970620850777645,
+        "avg_len_ratio": 3.9970620850777645,
+        "verbatim_count": 0,
+        "verbatim_with_extras_count": 0,
+        "inaccurate_count": 8,
+        "hallucination_count": 2,
+        "chattery_count": 4,
+        "truncated_count": 2,
+        "content_accuracy": 0.0,
+        "clean_output_rate": 1.0,
+        "hallucination_rate": 0.2,
+        "abstention": null,
+        "robustness": null,
+        "base_model": "gemma3:1b",
+        "quant": "q4_K_M",
+        "ci": {
+          "strict_accuracy": {
+            "lo": 0.0,
+            "hi": 0.2775327998628892,
+            "method": "wilson"
+          },
+          "content_accuracy": {
+            "lo": 0.0,
+            "hi": 0.2775327998628892,
+            "method": "wilson"
+          },
+          "hallucination_rate": {
+            "lo": 0.05668215145437519,
+            "hi": 0.5098375284633583,
+            "method": "wilson"
+          },
+          "clean_output_rate": {
+            "lo": 0.7224672001371107,
+            "hi": 0.9999999999999999,
+            "method": "wilson"
+          },
+          "avg_wer": {
+            "lo": 0.578997994318349,
+            "hi": 7.228141732832334,
+            "method": "bootstrap"
+          },
+          "avg_cer": {
+            "lo": 0.4182564413767111,
+            "hi": 6.8271823775213,
+            "method": "bootstrap"
+          },
+          "avg_token_sort_ratio": {
+            "lo": 38.269333087508436,
+            "hi": 76.59027449073228,
+            "method": "bootstrap"
+          },
+          "avg_chatter_ratio": {
+            "lo": -0.08100036912082131,
+            "hi": 6.4540171401889594,
+            "method": "bootstrap"
+          }
+        },
+        "decode_options": {
+          "base_url": "http://127.0.0.1:11434",
+          "model": "gemma3:1b-it-q4_K_M",
+          "temperature": 0.0,
+          "num_predict": 256
+        },
+        "connector": "ollama",
+        "strip_thinking_enabled": false,
+        "strip_thinking_changed_count": 0,
+        "raw_has_think_count": 0,
+        "grade": "F",
+        "headline": "Low verbatim fidelity.",
+        "notes": [
+          "Some off-target responses.",
+          "Often truncates output.",
+          "Often adds extra chatter."
+        ],
+        "results_path": "runs/20260603T033447Z/ollama_gemma3_1b_q4_K_M/results.json",
+        "details_path": "results/details/20260603T033447Z/ollama_gemma3_1b_q4_K_M.json",
+        "details_rel": "details/20260603T033447Z/ollama_gemma3_1b_q4_K_M.json",
+        "error_categories": {
+          "minor_deviation": 0,
+          "omission": 0,
+          "paraphrase": 2,
+          "partial_recall": 6
+        },
+        "confidence_intervals": {
+          "strict_accuracy": {
+            "mean": 0.0,
+            "lower": 0.0,
+            "upper": 0.2775401687666165,
+            "std_dev": 0.0,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.13877008438330826
+          },
+          "hallucination_rate": {
+            "mean": 0.2,
+            "lower": 0.05668094798069326,
+            "upper": 0.5098431532792767,
+            "std_dev": 0.1264911064067352,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.2265811026492917
+          },
+          "avg_wer": {
+            "mean": 3.512045737380864,
+            "lower": -0.9929992598389572,
+            "upper": 8.017090734600686,
+            "std_dev": 6.307965851652727,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 4.505044997219821
+          },
+          "avg_cer": {
+            "mean": 3.4584568753096634,
+            "lower": -1.0413098859749321,
+            "upper": 7.9582236365942585,
+            "std_dev": 6.30057526353276,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 4.4997667612845955
+          },
+          "avg_latency": {
+            "mean": 0.6012519375999998,
+            "lower": 0.19905559229602277,
+            "upper": 1.0034482829039768,
+            "std_dev": 0.563155487548446,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.402196345303977
+          },
+          "avg_semantic_similarity": {
+            "mean": 0.30949399999591287,
+            "lower": 0.06769877425148818,
+            "upper": 0.5512892257403376,
+            "std_dev": 0.33856177419532,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.2417952257444247
+          }
+        },
+        "avg_latency_seconds": 0.6012519375999998,
+        "avg_semantic_similarity": 0.30949399999591287
+      },
+      {
+        "model": "ollama:gemma3:4b@q8_0",
+        "model_slug": "ollama_gemma3_4b_q8_0",
+        "version": "kjv",
+        "prompt_mode": "system2",
+        "n": 10,
+        "strict_accuracy": 0.2,
+        "avg_wer": 0.5276796539341737,
+        "avg_cer": 0.41397738045289956,
+        "avg_token_sort_ratio": 75.11419973307515,
+        "avg_chatter_ratio": -0.0534212053656166,
+        "avg_len_ratio": 0.9465787946343834,
+        "verbatim_count": 2,
+        "verbatim_with_extras_count": 1,
+        "inaccurate_count": 7,
+        "hallucination_count": 0,
+        "chattery_count": 3,
+        "truncated_count": 4,
+        "content_accuracy": 0.3,
+        "clean_output_rate": 1.0,
+        "hallucination_rate": 0.0,
+        "abstention": null,
+        "robustness": null,
+        "base_model": "gemma3:4b",
+        "quant": "q8_0",
+        "ci": {
+          "strict_accuracy": {
+            "lo": 0.05668215145437519,
+            "hi": 0.5098375284633583,
+            "method": "wilson"
+          },
+          "content_accuracy": {
+            "lo": 0.10779126740630099,
+            "hi": 0.6032218525388546,
+            "method": "wilson"
+          },
+          "hallucination_rate": {
+            "lo": 0.0,
+            "hi": 0.2775327998628892,
+            "method": "wilson"
+          },
+          "clean_output_rate": {
+            "lo": 0.7224672001371107,
+            "hi": 0.9999999999999999,
+            "method": "wilson"
+          },
+          "avg_wer": {
+            "lo": 0.30621085290687994,
+            "hi": 0.7421967770571042,
+            "method": "bootstrap"
+          },
+          "avg_cer": {
+            "lo": 0.23364585407809152,
+            "hi": 0.5817538063428588,
+            "method": "bootstrap"
+          },
+          "avg_token_sort_ratio": {
+            "lo": 64.07995750677114,
+            "hi": 87.20902336255605,
+            "method": "bootstrap"
+          },
+          "avg_chatter_ratio": {
+            "lo": -0.20872558458642346,
+            "hi": 0.11685752539988695,
+            "method": "bootstrap"
+          }
+        },
+        "decode_options": {
+          "base_url": "http://127.0.0.1:11434",
+          "model": "gemma3:4b-it-q8_0",
+          "temperature": 0.0,
+          "num_predict": 256
+        },
+        "connector": "ollama",
+        "strip_thinking_enabled": false,
+        "strip_thinking_changed_count": 0,
+        "raw_has_think_count": 0,
+        "grade": "F",
+        "headline": "Low verbatim fidelity.",
+        "notes": [
+          "Often truncates output.",
+          "Often adds extra chatter."
+        ],
+        "results_path": "runs/20260603T033447Z/ollama_gemma3_4b_q8_0/results.json",
+        "details_path": "results/details/20260603T033447Z/ollama_gemma3_4b_q8_0.json",
+        "details_rel": "details/20260603T033447Z/ollama_gemma3_4b_q8_0.json",
+        "error_categories": {
+          "minor_deviation": 0,
+          "omission": 1,
+          "paraphrase": 1,
+          "partial_recall": 5
+        },
+        "confidence_intervals": {
+          "strict_accuracy": {
+            "mean": 0.2,
+            "lower": 0.05668094798069326,
+            "upper": 0.5098431532792767,
+            "std_dev": 0.1264911064067352,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.2265811026492917
+          },
+          "hallucination_rate": {
+            "mean": 0.0,
+            "lower": 0.0,
+            "upper": 0.2775401687666165,
+            "std_dev": 0.0,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.13877008438330826
+          },
+          "avg_wer": {
+            "mean": 0.5276796539341737,
+            "lower": 0.26325005163469084,
+            "upper": 0.7921092562336566,
+            "std_dev": 0.3702544375251796,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.26442960229948287
+          },
+          "avg_cer": {
+            "mean": 0.41397738045289956,
+            "lower": 0.20759064064286714,
+            "upper": 0.620364120262932,
+            "std_dev": 0.2889827976766147,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.20638673981003242
+          },
+          "avg_latency": {
+            "mean": 0.6240285375999992,
+            "lower": 0.40381750793750204,
+            "upper": 0.8442395672624964,
+            "std_dev": 0.30833957399439005,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.22021102966249717
+          },
+          "avg_semantic_similarity": {
+            "mean": 0.5686682980826488,
+            "lower": 0.2884598554822198,
+            "upper": 0.848876740683078,
+            "std_dev": 0.39234797618205747,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.2802084426004291
+          }
+        },
+        "avg_latency_seconds": 0.6240285375999992,
+        "avg_semantic_similarity": 0.5686682980826488
+      },
+      {
+        "model": "ollama:gemma3:4b@q4_K_M",
+        "model_slug": "ollama_gemma3_4b_q4_K_M",
+        "version": "kjv",
+        "prompt_mode": "system2",
+        "n": 10,
+        "strict_accuracy": 0.1,
+        "avg_wer": 1.323271572769765,
+        "avg_cer": 1.0878440077435845,
+        "avg_token_sort_ratio": 63.81608955110833,
+        "avg_chatter_ratio": 0.6283496020269744,
+        "avg_len_ratio": 1.6283496020269745,
+        "verbatim_count": 1,
+        "verbatim_with_extras_count": 0,
+        "inaccurate_count": 8,
+        "hallucination_count": 1,
+        "chattery_count": 4,
+        "truncated_count": 2,
+        "content_accuracy": 0.1,
+        "clean_output_rate": 1.0,
+        "hallucination_rate": 0.1,
+        "abstention": null,
+        "robustness": null,
+        "base_model": "gemma3:4b",
+        "quant": "q4_K_M",
+        "ci": {
+          "strict_accuracy": {
+            "lo": 0.017876213095072868,
+            "hi": 0.4041500267952385,
+            "method": "wilson"
+          },
+          "content_accuracy": {
+            "lo": 0.017876213095072868,
+            "hi": 0.4041500267952385,
+            "method": "wilson"
+          },
+          "hallucination_rate": {
+            "lo": 0.017876213095072868,
+            "hi": 0.4041500267952385,
+            "method": "wilson"
+          },
+          "clean_output_rate": {
+            "lo": 0.7224672001371107,
+            "hi": 0.9999999999999999,
+            "method": "wilson"
+          },
+          "avg_wer": {
+            "lo": 0.471423587671405,
+            "hi": 2.449879272262264,
+            "method": "bootstrap"
+          },
+          "avg_cer": {
+            "lo": 0.3683825660294809,
+            "hi": 2.0288591861580634,
+            "method": "bootstrap"
+          },
+          "avg_token_sort_ratio": {
+            "lo": 47.96995598370566,
+            "hi": 81.63775178067684,
+            "method": "bootstrap"
+          },
+          "avg_chatter_ratio": {
+            "lo": -0.05405632447843096,
+            "hi": 1.5777183809843656,
+            "method": "bootstrap"
+          }
+        },
+        "decode_options": {
+          "base_url": "http://127.0.0.1:11434",
+          "model": "gemma3:4b",
+          "temperature": 0.0,
+          "num_predict": 256
+        },
+        "connector": "ollama",
+        "strip_thinking_enabled": false,
+        "strip_thinking_changed_count": 0,
+        "raw_has_think_count": 0,
+        "grade": "F",
+        "headline": "Low verbatim fidelity.",
+        "notes": [
+          "Some off-target responses.",
+          "Often truncates output.",
+          "Often adds extra chatter."
+        ],
+        "results_path": "runs/20260603T033447Z/ollama_gemma3_4b_q4_K_M/results.json",
+        "details_path": "results/details/20260603T033447Z/ollama_gemma3_4b_q4_K_M.json",
+        "details_rel": "details/20260603T033447Z/ollama_gemma3_4b_q4_K_M.json",
+        "error_categories": {
+          "minor_deviation": 2,
+          "omission": 0,
+          "paraphrase": 0,
+          "partial_recall": 6
+        },
+        "confidence_intervals": {
+          "strict_accuracy": {
+            "mean": 0.1,
+            "lower": 0.01787574951572113,
+            "upper": 0.4041563854975721,
+            "std_dev": 0.09486832980505139,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.1931403179909255
+          },
+          "hallucination_rate": {
+            "mean": 0.1,
+            "lower": 0.01787574951572113,
+            "upper": 0.4041563854975721,
+            "std_dev": 0.09486832980505139,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.1931403179909255
+          },
+          "avg_wer": {
+            "mean": 1.323271572769765,
+            "lower": 0.045390774317662475,
+            "upper": 2.6011523712218674,
+            "std_dev": 1.7892892177754334,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 1.2778807984521023
+          },
+          "avg_cer": {
+            "mean": 1.0878440077435845,
+            "lower": 0.01305880504965895,
+            "upper": 2.16262921043751,
+            "std_dev": 1.5049146813492138,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 1.0747852026939255
+          },
+          "avg_latency": {
+            "mean": 0.5981679708000005,
+            "lower": 0.46417580321094687,
+            "upper": 0.7321601383890541,
+            "std_dev": 0.18761588797942866,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.13399216758905363
+          },
+          "avg_semantic_similarity": {
+            "mean": 0.4026065496908148,
+            "lower": 0.1116080958582214,
+            "upper": 0.6936050035234081,
+            "std_dev": 0.4074561543319861,
+            "n": 10,
+            "confidence_level": 0.95,
+            "margin_of_error": 0.2909984538325934
+          }
+        },
+        "avg_latency_seconds": 0.5981679708000005,
+        "avg_semantic_similarity": 0.4026065496908148
+      }
+    ]
   }
 ]

@@ -16,6 +16,7 @@ import yaml
 
 from bible_eval import __version__
 from bible_eval.core.abstention import classify_void_response
+from bible_eval.core.quant import parse_quant_from_tag
 from bible_eval.core.robustness import DEFAULT_PERTURBATIONS, summarize_robustness
 from bible_eval.core.scorer import ErrorCategory, ScoreConfig, Scorer
 from bible_eval.core.stats import bootstrap_ci, wilson_interval
@@ -405,6 +406,12 @@ def cmd_run(args: argparse.Namespace) -> int:
                 "hallucination_rate": halluc_rate,
                 "abstention": abstention,
                 "robustness": robustness,
+                "base_model": (model_cfg.get("base_model") or (model_cfg.get("options") or {}).get("base_model")),
+                "quant": (
+                    model_cfg.get("quant")
+                    or (model_cfg.get("options") or {}).get("quant")
+                    or parse_quant_from_tag((model_cfg.get("options") or {}).get("model"))
+                ),
                 "ci": ci,
                 "decode_options": dict((model_cfg.get("options") or {})),
                 "connector": model_cfg.get("connector"),
