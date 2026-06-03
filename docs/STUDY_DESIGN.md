@@ -84,6 +84,12 @@ three explicit axes:
 2. **Duplication** — stratify verses by popularity / web-frequency.
 3. **Context** — vary prompt framing (bare reference vs book/chapter context).
 
+> **First result (Gemma 4, full KJV, N=60):** famous verses **30%** verbatim
+> [17–48%] vs obscure verses **0%** [0–11%] — a **+30-point gap with
+> non-overlapping CIs**. The model recalls only the most-duplicated verses and
+> *zero* obscure ones: recall tracks popularity, not knowledge. This is the
+> memorization signature the framing predicts.
+
 ### 2.6 Avoid naive Elo / arena leaderboards **[verified]**
 
 Elo is sensitive to match order and hyperparameters, transitivity is not guaranteed, and

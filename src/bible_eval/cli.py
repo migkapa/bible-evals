@@ -16,6 +16,8 @@ import yaml
 
 from bible_eval import __version__
 from bible_eval.core.abstention import classify_void_response
+from bible_eval.core.popularity import classify as classify_tier
+from bible_eval.core.popularity import load_famous_ids, summarize_gradient
 from bible_eval.core.quant import parse_quant_from_tag
 from bible_eval.core.robustness import DEFAULT_PERTURBATIONS, summarize_robustness
 from bible_eval.core.scorer import ErrorCategory, ScoreConfig, Scorer
@@ -28,7 +30,7 @@ from bible_eval.core.statistics import (
 from bible_eval.data.fetch import SCROLLMAPPER_VERSIONS, fetch_version
 from bible_eval.data.loader import Taxonomy, VerseDatabase
 from bible_eval.engine.interrogator import Interrogator
-from bible_eval.engine.sampler import Sampler, SampleConfig, void_probes
+from bible_eval.engine.sampler import Sampler, SampleConfig, tiered_sample, void_probes
 from bible_eval.results.store import append_run, load_history, save_history, write_run_copy
 
 _REFERENCE_CONNECTORS = {"reference", "baseline"}
@@ -119,8 +121,22 @@ def cmd_run(args: argparse.Namespace) -> int:
         seed=int(cfg["eval"]["sample"].get("seed", 1)),
         stratified=bool(cfg["eval"]["sample"].get("stratified", False)),
     )
+    # Memorization gradient: stratify the sample into famous vs obscure verses
+    # and report accuracy per tier. A large famous−obscure gap means recall
+    # tracks popularity (memorization), not uniform competence.
+    gradient_cfg = cfg["eval"].get("gradient") or {}
+    gradient_enabled = bool(gradient_cfg.get("enabled", False))
+    famous_ids: set = set()
+    if gradient_enabled:
+        famous_ids = load_famous_ids(
+            gradient_cfg.get("popularity_path", "data/popularity.json"), taxonomy
+        )
+
     sampler = Sampler(sample_cfg)
-    verses = sampler.sample(db)
+    if gradient_enabled and famous_ids:
+        verses = tiered_sample(db, famous_ids, count=sample_cfg.count, seed=sample_cfg.seed)
+    else:
+        verses = sampler.sample(db)
 
     prompt_mode = cfg["eval"].get("prompt", "system2")
     scorer = Scorer(ScoreConfig())
@@ -171,6 +187,7 @@ def cmd_run(args: argparse.Namespace) -> int:
                     "model": interrogator.model_name,
                     "version": version_key,
                     "latency_seconds": latency,
+                    "tier": classify_tier(verse.id, famous_ids) if gradient_enabled else None,
                 }
             )
 
@@ -365,6 +382,29 @@ def cmd_run(args: argparse.Namespace) -> int:
                 f"verdict_consistency={robustness['verdict_consistency']:.2f}"
             )
 
+        # Memorization gradient: strict accuracy on famous vs obscure verses.
+        gradient = None
+        if gradient_enabled:
+            per_verse = [
+                (
+                    r.get("tier"),
+                    r["scores"]["wer"] == 0.0 and r["scores"]["cer"] == 0.0,
+                )
+                for r in results
+            ]
+            gradient = summarize_gradient([(t, s) for t, s in per_verse if t])
+            for tier in ("famous", "obscure"):
+                blk = gradient.get(tier) or {}
+                if blk.get("n"):
+                    blk["ci"] = _wilson_ci(blk["hits"], blk["n"])
+            gap = gradient.get("gap")
+            print(
+                f"{interrogator.model_name}: gradient "
+                f"famous={(gradient['famous']['strict_accuracy'] or 0):.2f} "
+                f"obscure={(gradient['obscure']['strict_accuracy'] or 0):.2f} "
+                f"gap={gap if gap is None else round(gap, 3)}"
+            )
+
         # Confidence intervals: Wilson for rates, percentile-bootstrap for
         # continuous metrics. Stored under `ci[<metric>] = {lo, hi, method}`
         # so the site can render every point estimate with its uncertainty.
@@ -407,6 +447,7 @@ def cmd_run(args: argparse.Namespace) -> int:
                 "hallucination_rate": halluc_rate,
                 "abstention": abstention,
                 "robustness": robustness,
+                "gradient": gradient,
                 "base_model": (model_cfg.get("base_model") or (model_cfg.get("options") or {}).get("base_model")),
                 "quant": (
                     model_cfg.get("quant")

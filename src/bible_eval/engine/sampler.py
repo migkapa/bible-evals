@@ -30,6 +30,29 @@ class VoidProbe:
         return f"{self.book} {self.chapter}:{self.verse}"
 
 
+def tiered_sample(
+    db: VerseDatabase, famous_ids: set[int], count: int, seed: int = 1
+) -> list[VerseRecord]:
+    """Balanced famous/obscure sample for the memorization gradient.
+
+    Draws ~count/2 famous verses (those whose id is in ``famous_ids`` and present
+    in the db) and fills the remainder with random obscure verses, so the two
+    tiers are comparably sized regardless of how rare the famous set is.
+    """
+    verses = db.all()
+    if not verses or count <= 0:
+        return []
+    famous = [v for v in verses if v.id in famous_ids]
+    obscure = [v for v in verses if v.id not in famous_ids]
+    rng = random.Random(seed)
+    half = count // 2
+    pick_f = min(half, len(famous))
+    pick_o = min(count - pick_f, len(obscure))
+    out = rng.sample(famous, k=pick_f) + rng.sample(obscure, k=pick_o)
+    rng.shuffle(out)
+    return out
+
+
 def void_probes(db: VerseDatabase, count: int, seed: int = 1) -> list[VoidProbe]:
     """Generate references to non-existent verses from books present in ``db``.
 
