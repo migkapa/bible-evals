@@ -16,6 +16,7 @@ import yaml
 
 from bible_eval import __version__
 from bible_eval.core.abstention import classify_void_response
+from bible_eval.core.robustness import DEFAULT_PERTURBATIONS, summarize_robustness
 from bible_eval.core.scorer import ErrorCategory, ScoreConfig, Scorer
 from bible_eval.core.stats import bootstrap_ci, wilson_interval
 from bible_eval.core.statistics import (
@@ -131,6 +132,14 @@ def cmd_run(args: argparse.Namespace) -> int:
         if abstention_enabled and abstention_count > 0
         else []
     )
+
+    # Prompt-perturbation robustness: re-ask each verse under semantics-preserving
+    # paraphrases and measure ranking/verdict stability. A single perturbation
+    # reorders model rankings ~63% of the time (arXiv:2603.13285), so single-prompt
+    # scores are not trustworthy on their own.
+    perturb_cfg = cfg["eval"].get("perturbations") or {}
+    perturb_enabled = bool(perturb_cfg.get("enabled", False))
+    perturbations = list(perturb_cfg.get("templates") or DEFAULT_PERTURBATIONS)
 
     run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     out_dir = Path("runs") / run_id
@@ -309,6 +318,51 @@ def cmd_run(args: argparse.Namespace) -> int:
                 f"fabricated={fabricated}/{n_probes}"
             )
 
+        # Prompt-perturbation robustness: re-ask each verse under each paraphrase,
+        # score it, and summarize ranking/verdict stability across variants.
+        robustness = None
+        if perturb_enabled and perturbations:
+            labels_per_verse = []
+            strict_per_verse = []
+            perturb_details = []
+            for verse in verses:
+                row_labels = []
+                row_strict = []
+                for template in perturbations:
+                    _req, p_raw = interrogator.query_with_template(
+                        verse, version_cfg.get("name", version_key), template
+                    )
+                    p_clean, _ = _postprocess_prediction(p_raw, model_cfg=model_cfg)
+                    sc = scorer.score_pair(gt=verse.text, pred=p_clean)
+                    is_strict = sc.wer == 0.0 and sc.cer == 0.0
+                    row_labels.append(sc.label)
+                    row_strict.append(is_strict)
+                    perturb_details.append(
+                        {
+                            "ref": verse.ref,
+                            "template": template,
+                            "prediction": p_clean,
+                            "label": sc.label,
+                            "wer": sc.wer,
+                            "strict": is_strict,
+                        }
+                    )
+                labels_per_verse.append(row_labels)
+                strict_per_verse.append(row_strict)
+
+            robustness = summarize_robustness(labels_per_verse, strict_per_verse)
+            robustness["templates"] = list(perturbations)
+            robustness_rel = f"details/{run_id}/{slug}.robustness.json"
+            (Path("results") / robustness_rel).write_text(
+                json.dumps(perturb_details, ensure_ascii=False, indent=2), encoding="utf-8"
+            )
+            robustness["details_rel"] = robustness_rel
+            print(
+                f"{interrogator.model_name}: robustness "
+                f"acc_range={robustness['accuracy_range']:.3f} "
+                f"verdict_consistency={robustness['verdict_consistency']:.2f}"
+            )
+
         # Confidence intervals: Wilson for rates, percentile-bootstrap for
         # continuous metrics. Stored under `ci[<metric>] = {lo, hi, method}`
         # so the site can render every point estimate with its uncertainty.
@@ -350,6 +404,7 @@ def cmd_run(args: argparse.Namespace) -> int:
                 "clean_output_rate": clean_output_rate,
                 "hallucination_rate": halluc_rate,
                 "abstention": abstention,
+                "robustness": robustness,
                 "ci": ci,
                 "decode_options": dict((model_cfg.get("options") or {})),
                 "connector": model_cfg.get("connector"),
@@ -433,7 +488,7 @@ def cmd_run(args: argparse.Namespace) -> int:
 
     # Copy latest run details into the site for example rendering.
     for m in summaries:
-        rels = [m.get("details_rel"), (m.get("abstention") or {}).get("details_rel")]
+        rels = [m.get("details_rel"), (m.get("abstention") or {}).get("details_rel"), (m.get("robustness") or {}).get("details_rel")]
         for rel in rels:
             if not rel:
                 continue
@@ -458,7 +513,7 @@ def cmd_export_site(args: argparse.Namespace) -> int:
 
     for run in runs:
         for m in run.get("models", []) or []:
-            rels = [m.get("details_rel"), (m.get("abstention") or {}).get("details_rel")]
+            rels = [m.get("details_rel"), (m.get("abstention") or {}).get("details_rel"), (m.get("robustness") or {}).get("details_rel")]
             for rel in rels:
                 if not rel:
                     continue

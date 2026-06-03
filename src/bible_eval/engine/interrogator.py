@@ -90,6 +90,22 @@ class Interrogator:
     def build_request(self, *, verse: VerseRecord, version_name: str) -> GenerateRequest:
         return self._build(ref=verse.ref, version_name=version_name)
 
+    def _system_for_mode(self) -> Optional[str]:
+        """System prompt for the active mode (None for naive/constraint)."""
+        return self.prompts.system2_system if self.prompt_mode == "system2" else None
+
+    def query_with_template(self, verse, version_name: str, user_template: str) -> tuple[GenerateRequest, str]:
+        """Query with a custom user-prompt paraphrase under the active mode's system prompt.
+
+        Used by the prompt-perturbation harness to probe ranking stability across
+        semantics-preserving rephrasings. ``verse`` only needs a ``.ref``.
+        """
+        req = GenerateRequest(
+            system=self._system_for_mode(),
+            user=user_template.format(ref=verse.ref, version=version_name),
+        )
+        return req, self._generate(verse, req)
+
     def _generate(self, verse: VerseRecord, req: GenerateRequest) -> str:
         last_err: Optional[Exception] = None
         for attempt in range(self.max_retries + 1):

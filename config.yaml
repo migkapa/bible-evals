@@ -88,6 +88,17 @@ eval:
     enabled: true
     count: 5
     seed: 1
+  # Prompt-perturbation robustness: re-ask each verse under semantics-preserving
+  # paraphrases and report ranking/verdict stability (a single perturbation reorders
+  # model rankings ~63% of the time). Multiplies model-eval cost by the number of
+  # templates; omit `templates` to use the built-in default set.
+  perturbations:
+    enabled: false
+    templates:
+      - "Quote {ref} from the {version}."
+      - "What does {ref} say in the {version}?"
+      - "Please write out the text of {ref} ({version})."
+      - "Recite {ref} from the {version}, word for word."
 
 engine:
   max_retries: 2
