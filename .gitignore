@@ -12,3 +12,8 @@ build/
 data/processed/
 web/out/
 runs/
+
+# Full fetched corpora are reproducible via `bible-eval fetch-data`; keep the
+# committed sample only, not the multi-MB full translations.
+data/raw/*.json
+!data/raw/kjv_sample.json

@@ -68,7 +68,7 @@
     {"index": 63, "name": "2 John", "aliases": ["2John", "2 Jn", "II John", "Second John"]},
     {"index": 64, "name": "3 John", "aliases": ["3John", "3 Jn", "III John", "Third John"]},
     {"index": 65, "name": "Jude", "aliases": ["Jud", "Jd"]},
-    {"index": 66, "name": "Revelation", "aliases": ["Rev", "Re", "The Revelation"]}
+    {"index": 66, "name": "Revelation", "aliases": ["Rev", "Re", "The Revelation", "Revelation of John", "Apocalypse"]}
   ]
 }
 
