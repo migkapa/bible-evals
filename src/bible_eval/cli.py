@@ -25,6 +25,7 @@ from bible_eval.core.statistics import (
     compute_proportion_ci,
     format_ci,
 )
+from bible_eval.data.fetch import SCROLLMAPPER_VERSIONS, fetch_version
 from bible_eval.data.loader import Taxonomy, VerseDatabase
 from bible_eval.engine.interrogator import Interrogator
 from bible_eval.engine.sampler import Sampler, SampleConfig, void_probes
@@ -572,6 +573,17 @@ def cmd_examples(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_fetch_data(args: argparse.Namespace) -> int:
+    taxonomy = Taxonomy.from_path(args.taxonomy)
+    verses = fetch_version(args.version, taxonomy, url=args.url)
+    out_path = Path(args.out or f"data/raw/{args.version.lower()}.json")
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(json.dumps(verses, ensure_ascii=False, indent=2), encoding="utf-8")
+    books = len({v["book"] for v in verses})
+    print(f"Wrote {out_path}: {len(verses)} verses across {books} books ({args.version}).")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="bible-eval", description="Evaluate LLM verbatim Bible recall.")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -599,6 +611,19 @@ def build_parser() -> argparse.ArgumentParser:
     )
     s_ex.add_argument("--count", type=int, default=5, help="How many bad examples to print.")
     s_ex.set_defaults(func=cmd_examples)
+
+    s_fetch = sub.add_parser(
+        "fetch-data", help="Download a public-domain Bible translation into data/raw/."
+    )
+    s_fetch.add_argument(
+        "--version",
+        required=True,
+        help=f"Version key to fetch. Known: {sorted(SCROLLMAPPER_VERSIONS)}.",
+    )
+    s_fetch.add_argument("--out", default=None, help="Output path (default: data/raw/<version>.json).")
+    s_fetch.add_argument("--taxonomy", default="data/taxonomy.json", help="Path to taxonomy JSON.")
+    s_fetch.add_argument("--url", default=None, help="Override source URL (advanced).")
+    s_fetch.set_defaults(func=cmd_fetch_data)
 
     return p
 

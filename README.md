@@ -69,12 +69,23 @@ Raw verse JSON is expected as a list of objects:
 { "book": "Genesis", "chapter": 1, "verse": 1, "text": "In the beginning..." }
 ```
 
-See `docs/DATA.md` for details and normalization rules.
+A 10-verse KJV sample ships in `data/raw/kjv_sample.json`. For real runs, fetch a
+full public-domain translation:
+
+```bash
+bible-eval fetch-data --version kjv   # writes data/raw/kjv.json (31,102 verses)
+bible-eval fetch-data --version asv   # also public domain
+```
+
+then point `config.yaml` at it and raise `eval.sample.count`. Full corpora are
+git-ignored (reproducible via `fetch-data`); only the sample is committed. See
+`docs/DATA.md` for normalization rules.
 
 ## CLI
 
 - `bible-eval run --config config.yaml` writes `runs/<timestamp>/<model_slug>/results.json` and `runs/<timestamp>/summary.json`.
 - `bible-eval score --gt "<text>" --pred "<text>"` prints metrics for one pair.
+- `bible-eval fetch-data --version kjv` downloads a public-domain translation into `data/raw/`.
 - `bible-eval export-site` writes `docs/data/history.json` for the landing page.
 
 ## Results + Landing Page
