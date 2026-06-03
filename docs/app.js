@@ -752,6 +752,94 @@ function svgQuantChart(models) {
   return svg;
 }
 
+// Latest gradient-bearing run per model (gradient lives on specific runs, not
+// necessarily the best-strict-accuracy run that the leaderboard surfaces).
+function gradientModels(history) {
+  const best = new Map();
+  for (const run of history) {
+    for (const m of run.models || []) {
+      if (isReferenceModel(m)) continue;
+      const g = m.gradient;
+      if (!g || !g.famous?.n || !g.obscure?.n) continue;
+      const prev = best.get(m.model);
+      if (!prev || String(run.run_id) > String(prev._run_id)) {
+        best.set(m.model, { ...m, _run_id: run.run_id });
+      }
+    }
+  }
+  return [...best.values()];
+}
+
+function svgGradientChart(models) {
+  const ns = "http://www.w3.org/2000/svg";
+  const mk = (tag, attrs, text) => {
+    const n = document.createElementNS(ns, tag);
+    for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, String(v));
+    if (text != null) n.textContent = text;
+    return n;
+  };
+  const rows = models
+    .filter((m) => !isReferenceModel(m))
+    .map((m) => ({ m, g: m.gradient }))
+    .filter((r) => r.g && r.g.famous && r.g.obscure && r.g.famous.n && r.g.obscure.n)
+    .sort((a, b) => (b.g.gap ?? -1) - (a.g.gap ?? -1));
+  if (!rows.length) return null;
+
+  const width = 980;
+  const height = 300;
+  const pad = { l: 46, r: 16, t: 18, b: 64 };
+  const innerW = width - pad.l - pad.r;
+  const innerH = height - pad.t - pad.b;
+  const sy = (v) => pad.t + (1 - Math.max(0, Math.min(1, v))) * innerH;
+  const groupW = innerW / rows.length;
+
+  const svg = mk("svg", { viewBox: `0 0 ${width} ${height}`, width: "100%", height: "100%" });
+  for (let i = 0; i <= 4; i++) {
+    const y = pad.t + (innerH * i) / 4;
+    svg.appendChild(mk("line", { x1: pad.l, x2: width - pad.r, y1: y, y2: y, stroke: "rgba(255,255,255,0.10)" }));
+    svg.appendChild(Object.assign(mk("text", { x: pad.l - 8, y: y + 4, fill: "rgba(255,255,255,0.6)", "font-size": "11", "text-anchor": "end" }), { textContent: fmtPct(1 - i / 4) }));
+  }
+
+  const COL = { famous: "rgba(34,197,94,0.88)", obscure: "rgba(239,68,68,0.86)" };
+  const barW = Math.min(46, (groupW - 24) / 2);
+  rows.forEach((r, i) => {
+    const gx = pad.l + i * groupW;
+    const tiers = [
+      { key: "famous", blk: r.g.famous, x: gx + groupW / 2 - barW - 4 },
+      { key: "obscure", blk: r.g.obscure, x: gx + groupW / 2 + 4 },
+    ];
+    for (const t of tiers) {
+      const acc = Number(t.blk.strict_accuracy) || 0;
+      const y = sy(acc);
+      svg.appendChild(mk("rect", { x: t.x, y, width: barW, height: pad.t + innerH - y, rx: 5, fill: COL[t.key], stroke: "rgba(255,255,255,0.14)" }));
+      const ci = t.blk.ci;
+      if (ci) {
+        const cx = t.x + barW / 2;
+        const w = mk("g", { stroke: "rgba(255,255,255,0.85)", "stroke-width": "1.5" });
+        w.appendChild(mk("line", { x1: cx, y1: sy(ci.hi), x2: cx, y2: sy(ci.lo) }));
+        w.appendChild(mk("line", { x1: cx - 5, y1: sy(ci.hi), x2: cx + 5, y2: sy(ci.hi) }));
+        w.appendChild(mk("line", { x1: cx - 5, y1: sy(ci.lo), x2: cx + 5, y2: sy(ci.lo) }));
+        svg.appendChild(w);
+      }
+      svg.appendChild(Object.assign(mk("text", { x: t.x + barW / 2, y: y - 5, fill: "rgba(255,255,255,0.85)", "font-size": "11", "text-anchor": "middle" }), { textContent: fmtPct(acc) }));
+    }
+    svg.appendChild(Object.assign(mk("text", { x: gx + groupW / 2, y: height - 30, fill: "rgba(255,255,255,0.82)", "font-size": "12", "text-anchor": "middle" }), { textContent: String(r.m.model).replace(/^ollama:/, "") }));
+    const gap = r.g.gap;
+    if (gap != null) {
+      svg.appendChild(Object.assign(mk("text", { x: gx + groupW / 2, y: height - 14, fill: "rgba(255,255,255,0.6)", "font-size": "11", "text-anchor": "middle" }), { textContent: `gap +${Math.round(gap * 100)}` }));
+    }
+  });
+
+  // Legend.
+  const lg = [["famous", COL.famous], ["obscure", COL.obscure]];
+  lg.forEach(([label, color], i) => {
+    const x = pad.l + i * 110;
+    svg.appendChild(mk("rect", { x, y: pad.t - 4, width: 12, height: 12, rx: 3, fill: color }));
+    svg.appendChild(Object.assign(mk("text", { x: x + 18, y: pad.t + 6, fill: "rgba(255,255,255,0.78)", "font-size": "12" }), { textContent: label }));
+  });
+  return svg;
+}
+
 function renderLeaderboardTable(models) {
   const table = document.getElementById("leaderboard");
   const tbody = table.querySelector("tbody");
@@ -1277,6 +1365,19 @@ async function main() {
       quantSection.hidden = false;
     } else {
       quantSection.hidden = true;
+    }
+  }
+
+  const gradientChart = document.getElementById("gradientChart");
+  const gradientSection = document.getElementById("gradientSection");
+  if (gradientChart && gradientSection) {
+    const svg = svgGradientChart(gradientModels(history));
+    if (svg) {
+      gradientChart.innerHTML = "";
+      gradientChart.appendChild(svg);
+      gradientSection.hidden = false;
+    } else {
+      gradientSection.hidden = true;
     }
   }
 

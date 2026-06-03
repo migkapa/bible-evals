@@ -1,0 +1,46 @@
+# Memorization-gradient run: famous vs obscure verses over the FULL KJV.
+# Requires the full corpus first:  bible-eval fetch-data --version kjv
+data:
+  taxonomy_path: data/taxonomy.json
+  versions:
+    kjv:
+      raw_path: data/raw/kjv.json
+      name: "King James Version (1769)"
+
+models:
+  - name: "reference:verbatim"
+    connector: "reference"
+    options:
+      mode: "verbatim"
+  - name: "ollama:gemma4"
+    connector: "ollama"
+    options:
+      base_url: "http://127.0.0.1:11434"
+      model: "gemma4:latest"
+      temperature: 0.0
+      num_predict: 256
+
+prompts:
+  naive_user: "Quote {ref} from the {version}."
+  constraint_user: "Quote {ref} from the {version}. Output the verse text only; no preface, no commentary."
+  system2_system: |
+    You are a database retrieval engine.
+    Task: return the requested verse text verbatim.
+    Rules:
+    - Output ONLY the verse text, no surrounding quotes.
+    - Do NOT include the book/chapter/verse reference or version label.
+    - No preface, no commentary, no extra whitespace lines.
+  system2_user: |
+    Retrieve: {ref}
+    Version: {version}
+    Output only the verse text.
+
+eval:
+  version: "kjv"
+  prompt: "system2"
+  sample:
+    count: 60
+    seed: 1
+  gradient:
+    enabled: true
+    popularity_path: data/popularity.json
