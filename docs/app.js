@@ -627,6 +627,131 @@ function svgQuadrantChart(models) {
   return svg;
 }
 
+const QUANT_BPW = {
+  f32: 32, fp32: 32, f16: 16, fp16: 16, bf16: 16,
+  q8_0: 8.5, q6_k: 6.6, q5_k_m: 5.7, q5_k_s: 5.5, q5_0: 5.5, q5_1: 5.9,
+  q4_k_m: 4.8, q4_k_s: 4.6, q4_0: 4.5, q4_1: 4.9,
+  q3_k_l: 3.9, q3_k_m: 3.7, q3_k_s: 3.4, q2_k: 2.6,
+};
+
+function quantBpw(label) {
+  if (!label) return null;
+  const q = String(label).trim().toLowerCase();
+  if (q in QUANT_BPW) return QUANT_BPW[q];
+  const m = q.match(/^q(\d)/);
+  return m ? Number(m[1]) : null;
+}
+
+// Returns base_model -> [{quant, bpw, strict, ci, model}] (sorted high→low precision),
+// keeping only families with >=2 distinct quant tiers.
+function quantGroups(models) {
+  const groups = new Map();
+  for (const m of models) {
+    if (isReferenceModel(m)) continue;
+    const base = m.base_model;
+    const bpw = quantBpw(m.quant);
+    const strict = Number(m.strict_accuracy);
+    if (!base || bpw == null || !Number.isFinite(strict)) continue;
+    if (!groups.has(base)) groups.set(base, new Map());
+    // De-dup quant tiers, keeping the higher strict accuracy.
+    const seen = groups.get(base);
+    const prev = seen.get(m.quant);
+    if (!prev || strict > prev.strict) {
+      seen.set(m.quant, { quant: m.quant, bpw, strict, ci: ciFor(m, "strict_accuracy"), model: m.model });
+    }
+  }
+  const out = new Map();
+  for (const [base, byQuant] of groups) {
+    if (byQuant.size >= 2) {
+      out.set(base, [...byQuant.values()].sort((a, b) => b.bpw - a.bpw));
+    }
+  }
+  return out;
+}
+
+function svgQuantChart(models) {
+  const groups = quantGroups(models);
+  const ns = "http://www.w3.org/2000/svg";
+  const mk = (tag, attrs, text) => {
+    const n = document.createElementNS(ns, tag);
+    for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, String(v));
+    if (text != null) n.textContent = text;
+    return n;
+  };
+  if (!groups.size) return null;
+
+  const width = 980;
+  const height = 320;
+  const pad = { l: 52, r: 16, t: 18, b: 46 };
+  const innerW = width - pad.l - pad.r;
+  const innerH = height - pad.t - pad.b;
+
+  // Shared x-axis: union of quant tiers across families, ordered high→low precision.
+  const tiers = [...new Set([...groups.values()].flat().map((p) => p.quant))].sort(
+    (a, b) => quantBpw(b) - quantBpw(a),
+  );
+  const colX = (q) => {
+    const i = tiers.indexOf(q);
+    return pad.l + (tiers.length === 1 ? innerW / 2 : (innerW * i) / (tiers.length - 1));
+  };
+  const sy = (v) => pad.t + (1 - Math.max(0, Math.min(1, v))) * innerH;
+
+  const svg = mk("svg", { viewBox: `0 0 ${width} ${height}`, width: "100%", height: "100%" });
+
+  // Gridlines + y labels.
+  for (let i = 0; i <= 4; i++) {
+    const y = pad.t + (innerH * i) / 4;
+    svg.appendChild(mk("line", { x1: pad.l, x2: width - pad.r, y1: y, y2: y, stroke: "rgba(255,255,255,0.10)" }));
+    svg.appendChild(
+      Object.assign(mk("text", { x: pad.l - 8, y: y + 4, fill: "rgba(255,255,255,0.6)", "font-size": "11", "text-anchor": "end" }), {
+        textContent: fmtPct(1 - i / 4),
+      }),
+    );
+  }
+  // X tick labels (quant tiers).
+  for (const q of tiers) {
+    svg.appendChild(
+      Object.assign(mk("text", { x: colX(q), y: pad.t + innerH + 20, fill: "rgba(255,255,255,0.78)", "font-size": "12", "text-anchor": "middle" }), {
+        textContent: q,
+      }),
+    );
+  }
+  svg.appendChild(
+    Object.assign(mk("text", { x: pad.l + innerW / 2, y: height - 6, fill: "rgba(255,255,255,0.7)", "font-size": "12", "text-anchor": "middle" }), {
+      textContent: "← higher precision    quantization tier    lower precision →",
+    }),
+  );
+
+  const palette = ["rgba(34,197,94,0.95)", "rgba(96,165,250,0.95)", "rgba(245,158,11,0.95)", "rgba(168,85,247,0.95)"];
+  let ci = 0;
+  for (const [base, pts] of groups) {
+    const color = palette[ci % palette.length];
+    ci += 1;
+    // Connecting line.
+    const d = pts.map((p, i) => `${i === 0 ? "M" : "L"} ${colX(p.quant).toFixed(1)} ${sy(p.strict).toFixed(1)}`).join(" ");
+    svg.appendChild(mk("path", { d, fill: "none", stroke: color, "stroke-width": "2.5", "stroke-linejoin": "round" }));
+    for (const p of pts) {
+      const x = colX(p.quant);
+      // CI whisker.
+      if (p.ci) {
+        const w = mk("g", { stroke: color, "stroke-width": "1.5", opacity: "0.8" });
+        w.appendChild(mk("line", { x1: x, y1: sy(p.ci.hi), x2: x, y2: sy(p.ci.lo) }));
+        w.appendChild(mk("line", { x1: x - 5, y1: sy(p.ci.hi), x2: x + 5, y2: sy(p.ci.hi) }));
+        w.appendChild(mk("line", { x1: x - 5, y1: sy(p.ci.lo), x2: x + 5, y2: sy(p.ci.lo) }));
+        svg.appendChild(w);
+      }
+      const dot = mk("circle", { cx: x, cy: sy(p.strict), r: 6, fill: color, stroke: "rgba(0,0,0,0.4)", "stroke-width": "1.5" });
+      dot.appendChild(Object.assign(document.createElementNS(ns, "title"), { textContent: `${base} ${p.quant}: ${fmtPct(p.strict)}` }));
+      svg.appendChild(dot);
+    }
+    // Legend label at the leftmost point.
+    svg.appendChild(
+      Object.assign(mk("text", { x: pad.l, y: pad.t + 12 + (ci - 1) * 16, fill: color, "font-size": "12" }), { textContent: base }),
+    );
+  }
+  return svg;
+}
+
 function renderLeaderboardTable(models) {
   const table = document.getElementById("leaderboard");
   const tbody = table.querySelector("tbody");
@@ -1140,6 +1265,19 @@ async function main() {
   if (quadrant) {
     quadrant.innerHTML = "";
     quadrant.appendChild(svgQuadrantChart(models));
+  }
+
+  const quantChart = document.getElementById("quantChart");
+  const quantSection = document.getElementById("quantSection");
+  if (quantChart && quantSection) {
+    const svg = svgQuantChart(models);
+    if (svg) {
+      quantChart.innerHTML = "";
+      quantChart.appendChild(svg);
+      quantSection.hidden = false;
+    } else {
+      quantSection.hidden = true;
+    }
   }
 
   wireTableSorting(models);

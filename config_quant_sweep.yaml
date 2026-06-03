@@ -1,0 +1,91 @@
+# Quantization-fidelity sweep: one base model across quant tiers.
+# Answers "which quant can still quote scripture verbatim?" — strict accuracy vs
+# bits-per-weight. Each entry tags `base_model` + `quant` so the site can group
+# and order them (FP16 -> Q8 -> Q4). Pull the tags first, e.g.:
+#   ollama pull gemma3:1b-it-fp16
+#   ollama pull gemma3:1b-it-q8_0
+#   ollama pull gemma3:1b-it-q4_K_M
+data:
+  taxonomy_path: data/taxonomy.json
+  versions:
+    kjv:
+      raw_path: data/raw/kjv_sample.json
+      name: "King James Version (1769)"
+
+models:
+  - name: "reference:verbatim"
+    connector: "reference"
+    options:
+      mode: "verbatim"
+  - name: "ollama:gemma3:1b@fp16"
+    connector: "ollama"
+    base_model: "gemma3:1b"
+    quant: "fp16"
+    options:
+      base_url: "http://127.0.0.1:11434"
+      model: "gemma3:1b-it-fp16"
+      temperature: 0.0
+      num_predict: 256
+  - name: "ollama:gemma3:1b@q8_0"
+    connector: "ollama"
+    base_model: "gemma3:1b"
+    quant: "q8_0"
+    options:
+      base_url: "http://127.0.0.1:11434"
+      model: "gemma3:1b-it-q8_0"
+      temperature: 0.0
+      num_predict: 256
+  - name: "ollama:gemma3:1b@q4_K_M"
+    connector: "ollama"
+    base_model: "gemma3:1b"
+    quant: "q4_K_M"
+    options:
+      base_url: "http://127.0.0.1:11434"
+      model: "gemma3:1b-it-q4_K_M"
+      temperature: 0.0
+      num_predict: 256
+  - name: "ollama:gemma3:4b@q8_0"
+    connector: "ollama"
+    base_model: "gemma3:4b"
+    quant: "q8_0"
+    options:
+      base_url: "http://127.0.0.1:11434"
+      model: "gemma3:4b-it-q8_0"
+      temperature: 0.0
+      num_predict: 256
+  - name: "ollama:gemma3:4b@q4_K_M"
+    connector: "ollama"
+    base_model: "gemma3:4b"
+    quant: "q4_K_M"
+    options:
+      base_url: "http://127.0.0.1:11434"
+      model: "gemma3:4b"
+      temperature: 0.0
+      num_predict: 256
+
+prompts:
+  naive_user: "Quote {ref} from the {version}."
+  constraint_user: "Quote {ref} from the {version}. Output the verse text only; no preface, no commentary."
+  system2_system: |
+    You are a database retrieval engine.
+    Task: return the requested verse text verbatim.
+    Rules:
+    - Output ONLY the verse text, no surrounding quotes.
+    - Do NOT include the book/chapter/verse reference or version label.
+    - No preface, no commentary, no extra whitespace lines.
+  system2_user: |
+    Retrieve: {ref}
+    Version: {version}
+    Output only the verse text.
+
+eval:
+  version: "kjv"
+  prompt: "system2"
+  sample:
+    count: 50
+    seed: 1
+    stratified: true
+  abstention:
+    enabled: false
+  perturbations:
+    enabled: false
