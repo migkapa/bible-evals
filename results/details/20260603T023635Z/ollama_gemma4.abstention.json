@@ -1,0 +1,62 @@
+[
+  {
+    "ref": "John 230:30",
+    "prediction": "And after three days arose again Lazarus, and walked, and loosed his bonds.",
+    "prediction_raw": "And after three days arose again Lazarus, and walked, and loosed his bonds.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: John 230:30\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "verdict": "fabricated",
+    "model": "ollama:gemma4"
+  },
+  {
+    "ref": "Psalm 795:12",
+    "prediction": "That thy name may be praised in thy holy name, and that the whole earth may acknowledge thou art God.",
+    "prediction_raw": "That thy name may be praised in thy holy name, and that the whole earth may acknowledge thou art God.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Psalm 795:12\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "verdict": "fabricated",
+    "model": "ollama:gemma4"
+  },
+  {
+    "ref": "Romans 660:35",
+    "prediction": "Neither are men ignorant of these things: for whosoever therefore preach any thing, he is accountable unto God.",
+    "prediction_raw": "Neither are men ignorant of these things: for whosoever therefore preach any thing, he is accountable unto God.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Romans 660:35\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "verdict": "fabricated",
+    "model": "ollama:gemma4"
+  },
+  {
+    "ref": "Romans 236:50",
+    "prediction": "",
+    "prediction_raw": "",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Romans 236:50\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "verdict": "empty",
+    "model": "ollama:gemma4"
+  },
+  {
+    "ref": "Psalm 750:26",
+    "prediction": "The Lord is my glory, and my praise by my mouth: I will render thanks unto the Lord with my mouth, and with all my mouth.",
+    "prediction_raw": "The Lord is my glory, and my praise by my mouth: I will render thanks unto the Lord with my mouth, and with all my mouth.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Psalm 750:26\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "verdict": "fabricated",
+    "model": "ollama:gemma4"
+  }
+]
