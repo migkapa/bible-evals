@@ -81,6 +81,23 @@ function bestModels(history, key) {
   return [...best.values()];
 }
 
+// The most statistically reliable run per model: largest sample (N), then most
+// recent. Avoids surfacing cherry-picked small-N high scores on the leaderboard.
+function reliableModels(history) {
+  const best = new Map();
+  for (const run of history) {
+    for (const m of run.models || []) {
+      if (isReferenceModel(m)) continue;
+      const n = Number(m?.n) || 0;
+      const prev = best.get(m.model);
+      const better =
+        !prev || n > prev._n || (n === prev._n && String(run.run_id) > String(prev._run_id));
+      if (better) best.set(m.model, { ...m, _n: n, _run_id: run.run_id, _created_at: run.created_at });
+    }
+  }
+  return [...best.values()];
+}
+
 function el(tag, attrs = {}, children = []) {
   const node = document.createElement(tag);
   for (const [k, v] of Object.entries(attrs)) {
@@ -1342,16 +1359,22 @@ function renderHeadline(history) {
   if (!band) return;
   band.innerHTML = "";
   const models = uniqueModels(history);
-  const best = bestModels(history, "strict_accuracy").sort(byKey("strict_accuracy", "desc"))[0];
   const grad = topGradient(history);
 
   band.appendChild(statEl(models.length, "", "Models tested"));
   band.appendChild(statEl(history.length, "", "Eval runs"));
-  if (best && Number.isFinite(Number(best.strict_accuracy))) {
-    band.appendChild(statEl(Math.round(Number(best.strict_accuracy) * 100), "%", "Best verbatim"));
-  }
-  if (grad) {
+  if (grad && grad.gradient.famous) {
+    // Top famous-verse recall is the meaningful "knows the Bible" headline.
+    const top = gradientModels(history)
+      .filter((m) => Number.isFinite(Number(m.gradient?.famous?.strict_accuracy)))
+      .sort((a, b) => b.gradient.famous.strict_accuracy - a.gradient.famous.strict_accuracy)[0];
+    if (top) {
+      band.appendChild(statEl(Math.round(top.gradient.famous.strict_accuracy * 100), "%", "Top famous recall"));
+    }
     band.appendChild(statEl(`+${Math.round(grad.gradient.gap * 100)}`, "", "Memorization gap"));
+  } else {
+    const best = reliableModels(history).sort(byKey("strict_accuracy", "desc"))[0];
+    if (best) band.appendChild(statEl(Math.round(Number(best.strict_accuracy) * 100), "%", "Best verbatim"));
   }
 }
 
@@ -1390,7 +1413,7 @@ async function main() {
   renderFinding(history);
   renderMeta(latest);
 
-  const models = bestModels(history, "strict_accuracy").sort(byKey("strict_accuracy", "desc"));
+  const models = reliableModels(history).sort(byKey("strict_accuracy", "desc"));
   const barChart = document.getElementById("barChart");
   barChart.innerHTML = "";
   barChart.appendChild(
