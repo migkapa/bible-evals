@@ -1,0 +1,98 @@
+[
+  {
+    "ref": "Numbers 625:26",
+    "prediction": "And the Lord spake unto Moses in the wilderness of Sinai, upon the day that he entered into the covenant with the children of Israel, saying,",
+    "prediction_raw": "And the Lord spake unto Moses in the wilderness of Sinai, upon the day that he entered into the covenant with the children of Israel, saying,",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Numbers 625:26\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "verdict": "fabricated",
+    "model": "ollama:gemma3n"
+  },
+  {
+    "ref": "Acts 534:35",
+    "prediction": "Peter and John were ascended up unto the roof, which was closed.",
+    "prediction_raw": "Peter and John were ascended up unto the roof, which was closed.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Acts 534:35\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "verdict": "fabricated",
+    "model": "ollama:gemma3n"
+  },
+  {
+    "ref": "I Timothy 939:29",
+    "prediction": "I Timothy 9:29",
+    "prediction_raw": "I Timothy 9:29",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: I Timothy 939:29\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "verdict": "fabricated",
+    "model": "ollama:gemma3n"
+  },
+  {
+    "ref": "Song of Solomon 385:5",
+    "prediction": "He drew near unto her, and said, I have loved thee into the moment of holiness; and I kept not my charge against her.",
+    "prediction_raw": "He drew near unto her, and said, I have loved thee into the moment of holiness; and I kept not my charge against her.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Song of Solomon 385:5\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "verdict": "fabricated",
+    "model": "ollama:gemma3n"
+  },
+  {
+    "ref": "II Kings 379:23",
+    "prediction": "And the king of Syria did go up and down upon his chariots, and against the cities of Israel, and did attack them.",
+    "prediction_raw": "And the king of Syria did go up and down upon his chariots, and against the cities of Israel, and did attack them.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: II Kings 379:23\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "verdict": "fabricated",
+    "model": "ollama:gemma3n"
+  },
+  {
+    "ref": "Acts 786:24",
+    "prediction": "And the Lord was moved to pity, and gave them a sign.",
+    "prediction_raw": "And the Lord was moved to pity, and gave them a sign.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Acts 786:24\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "verdict": "fabricated",
+    "model": "ollama:gemma3n"
+  },
+  {
+    "ref": "Genesis 437:8",
+    "prediction": "And they said unto him, Our father is an old man; he hath no strength to prepare meat for himself.",
+    "prediction_raw": "And they said unto him, Our father is an old man; he hath no strength to prepare meat for himself.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Genesis 437:8\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "verdict": "fabricated",
+    "model": "ollama:gemma3n"
+  },
+  {
+    "ref": "James 743:23",
+    "prediction": "Then said I unto myself, Tomorrow will I go unto him: yet fearfully did I quake at the thought of it.",
+    "prediction_raw": "Then said I unto myself, Tomorrow will I go unto him: yet fearfully did I quake at the thought of it.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: James 743:23\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "verdict": "fabricated",
+    "model": "ollama:gemma3n"
+  }
+]
