@@ -1,0 +1,98 @@
+[
+  {
+    "ref": "Numbers 625:26",
+    "prediction": "And it shall come to pass, when thy days are ended, that thou shalt take thy wages, which thou hast earned of every man in the land with which thou hast served, and thou shalt pass under the staff, and it shall be for thee for a warrant unto thine eyes.",
+    "prediction_raw": "And it shall come to pass, when thy days are ended, that thou shalt take thy wages, which thou hast earned of every man in the land with which thou hast served, and thou shalt pass under the staff, and it shall be for thee for a warrant unto thine eyes.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Numbers 625:26\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "verdict": "fabricated",
+    "model": "ollama:llama3.2"
+  },
+  {
+    "ref": "Acts 534:35",
+    "prediction": "And he said unto her, Arise, sir.",
+    "prediction_raw": "And he said unto her, Arise, sir.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Acts 534:35\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "verdict": "fabricated",
+    "model": "ollama:llama3.2"
+  },
+  {
+    "ref": "I Timothy 939:29",
+    "prediction": "Forbear, and present my offering, when I enter into thy gates with praise unto thee.",
+    "prediction_raw": "Forbear, and present my offering, when I enter into thy gates with praise unto thee.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: I Timothy 939:29\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "verdict": "fabricated",
+    "model": "ollama:llama3.2"
+  },
+  {
+    "ref": "Song of Solomon 385:5",
+    "prediction": "Behold, thou art fairer than Phoebus among the gods, and goest about in array, and thy eyes are as the eyes of doves:",
+    "prediction_raw": "Behold, thou art fairer than Phoebus among the gods, and goest about in array, and thy eyes are as the eyes of doves:",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Song of Solomon 385:5\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "verdict": "fabricated",
+    "model": "ollama:llama3.2"
+  },
+  {
+    "ref": "II Kings 379:23",
+    "prediction": "And it came to pass, when the king sat in his house, that he beheld a piece of leaven more old than all the leaven which was in all the house of Israel; and Joab brought it out unto him.",
+    "prediction_raw": "And it came to pass, when the king sat in his house, that he beheld a piece of leaven more old than all the leaven which was in all the house of Israel; and Joab brought it out unto him.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: II Kings 379:23\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "verdict": "fabricated",
+    "model": "ollama:llama3.2"
+  },
+  {
+    "ref": "Acts 786:24",
+    "prediction": "And when they had prayed, the place was shaken; and they said, \"Behold, a man of God is come.\"",
+    "prediction_raw": "And when they had prayed, the place was shaken; and they said, \"Behold, a man of God is come.\"",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Acts 786:24\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "verdict": "fabricated",
+    "model": "ollama:llama3.2"
+  },
+  {
+    "ref": "Genesis 437:8",
+    "prediction": "And God said, Let there be lights in the firmament of the heaven to divide the day from the night; and let them be for signs, and for seasons, and for days, and years:\n\nAnd let them be for lights in the firmament of the heaven to give light upon the earth. And it was so.",
+    "prediction_raw": "And God said, Let there be lights in the firmament of the heaven to divide the day from the night; and let them be for signs, and for seasons, and for days, and years:\n\nAnd let them be for lights in the firmament of the heaven to give light upon the earth. And it was so.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: Genesis 437:8\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "verdict": "fabricated",
+    "model": "ollama:llama3.2"
+  },
+  {
+    "ref": "James 743:23",
+    "prediction": "And behold, a man was leant upon his sickle at the time of harvest.",
+    "prediction_raw": "And behold, a man was leant upon his sickle at the time of harvest.",
+    "prompt": {
+      "system": "You are a database retrieval engine.\nTask: return the requested verse text verbatim.\nRules:\n- Output ONLY the verse text, no surrounding quotes.\n- Do NOT include the book/chapter/verse reference (e.g., \"John 11:35\") or version label (e.g., \"KJV\").\n- No preface, no commentary, no extra whitespace lines.\n- Preserve punctuation as best as you can.\nExamples:\n- Bad:  \"Jesus wept.\" - John 11:35 (KJV)\n- Good: Jesus wept.\n",
+      "user": "Retrieve: James 743:23\nVersion: King James Version (1769)\nOutput only the verse text.\n"
+    },
+    "postprocess": {},
+    "verdict": "fabricated",
+    "model": "ollama:llama3.2"
+  }
+]
